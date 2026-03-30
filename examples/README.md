@@ -25,16 +25,22 @@ They are self-contained descendants that live in this repo. They are not imports
   causal statistical-memory composition example in `projects/causal/`
 - `packed_memory_controller`
   causal memory-first confidence/controller example in `projects/causal/`
+- `program_controller`
+  causal higher-order routing/controller descendant kept project-local in `projects/causal/`
 - `proxy_features`
   bridge-style descendant in `projects/bridge/`
 - `feature_export`
   bridge export/report descendant in `projects/bridge/`
 - `agreement_export`
   bridge agreement-focused descendant in `projects/bridge/`
+- `teacher_export`
+  bridge export descendant with local teacher-label and attack-report policy in `projects/bridge/`
 - `bidirectional_analysis`
   analysis-only descendant in `projects/oracle/`
 - `field_reconstruction`
   noncausal reconstruction descendant in `projects/noncausal/`
+- `payload_choice`
+  noncausal payload-layout descendant kept project-local in `projects/noncausal/`
 - `patch_latent`
   learned byte-patch latent descendant in `projects/byte_latent/`
 
@@ -59,10 +65,10 @@ If you want to understand the repo through examples:
 1. `quickstart.py`
 2. `projects/ancestor/hierarchical_predictive`
 3. `projects/causal/exact_context_repair`
-4. `projects/causal/memory_stability` through `causal/packed_memory_controller`
+4. `projects/causal/memory_stability` through `causal/program_controller`
 5. `projects/bridge/proxy_features`
 6. `projects/bridge/feature_export`
-7. `projects/bridge/agreement_export`
-8. `projects/noncausal/field_reconstruction`
+7. `projects/bridge/agreement_export` and `bridge/teacher_export`
+8. `projects/noncausal/field_reconstruction` and `noncausal/payload_choice`
 9. `projects/oracle/bidirectional_analysis`
 10. `projects/byte_latent/patch_latent`

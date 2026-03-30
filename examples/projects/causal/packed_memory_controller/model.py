@@ -12,15 +12,17 @@ if _SRC_ROOT.exists() and str(_SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(_SRC_ROOT))
 
 from open_predictive_coder import (
-    BridgeFeatureConfig,
     ExactContextConfig,
     ExactContextMemory,
     ExactContextFitReport,
     NgramMemory,
     NgramMemoryConfig,
     NgramMemoryReport,
-    bridge_feature_arrays,
     ensure_tokens,
+)
+from open_predictive_coder.probability_diagnostics import (
+    ProbabilityDiagnosticsConfig,
+    probability_diagnostics,
 )
 
 
@@ -136,7 +138,7 @@ class PackedMemoryControllerModel:
                 alpha=self.config.exact_alpha,
             )
         )
-        self.bridge_config = BridgeFeatureConfig(candidate_count=self.config.candidate_count)
+        self.diagnostics_config = ProbabilityDiagnosticsConfig(top_k=self.config.candidate_count)
         self._controller_weights = np.zeros(len(self.FEATURE_NAMES), dtype=np.float64)
 
     @classmethod
@@ -165,26 +167,24 @@ class PackedMemoryControllerModel:
         exact_support: float,
         exact_order: int,
     ) -> np.ndarray:
-        features = bridge_feature_arrays(
+        diagnostics = probability_diagnostics(
             prior_probs[None, :],
             exact_probs[None, :],
-            self.config.vocabulary_size,
-            config=self.bridge_config,
+            config=self.diagnostics_config,
         )
-        vector = np.asarray(
+        return np.asarray(
             [
-                float(features.entropy[0]),
-                float(features.peak[0]),
-                float(features.candidate4[0]),
-                float(features.agreement[0]),
-                float(features.agreement_mass[0]),
+                float(diagnostics.entropy[0]),
+                float(diagnostics.peak[0]),
+                float(diagnostics.top_k_mass[0]),
+                float(diagnostics.overlap[0]),
+                float(diagnostics.shared_top_k_mass[0]),
                 float(exact_support),
                 float(exact_order) / float(max(self.config.exact_max_order, 1)),
                 1.0,
             ],
             dtype=np.float64,
         )
-        return vector
 
     def fit(
         self,
@@ -301,6 +301,8 @@ class PackedMemoryControllerModel:
         mixed_bits = -np.log2(np.clip(trace.mixed_probs[rows, targets], 1e-12, 1.0))
 
         exact_wins = np.mean(trace.exact_probs[rows, targets] > trace.prior_probs[rows, targets])
+        agreement_mass_index = self.FEATURE_NAMES.index("agreement_mass")
+        candidate4_index = self.FEATURE_NAMES.index("candidate4")
 
         return PackedMemoryControllerScore(
             tokens=int(tokens.size),
@@ -309,8 +311,8 @@ class PackedMemoryControllerModel:
             mixed_bits_per_byte=float(np.mean(mixed_bits)),
             mean_memory_trust=float(np.mean(trace.memory_trust)),
             exact_win_rate=float(exact_wins),
-            mean_agreement_mass=float(np.mean(trace.controller_features[:, 4])),
-            mean_candidate4=float(np.mean(trace.controller_features[:, 2])),
+            mean_agreement_mass=float(np.mean(trace.controller_features[:, agreement_mass_index])),
+            mean_candidate4=float(np.mean(trace.controller_features[:, candidate4_index])),
         )
 
     def controller_weights(self) -> np.ndarray:

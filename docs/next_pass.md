@@ -23,6 +23,7 @@ The repo now has:
 - a first `src/`-level `bridge_export` adapter
 - a first learned patch-latent kernel slice for segmentation, local encoding, pooling, and bridging
 - the next statistical/kernel slice for oscillatory memory, n-gram memory, bridge features, and bidirectional context
+- a first family-neutral probability diagnostics seam over scored distributions
 - a first reusable scored-span selection primitive
 - a first causal packed-memory controller descendant built from current primitives
 - a first noncausal field-reconstruction descendant built from current primitives

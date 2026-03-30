@@ -14,6 +14,7 @@ Examples:
 - `test_linear_memory.py`
 - `test_oscillatory_memory.py`
 - `test_ngram_memory.py`
+- `test_probability_diagnostics.py`
 - `test_bridge_export.py`
 - `test_bridge_features.py`
 - `test_bidirectional_context.py`
@@ -65,6 +66,9 @@ Examples:
 - `test_packed_memory_controller_example.py`
 - `test_bidirectional_analysis_example.py`
 - `test_field_reconstruction_example.py`
+- `test_payload_choice_example.py`
+- `test_teacher_export_example.py`
+- `test_program_controller_example.py`
 - `test_patch_latent_example.py`
 - `test_statistical_memory_example.py`
 - `test_diagnostics_examples.py`

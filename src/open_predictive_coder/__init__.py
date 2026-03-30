@@ -107,6 +107,18 @@ from .patch_latent_blocks import (
     PatchPooler,
     PatchPoolerConfig,
 )
+from .probability_diagnostics import (
+    ProbabilityDiagnostics,
+    ProbabilityDiagnosticsConfig,
+    normalized_entropy,
+    overlap_mass,
+    probability_diagnostics,
+    shared_top_k_mass,
+    top1_agreement,
+    top1_peak,
+    top2_margin,
+    top_k_mass,
+)
 from .sampled_readout import SampledBandSummary, SampledMultiscaleReadout
 from .span_selection import ScoredSpan, SpanSelectionConfig, replay_spans_from_scores, select_scored_spans
 from .views import ByteLatentFeatureView
@@ -275,6 +287,16 @@ __all__ = [
     "PathwayGateValues",
     "PatchPooler",
     "PatchPoolerConfig",
+    "ProbabilityDiagnostics",
+    "ProbabilityDiagnosticsConfig",
+    "probability_diagnostics",
+    "normalized_entropy",
+    "overlap_mass",
+    "shared_top_k_mass",
+    "top1_agreement",
+    "top1_peak",
+    "top2_margin",
+    "top_k_mass",
     "PredictiveController",
     "PredictiveObservation",
     "PredictiveState",

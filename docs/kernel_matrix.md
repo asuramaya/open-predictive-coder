@@ -73,6 +73,7 @@ Use [`frontier_pass.md`](./frontier_pass.md) for the current descendant-frontier
 | `views.hierarchical` | pooled and predictive views over fast/mid/slow banks | `carving_machine/models.py#L224` | predictive coding hierarchies and surprise-style residuals | Implemented |
 | `views.sampled_readout` | deterministic sampled bands over multiscale state | `ablations.py`, `v6.py` | sampled multiscale readout over fixed state | Implemented |
 | `views.byte_latent` | residual + patch-summary + latent feature construction | current library | Rao and Ballard 1999, BLT 2025 | Implemented |
+| `views.probability_diagnostics` | family-neutral summaries over one or two probability sources | bridge export, causal packed-memory control, and causal program-controller descendants | confidence and overlap diagnostics over scored distributions | Implemented |
 | `views.bridge_features` | probability-to-feature bridge between proxy and runtime surfaces | bridge/export descendant framing | causal proxy features from offline or higher-order distributions | Implemented |
 | `analysis.bidirectional_context` | noncausal left/right context determinism probe | oracle-analysis descendant framing | bidirectional context probing and support-size analysis | Implemented |
 | `runtime.span_selection` | shared score-array to replay-span grouping seam | bridge export and noncausal field-reconstruction descendants | reusable scored-position to contiguous-span selection | Implemented |
@@ -142,6 +143,7 @@ The kernel is no longer just an echo-state toy. It now has:
 - smoothed n-gram memory primitive
 - feature-view primitives for both byte-latent and hierarchical state
 - bridge feature utilities over probability arrays
+- family-neutral probability diagnostics over probability arrays
 - bidirectional context analysis primitive
 - scored-span selection primitive
 - local byte encoder, patch pooler, and learned global-to-local bridge primitives

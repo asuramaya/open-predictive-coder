@@ -30,6 +30,7 @@ It owns:
 - substrate dynamics
 - controller-side summaries, gates, routing, and modulation
 - memory, latent, and learned patch-latent primitives
+- family-neutral probability diagnostics and bridge-side feature transforms
 - feature views and sampled readout
 - readouts, experts, and scoring utilities
 - runtime surfaces like traces, eval, train modes, and artifact accounting
@@ -123,6 +124,7 @@ The kernel is easiest to understand by category rather than by filename order.
 - [`learned_segmentation.py`](../src/open_predictive_coder/learned_segmentation.py)
 - [`ngram_memory.py`](../src/open_predictive_coder/ngram_memory.py)
 - [`patch_latent_blocks.py`](../src/open_predictive_coder/patch_latent_blocks.py)
+- [`probability_diagnostics.py`](../src/open_predictive_coder/probability_diagnostics.py)
 - [`segmenters.py`](../src/open_predictive_coder/segmenters.py)
 - [`views.py`](../src/open_predictive_coder/views.py)
 - [`linear_views.py`](../src/open_predictive_coder/linear_views.py)
@@ -173,6 +175,7 @@ Stable kernel examples of the right kind of promotion:
 - `TrainModeConfig`
 - `ArtifactMetadata` / `ReplaySpan` / `ArtifactAccounting`
 - `select_scored_spans` / `replay_spans_from_scores`
+- `ProbabilityDiagnostics` / `probability_diagnostics`
 
 Still project-local on purpose:
 

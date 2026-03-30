@@ -123,7 +123,9 @@ Likely extraction path:
 
 The `Conker-10` read makes this explicit: memory is not enough by itself; what matters is exposing when memory should be trusted.
 
-Kernel candidate:
+This seam is now in `src/` as a small family-neutral probability diagnostics surface.
+
+Kernel seam:
 
 - a small probability-source diagnostics surface that reports things like:
   - entropy
@@ -132,6 +134,18 @@ Kernel candidate:
   - base-vs-memory agreement
 
 This is more plausible now because both bridge export and causal memory-first work want similar “confidence about a scored distribution” surfaces.
+
+It is family-neutral, mechanism-level, and already repeated across:
+
+- bridge feature export
+- causal packed-memory control
+- oracle-side probability comparison
+
+What should not follow it into `src/`:
+
+- payload-wire policy
+- teacher-export policy
+- higher-order causal program/controller policy
 
 ### 3. Payload-Choice Helpers
 
@@ -191,6 +205,8 @@ The frontier does not change the basic rule:
 - repeated mechanism goes to the kernel
 - descendant policy stays in example space
 - the current frontier only defines where to look next
+- probability diagnostics is now a shared seam and should be pressure-tested, not immediately widened
+- higher-order causal controller policy stays out of `src/` for now
 
 That means:
 

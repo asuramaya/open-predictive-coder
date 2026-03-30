@@ -243,6 +243,6 @@ kernel were `LinearMemorySubstrate`, `LinearMemoryFeatureView`, `FrozenReadoutEx
 `ArtifactAccounting` runtime slice, the first shared `CausalPredictiveAdapter` plus `OracleAnalysisAdapter` plus
 `BridgeExportAdapter`, the first learned patch-latent kernel blocks (`LearnedSegmenter`, `LocalByteEncoder`,
 `PatchPooler`, `GlobalLocalBridge`), and the next statistical/kernel additions (`OscillatoryMemorySubstrate`,
-`NgramMemory`, `bridge_feature_arrays`, `BidirectionalContextProbe`, `select_scored_spans`,
-`replay_spans_from_scores`); descendant mixer policies, noncausal replay economics, rate-distortion objectives, and
-quantization/export policy remain deliberately project-local, and diagnostics stayed under `examples/`.
+`NgramMemory`, `bridge_feature_arrays`, `ProbabilityDiagnostics`, `BidirectionalContextProbe`,
+`select_scored_spans`, `replay_spans_from_scores`); descendant mixer policies, noncausal replay economics,
+rate-distortion objectives, and quantization/export policy remain deliberately project-local.

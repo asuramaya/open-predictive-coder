@@ -56,6 +56,8 @@ These are not toy demos. They are boundary tests.
   three different causal composition policies built from kernel primitives
 - `causal/statistical_memory/`
   causal example that composes dense n-gram tables and exact-context repair without widening `src/`
+- `causal/packed_memory_controller/`
+  causal memory-first descendant that adds an example-local trust controller over packed priors and exact repair
 - `bridge/proxy_features/`
   bridge-style descendant that turns probability streams into causal proxy features
 - `bridge/feature_export/`

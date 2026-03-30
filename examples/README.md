@@ -23,6 +23,8 @@ They are self-contained descendants that live in this repo. They are not imports
   three causal composition variants in `projects/causal/`
 - `statistical_memory`
   causal statistical-memory composition example in `projects/causal/`
+- `packed_memory_controller`
+  causal memory-first confidence/controller example in `projects/causal/`
 - `proxy_features`
   bridge-style descendant in `projects/bridge/`
 - `feature_export`
@@ -57,7 +59,7 @@ If you want to understand the repo through examples:
 1. `quickstart.py`
 2. `projects/ancestor/hierarchical_predictive`
 3. `projects/causal/exact_context_repair`
-4. `projects/causal/memory_stability` through `causal/statistical_memory`
+4. `projects/causal/memory_stability` through `causal/packed_memory_controller`
 5. `projects/bridge/proxy_features`
 6. `projects/bridge/feature_export`
 7. `projects/bridge/agreement_export`

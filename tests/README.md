@@ -62,6 +62,7 @@ Examples:
 - `test_bridge_proxy_example.py`
 - `test_feature_export_example.py`
 - `test_agreement_export_example.py`
+- `test_packed_memory_controller_example.py`
 - `test_bidirectional_analysis_example.py`
 - `test_field_reconstruction_example.py`
 - `test_patch_latent_example.py`

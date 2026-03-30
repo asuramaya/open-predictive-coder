@@ -96,6 +96,7 @@ The current kernel and descendant examples already cover a meaningful part of th
   - [`span_selection.py`](../src/open_predictive_coder/span_selection.py)
 - descendant rebuilds:
   - `examples/projects/causal/*`
+  - `examples/projects/causal/packed_memory_controller`
   - `examples/projects/bridge/*`
   - `examples/projects/noncausal/field_reconstruction`
 
@@ -171,18 +172,17 @@ Those should first exist as rebuilt descendants or example-local controllers in 
 
 If the repo keeps following the descendant-first method, the next clean rebuilds are:
 
-1. `examples/projects/causal/packed_memory_controller`
-   - stronger memory-first causal example
-   - combine `ngram_memory`, `exact_context`, and explicit confidence features
-
-2. `examples/projects/noncausal/payload_choice`
+1. `examples/projects/noncausal/payload_choice`
    - noncausal descendant that chooses dense vs sparse position payloads
    - keep dictionary policy local at first
 
-3. `examples/projects/bridge/teacher_export`
+2. `examples/projects/bridge/teacher_export`
    - bridge descendant focused on export labels and attack-aware reporting
 
-Those three would pressure the frontier without locking the wrong `src/` contracts too early.
+3. a stronger causal controller/program descendant
+   - pressure-test higher-order controller shapes without promoting them into `src/`
+
+Those rebuilds would pressure the frontier without locking the wrong `src/` contracts too early.
 
 ## Current Extraction Rule
 

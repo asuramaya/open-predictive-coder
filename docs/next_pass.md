@@ -7,6 +7,8 @@ This document turns the current state into the next concrete implementation pass
 Use the new noncausal and bridge descendants to decide whether the first real `noncausal_reconstructive` contract is
 now specific enough to extract into `src/`, while keeping the kernel readable and generic.
 
+The live sibling-frontier read that informs this pass is tracked in [`frontier_pass.md`](./frontier_pass.md).
+
 ## Why This Is The Next Pass
 
 The repo now has:
@@ -112,6 +114,7 @@ Every pass should also improve orientation:
 2. harden runtime and accounting
 3. extract the first minimal `noncausal_reconstructive` contract if the boundary is now clear
 4. only then consider wider family abstractions
+5. keep the current live `Conker` / `BLINX` / `Giddy-Up` frontier read synced into the descendant rebuild plan
 
 ## Non-Goals For The Next Pass
 

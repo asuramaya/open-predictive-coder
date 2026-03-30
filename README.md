@@ -18,7 +18,8 @@ pattern language extracted from related descendants. Use [`docs/lineage.md`](./d
 attribution, and the rule this repo follows for non-vendored references. The current kernel extraction roadmap lives in
 [`docs/kernel_matrix.md`](./docs/kernel_matrix.md), the package/code map is in
 [`docs/architecture.md`](./docs/architecture.md), the concrete next implementation pass is in
-[`docs/next_pass.md`](./docs/next_pass.md), and the next controller extraction boundary is outlined in
+[`docs/next_pass.md`](./docs/next_pass.md), the current live sibling-frontier extraction read is in
+[`docs/frontier_pass.md`](./docs/frontier_pass.md), and the next controller extraction boundary is outlined in
 [`docs/control_surface.md`](./docs/control_surface.md).
 
 ## Start Here
@@ -27,8 +28,9 @@ If you want to understand the repo quickly:
 
 1. read [`docs/architecture.md`](./docs/architecture.md)
 2. skim [`docs/kernel_matrix.md`](./docs/kernel_matrix.md)
-3. read [`examples/README.md`](./examples/README.md)
-4. use [`tests/README.md`](./tests/README.md) to find the verification surface for the area you care about
+3. read [`docs/frontier_pass.md`](./docs/frontier_pass.md)
+4. read [`examples/README.md`](./examples/README.md)
+5. use [`tests/README.md`](./tests/README.md) to find the verification surface for the area you care about
 
 ## Why This Exists
 

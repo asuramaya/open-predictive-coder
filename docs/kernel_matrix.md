@@ -10,6 +10,7 @@ The point is not to preserve every historical branch name. The point is to extra
 the upstream workspace that can still support causal, noncausal, oracle, bridge, and byte-latent downstream systems.
 
 Use [`lineage.md`](./lineage.md) for the attribution rule behind the upstream workspace paths named below.
+Use [`frontier_pass.md`](./frontier_pass.md) for the current descendant-frontier read across the live sibling repos.
 
 ## Source Anchors
 
@@ -113,6 +114,7 @@ Use [`lineage.md`](./lineage.md) for the attribution rule behind the upstream wo
 - noncausal field selectors and replay accounting
 - oracle analysis helpers
 - bridge/export schemas
+- payload-choice helpers and teacher-export surfaces once they repeat across multiple descendants
 
 ### P3: only then stabilize presets
 

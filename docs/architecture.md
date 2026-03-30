@@ -8,10 +8,11 @@ If you are new to the repo, read things in this order:
 
 1. [`README.md`](../README.md)
 2. [`kernel_matrix.md`](./kernel_matrix.md)
-3. this file
-4. [`examples/README.md`](../examples/README.md)
-5. [`lineage.md`](./lineage.md)
-6. the specific example project README you care about
+3. [`frontier_pass.md`](./frontier_pass.md)
+4. this file
+5. [`examples/README.md`](../examples/README.md)
+6. [`lineage.md`](./lineage.md)
+7. the specific example project README you care about
 
 Use [`related_work.md`](./related_work.md) and [`landscape.md`](./landscape.md) for research and ecosystem context, not
 for code orientation.

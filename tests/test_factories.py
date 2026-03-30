@@ -10,6 +10,7 @@ from open_predictive_coder.config import (
     LatentConfig,
     MixedMemoryConfig,
     OpenPredictiveCoderConfig,
+    OscillatoryMemoryConfig,
     ReservoirConfig,
 )
 from open_predictive_coder.delay import DelayLineSubstrate
@@ -18,11 +19,13 @@ from open_predictive_coder.factories import (
     create_echo_state_substrate,
     create_hierarchical_substrate,
     create_mixed_memory_substrate,
+    create_oscillatory_memory_substrate,
     create_substrate,
     create_substrate_for_model,
 )
 from open_predictive_coder.hierarchical import HierarchicalSubstrate
 from open_predictive_coder.mixed_memory import MixedMemorySubstrate
+from open_predictive_coder.oscillatory_memory import OscillatoryMemorySubstrate
 from open_predictive_coder.reservoir import EchoStateReservoir
 
 
@@ -69,6 +72,25 @@ class FactoryTests(unittest.TestCase):
         self.assertFalse(np.allclose(substrate.reservoir_view(next_state), 0.0))
         self.assertFalse(np.allclose(substrate.delay_view(next_state), 0.0))
 
+    def test_oscillatory_factory_builds_frozen_mode_bank(self) -> None:
+        config = OscillatoryMemoryConfig(
+            vocabulary_size=16,
+            embedding_dim=4,
+            decay_rates=(0.5, 0.8),
+            oscillatory_modes=2,
+            seed=19,
+        )
+        substrate = create_oscillatory_memory_substrate(config)
+
+        self.assertIsInstance(substrate, OscillatoryMemorySubstrate)
+        state = substrate.initial_state()
+        self.assertEqual(state.shape, (config.state_dim,))
+        self.assertTrue(np.all(state == 0.0))
+
+        next_state = substrate.step(state, 3)
+        self.assertEqual(next_state.shape, (config.state_dim,))
+        self.assertTrue(np.all(np.isfinite(next_state)))
+
     def test_hierarchical_factory_builds_multiscale_substrate(self) -> None:
         config = HierarchicalSubstrateConfig(
             fast_size=8,
@@ -92,6 +114,7 @@ class FactoryTests(unittest.TestCase):
             reservoir=ReservoirConfig(size=16, connectivity=0.25, spectral_radius=0.9, leak=0.2, seed=3),
             delay=DelayLineConfig(history_length=2, embedding_dim=3, vocabulary_size=8, seed=4),
         )
+        oscillatory = OscillatoryMemoryConfig(vocabulary_size=8, embedding_dim=3, oscillatory_modes=2, seed=5)
         hierarchical = HierarchicalSubstrateConfig(
             fast_size=8,
             mid_size=10,
@@ -102,6 +125,7 @@ class FactoryTests(unittest.TestCase):
 
         self.assertIsInstance(create_substrate(reservoir), EchoStateReservoir)
         self.assertIsInstance(create_substrate(delay), DelayLineSubstrate)
+        self.assertIsInstance(create_substrate(oscillatory), OscillatoryMemorySubstrate)
         self.assertIsInstance(create_substrate(mixed), MixedMemorySubstrate)
         self.assertIsInstance(create_substrate(hierarchical), HierarchicalSubstrate)
 
@@ -123,6 +147,18 @@ class FactoryTests(unittest.TestCase):
             ),
             latent=latent,
         )
+        oscillatory = OpenPredictiveCoderConfig(
+            vocabulary_size=32,
+            substrate_kind="oscillatory",
+            oscillatory=OscillatoryMemoryConfig(
+                vocabulary_size=32,
+                embedding_dim=4,
+                decay_rates=(0.5, 0.9),
+                oscillatory_modes=2,
+                seed=8,
+            ),
+            latent=latent,
+        )
         hierarchical = OpenPredictiveCoderConfig(
             vocabulary_size=32,
             substrate_kind="hierarchical",
@@ -138,6 +174,7 @@ class FactoryTests(unittest.TestCase):
 
         self.assertIsInstance(create_substrate_for_model(base), EchoStateReservoir)
         self.assertIsInstance(create_substrate_for_model(delay), DelayLineSubstrate)
+        self.assertIsInstance(create_substrate_for_model(oscillatory), OscillatoryMemorySubstrate)
         self.assertIsInstance(create_substrate_for_model(mixed), MixedMemorySubstrate)
         self.assertIsInstance(create_substrate_for_model(hierarchical), HierarchicalSubstrate)
 

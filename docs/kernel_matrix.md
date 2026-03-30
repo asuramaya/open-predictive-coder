@@ -59,16 +59,22 @@ Use [`lineage.md`](./lineage.md) for the attribution rule behind the upstream wo
 | `substrates.linear_memory` | frozen linear multiscale decay-bank memory | linear-correction and residual-repair reconstruction from primitives | short/medium-horizon linear memory scaffold | Implemented |
 | `substrates.mixed_memory` | recurrent plus delay hybrid | `carving_machine/models.py#L484`, `carving_machine/models.py#L609` | sequence memory and continual modeling | Implemented |
 | `substrates.hierarchical` | fast/mid/slow multi-timescale substrate | `carving_machine/models.py#L224` | predictive coding hierarchies, multi-timescale memory | Implemented |
+| `substrates.oscillatory_memory` | frozen exponential plus damped-oscillatory mode bank | later linear-memory / oscillatory substrate experiments in the upstream workspace | multi-timescale linear dynamical memory and oscillatory state summaries | Implemented |
 | `factories.substrates` | config-driven substrate construction and adapter dispatch | upstream harness principle: compare substrate designs | engineering bridge from research kernel to adapters | Implemented |
 | `controllers.summary` | generic summary contract shared by gates and routing | `carving_machine/models.py#L224`, `carving_machine/models.py#L1129` | control-side summary views over substrate state | Implemented |
 | `controllers.predictive` | latent commit, prediction, surprise, residual paths | `carving_machine/models.py#L224`, `carving_machine/models.py#L609` | Rao and Ballard 1999, Friston 2005 | Partial: generic predictive/surprise primitive implemented |
+| `controllers.learned_segmentation` | reusable learned boundary probability and target-rate patching | learned patch-latent reconstruction from primitives | rate-distortion intuition without transformer-specific policy | Implemented |
 | `memory.exact_context` | causal exact-history experts over exact1/exact2/exact3 style contexts | causal descendant docs and early exact-count branches | count-based language modeling, causal support-aware correction | Implemented |
+| `memory.ngram` | smoothed unigram/bigram/trigram statistical tables | later causal packed-memory descendants | classical n-gram language modeling and lightweight causal memory | Implemented |
 | `controllers.gating` | reusable fast-to-mid and mid-to-slow pathway gates | `carving_machine/models.py#L224` | adaptive control over multiscale substrate paths | Implemented |
 | `controllers.routing` | causal substrate/path selection over branch summaries | `carving_machine/models.py#L1129` | adaptive control over substrate views | Implemented |
 | `controllers.modulation` | hormone/modulation paths | `carving_machine/models.py#L1354` | side-channel modulation over substrate | Implemented as primitive |
 | `views.hierarchical` | pooled and predictive views over fast/mid/slow banks | `carving_machine/models.py#L224` | predictive coding hierarchies and surprise-style residuals | Implemented |
 | `views.sampled_readout` | deterministic sampled bands over multiscale state | `ablations.py`, `v6.py` | sampled multiscale readout over fixed state | Implemented |
 | `views.byte_latent` | residual + patch-summary + latent feature construction | current library | Rao and Ballard 1999, BLT 2025 | Implemented |
+| `views.bridge_features` | probability-to-feature bridge between proxy and runtime surfaces | bridge/export descendant framing | causal proxy features from offline or higher-order distributions | Implemented |
+| `analysis.bidirectional_context` | noncausal left/right context determinism probe | oracle-analysis descendant framing | bidirectional context probing and support-size analysis | Implemented |
+| `blocks.patch_latent_local` | local byte encoding, patch pooling, and learned global-to-local bridge | learned patch-latent reconstruction from primitives | local predictive coding over shorter latent streams | Implemented |
 | `views.linear_memory` | reusable features over decay-bank memory state | linear-correction and residual-repair reconstruction from primitives | short/medium-horizon linear summaries | Implemented |
 | `readouts.closed_form` | simple trained readout over frozen state | current library | Jaeger 2001 | Implemented |
 | `experts.frozen_readout` | frozen substrate plus feature-function expert wrapper | causal variant reconstruction from primitives | mixture-of-experts over fixed dynamical state | Implemented |
@@ -81,7 +87,7 @@ Use [`lineage.md`](./lineage.md) for the attribution rule behind the upstream wo
 | `adapters.causal_predictive` | causal predictive/compressive runtime systems | causal descendant docs | sequence predictive coding | Implemented |
 | `adapters.noncausal_reconstructive` | document-field replay systems | noncausal descendant docs | reconstruction and side-data economics | Not started |
 | `adapters.oracle_analysis` | bidirectional structure analysis | oracle analysis docs | predictive coding as analysis, not runtime | Implemented |
-| `adapters.bridge_export` | offline teacher to causal export layer | bridge-export docs | explicit boundary discipline | Not started |
+| `adapters.bridge_export` | offline teacher to causal export layer | bridge-export docs | explicit boundary discipline | Implemented |
 | `presets` | reproducible named bundles over primitives | `carving_machine/catalog.py#L1` | engineering convenience, not theory | Not started |
 | `examples.reference_projects` | thin project-shaped models over the kernel, used for smoke/dev loops | upstream ancestor docs, causal descendant docs, oracle-analysis docs, and byte-latent downstream docs as downstream shapes | engineering bridge from primitives to dev/test targets | Implemented |
 
@@ -119,16 +125,22 @@ The kernel is no longer just an echo-state toy. It now has:
 - fixed recurrent substrate
 - delay substrate
 - linear memory substrate
+- oscillatory memory substrate
 - mixed-memory substrate
 - hierarchical multiscale substrate
 - substrate factory and `substrate_kind` dispatch
 - controller-summary contract
 - predictive controller primitive plus compact predictive/surprise primitive
+- learned boundary-scoring and learned segmenter primitive
 - pathway-gate primitive
 - summary router primitive
 - hormone modulation primitive
 - exact-context memory and support-weighted blending primitives
+- smoothed n-gram memory primitive
 - feature-view primitives for both byte-latent and hierarchical state
+- bridge feature utilities over probability arrays
+- bidirectional context analysis primitive
+- local byte encoder, patch pooler, and learned global-to-local bridge primitives
 - deterministic sampled multiscale readout
 - reusable linear-memory feature view
 - reporting runtime surface
@@ -137,9 +149,11 @@ The kernel is no longer just an echo-state toy. It now has:
 - frozen readout expert primitive
 - first shared causal adapter
 - first shared oracle-analysis adapter
+- first shared bridge-export adapter
 - byte-latent adapter
 - example-project smoke surfaces for the hierarchical ancestor path and early exact-context repair builds
 - causal mixture/correction/repair replica projects built from primitives
+- bridge proxy-feature and feature-export consumers built from primitives
 
 The line to preserve is:
 

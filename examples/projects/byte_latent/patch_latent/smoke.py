@@ -27,6 +27,8 @@ def main() -> None:
     print("score bits/byte:", round(score_report.bits_per_byte, 4))
     print("mean patch size:", round(float(trace.mean_patch_size), 4))
     print("compression ratio:", round(float(trace.compression_ratio), 4))
+    print("mean surprise:", round(float(trace.mean_surprise), 4))
+    print("mean boundary probability:", round(float(trace.mean_boundary_probability), 4))
     print("patches:", trace.patches)
     print("tokens:", trace.tokens)
 

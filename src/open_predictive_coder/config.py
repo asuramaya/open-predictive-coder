@@ -6,7 +6,7 @@ from typing import Literal
 SegmenterMode = Literal["fixed", "adaptive"]
 ReservoirTopology = Literal["erdos_renyi", "small_world"]
 MemoryMergeMode = Literal["concatenate"]
-SubstrateKind = Literal["echo_state", "delay", "mixed_memory", "hierarchical"]
+SubstrateKind = Literal["echo_state", "delay", "mixed_memory", "hierarchical", "oscillatory"]
 
 
 @dataclass(frozen=True)
@@ -105,6 +105,54 @@ class LinearMemoryConfig:
     @property
     def state_dim(self) -> int:
         return len(self.decays) * self.embedding_dim
+
+
+@dataclass(frozen=True)
+class OscillatoryMemoryConfig:
+    vocabulary_size: int = 256
+    embedding_dim: int = 16
+    decay_rates: tuple[float, ...] = (0.25, 0.5, 0.75, 0.9)
+    oscillatory_modes: int = 4
+    oscillatory_damping_range: tuple[float, float] = (0.85, 0.98)
+    oscillatory_period_range: tuple[float, float] = (4.0, 32.0)
+    input_scale: float = 0.2
+    seed: int = 7
+
+    def __post_init__(self) -> None:
+        if self.vocabulary_size < 2:
+            raise ValueError("vocabulary_size must be >= 2")
+        if self.embedding_dim < 1:
+            raise ValueError("embedding_dim must be >= 1")
+        if not self.decay_rates:
+            raise ValueError("decay_rates must contain at least one bank")
+        if any(rate <= 0.0 or rate >= 1.0 for rate in self.decay_rates):
+            raise ValueError("all decay_rates must lie in (0, 1)")
+        if self.oscillatory_modes < 1:
+            raise ValueError("oscillatory_modes must be >= 1")
+        if len(self.oscillatory_damping_range) != 2:
+            raise ValueError("oscillatory_damping_range must contain exactly two values")
+        if len(self.oscillatory_period_range) != 2:
+            raise ValueError("oscillatory_period_range must contain exactly two values")
+        low_damping, high_damping = self.oscillatory_damping_range
+        low_period, high_period = self.oscillatory_period_range
+        if not 0.0 < low_damping < high_damping < 1.0:
+            raise ValueError("oscillatory_damping_range must lie inside (0, 1)")
+        if not 0.0 < low_period < high_period:
+            raise ValueError("oscillatory_period_range must lie in positive increasing order")
+        if self.input_scale <= 0.0:
+            raise ValueError("input_scale must be > 0")
+
+    @property
+    def decay_bank_count(self) -> int:
+        return len(self.decay_rates)
+
+    @property
+    def oscillatory_bank_count(self) -> int:
+        return self.oscillatory_modes
+
+    @property
+    def state_dim(self) -> int:
+        return (self.decay_bank_count * self.embedding_dim) + (2 * self.oscillatory_bank_count * self.embedding_dim)
 
 
 @dataclass(frozen=True)
@@ -288,6 +336,7 @@ class OpenPredictiveCoderConfig:
     segmenter: SegmenterConfig = field(default_factory=SegmenterConfig)
     reservoir: ReservoirConfig = field(default_factory=ReservoirConfig)
     delay: DelayLineConfig = field(default_factory=DelayLineConfig)
+    oscillatory: OscillatoryMemoryConfig = field(default_factory=OscillatoryMemoryConfig)
     mixed_memory: MixedMemoryConfig = field(default_factory=MixedMemoryConfig)
     hierarchical: HierarchicalSubstrateConfig = field(default_factory=HierarchicalSubstrateConfig)
     latent: LatentConfig = field(default_factory=LatentConfig)
@@ -301,6 +350,10 @@ class OpenPredictiveCoderConfig:
             substrate_state_dim = self.delay.state_dim
             if self.delay.vocabulary_size < self.vocabulary_size:
                 raise ValueError("delay.vocabulary_size must be >= vocabulary_size")
+        elif self.substrate_kind == "oscillatory":
+            substrate_state_dim = self.oscillatory.state_dim
+            if self.oscillatory.vocabulary_size < self.vocabulary_size:
+                raise ValueError("oscillatory.vocabulary_size must be >= vocabulary_size")
         elif self.substrate_kind == "mixed_memory":
             substrate_state_dim = self.mixed_memory.state_dim
             if self.mixed_memory.delay.vocabulary_size < self.vocabulary_size:

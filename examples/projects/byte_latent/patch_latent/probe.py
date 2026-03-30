@@ -16,13 +16,16 @@ def main() -> None:
     config = model.config
     print("vocabulary_size:", config.vocabulary_size)
     print("token_view_dim:", config.token_view_dim)
+    print("encoder_state_dim:", config.encoder_state_dim)
     print("latent_dim:", config.latent.latent_dim)
     print("global_dim:", config.latent.global_dim)
     print("feature_dim:", model.feature_dim)
-    print("patch_size:", config.segmenter.patch_size)
+    print("patch_size:", config.segmenter.target_patch_size)
     print("min_patch_size:", config.segmenter.min_patch_size)
     print("max_patch_size:", config.segmenter.max_patch_size)
-    print("novelty_threshold:", config.segmenter.novelty_threshold)
+    print("boundary_threshold:", config.segmenter.commit_threshold)
+    print("boundary_warmup_epochs:", config.boundary_warmup_epochs)
+    print("boundary_refine_epochs:", config.boundary_refine_epochs)
 
 
 if __name__ == "__main__":

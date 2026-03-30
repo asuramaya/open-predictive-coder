@@ -28,7 +28,7 @@ It owns:
 
 - substrate dynamics
 - controller-side summaries, gates, routing, and modulation
-- memory and latent primitives
+- memory, latent, and learned patch-latent primitives
 - feature views and sampled readout
 - readouts, experts, and scoring utilities
 - runtime surfaces like traces, eval, train modes, and artifact accounting
@@ -53,6 +53,12 @@ These are not toy demos. They are boundary tests.
   early exact-context causal memory shape
 - `causal/memory_stability/`, `causal/linear_correction/`, `causal/residual_repair/`
   three different causal composition policies built from kernel primitives
+- `causal/statistical_memory/`
+  causal example that composes dense n-gram tables and exact-context repair without widening `src/`
+- `bridge/proxy_features/`
+  bridge-style descendant that turns probability streams into causal proxy features
+- `bridge/feature_export/`
+  bridge-style descendant that packages paired probability streams into a small export/report flow
 - `oracle/bidirectional_analysis/`
   analysis-only descendant that reuses sampled readout, routing, and train-mode checkpoints
 - `byte_latent/patch_latent/`
@@ -87,6 +93,7 @@ The kernel is easiest to understand by category rather than by filename order.
 - [`reservoir.py`](../src/open_predictive_coder/reservoir.py)
 - [`delay.py`](../src/open_predictive_coder/delay.py)
 - [`linear_memory.py`](../src/open_predictive_coder/linear_memory.py)
+- [`oscillatory_memory.py`](../src/open_predictive_coder/oscillatory_memory.py)
 - [`mixed_memory.py`](../src/open_predictive_coder/mixed_memory.py)
 - [`hierarchical.py`](../src/open_predictive_coder/hierarchical.py)
 - [`substrates.py`](../src/open_predictive_coder/substrates.py)
@@ -102,8 +109,13 @@ The kernel is easiest to understand by category rather than by filename order.
 
 ### Memory, Latents, And Views
 
+- [`bridge_features.py`](../src/open_predictive_coder/bridge_features.py)
+- [`bidirectional_context.py`](../src/open_predictive_coder/bidirectional_context.py)
 - [`exact_context.py`](../src/open_predictive_coder/exact_context.py)
 - [`latents.py`](../src/open_predictive_coder/latents.py)
+- [`learned_segmentation.py`](../src/open_predictive_coder/learned_segmentation.py)
+- [`ngram_memory.py`](../src/open_predictive_coder/ngram_memory.py)
+- [`patch_latent_blocks.py`](../src/open_predictive_coder/patch_latent_blocks.py)
 - [`segmenters.py`](../src/open_predictive_coder/segmenters.py)
 - [`views.py`](../src/open_predictive_coder/views.py)
 - [`linear_views.py`](../src/open_predictive_coder/linear_views.py)
@@ -125,6 +137,7 @@ The kernel is easiest to understand by category rather than by filename order.
 
 - [`adapters.py`](../src/open_predictive_coder/adapters.py)
 - [`causal_predictive.py`](../src/open_predictive_coder/causal_predictive.py)
+- [`bridge_export.py`](../src/open_predictive_coder/bridge_export.py)
 - [`oracle_analysis.py`](../src/open_predictive_coder/oracle_analysis.py)
 - [`model.py`](../src/open_predictive_coder/model.py)
 - [`presets.py`](../src/open_predictive_coder/presets.py)
@@ -156,24 +169,27 @@ Still project-local on purpose:
 
 - descendant mixer and residual-repair policy
 - interpretation and reporting around oracle comparisons
-- patch-boundary tuning and local/global bridge composition in the patch-latent example
+- rate-distortion weighting, second compression stage, and quantization/export policy in the patch-latent example
+- project-specific bridge/export policy above the shared probability-to-feature transforms
 - ancestor-specific predictor head choices
 
 Recent shared promotion:
 
 - `CausalPredictiveAdapter`
 - `OracleAnalysisAdapter`
+- `BridgeExportAdapter`
 
 ## Immediate Architectural Direction
 
-The next real jump is not another single descendant. It is pressure-testing the shared causal and oracle adapters
-across more than one consumer while keeping descendant policy out of `src/`.
+The next real jump is not another single descendant. It is pressure-testing the shared causal, oracle, and bridge
+adapters across more than one consumer while keeping descendant policy out of `src/`.
 
 That means:
 
 - thinning the causal descendants around the causal adapter
 - keeping the bidirectional-analysis example thin around the oracle adapter
 - hardening the shared runtime/accounting contract
-- starting the first truly noncausal reconstructive or bridge/export consumer
+- keeping bridge export generic while more than one bridge-shaped consumer pushes on it
+- starting the first truly noncausal reconstructive consumer
 
 That is how the repo graduates from "first shared contracts exist" to "the contracts are actually stable enough to keep."

@@ -7,7 +7,8 @@ and runtime primitives in one place, and let downstream systems specialize from 
 
 It is designed as a kernel extraction scaffold, not a benchmark claim. The current implementation includes
 multiscale substrates, predictive and exact-context memory primitives, control-side summaries, gates and routing,
-compressed latent commits, and simple trained readouts exposed as composable pieces.
+compressed latent commits, learned boundary and local patch-latent blocks, and simple trained readouts exposed as
+composable pieces.
 
 The repo is explicitly anchored in both literature and the current library landscape rather than vague inspiration.
 See [`docs/related_work.md`](./docs/related_work.md) for canonical references,
@@ -97,7 +98,8 @@ repo, and the public framing is by idea rather than by codename.
   boundary layers that turn offline oracle findings into strictly causal exported features or replay artifacts.
   See the attribution notes in [`docs/lineage.md`](./docs/lineage.md).
 - `byte-latent`:
-  byte-visible systems with adaptive patches, shorter internal latent streams, and recurrent latent refinement.
+  byte-visible systems with learned or heuristic patches, shorter internal latent streams, and recurrent latent
+  refinement.
   This repo is the first reference implementation for that pattern, and public lineage notes are tracked in
   [`docs/lineage.md`](./docs/lineage.md).
 
@@ -109,9 +111,10 @@ Those patterns illustrate the problem family:
 - offline bridge features exported into causal consumers
 - byte-patch latent modeling over a shorter internal sequence
 
-The extracted adapters in `src/` today are `byte-latent` and the first reusable `causal_predictive` contract.
-The kernel also carries example-project surfaces for an ancestor-style hierarchical path and the more specific
-causal descendants that sit on top of the shared causal layer.
+The extracted adapters in `src/` today are the byte-latent reference path plus shared `causal_predictive`,
+`oracle_analysis`, and `bridge_export` contracts. The kernel also carries example-project surfaces for an
+ancestor-style hierarchical path and the more specific causal, bridge, and oracle descendants that sit on top of
+those shared layers.
 
 ## Design Thesis
 
@@ -138,11 +141,16 @@ This implementation synthesizes ideas from:
 - `EchoStateSubstrate`: frozen recurrent substrate
 - `DelayLineSubstrate`: deterministic delay-memory substrate
 - `LinearMemorySubstrate`: frozen linear decay-bank memory substrate
+- `OscillatoryMemorySubstrate`: frozen exponential plus damped-oscillatory mode-bank substrate
 - `MixedMemorySubstrate`: concatenated recurrent plus delay-memory substrate
 - `HierarchicalSubstrate`: multiscale fast/mid/slow recurrent substrate
 - `LinearMemoryFeatureView`: reusable view over linear decay-bank state
 - adaptive or fixed byte patching
 - `LatentCommitter`: patch commit and recurrent global-memory update primitive
+- `LearnedBoundaryScorer` and `LearnedSegmenter`: reusable learned boundary probability and target-rate patching primitives
+- `LocalByteEncoder`: reusable local byte encoder with fittable output projection
+- `PatchPooler`: mean/last/mix patch pooling primitive
+- `GlobalLocalBridge`: learned bridge from global and latent state back to local features
 - `PredictiveController`: idea-based alias for the same controller surface
 - `PredictiveSurpriseController`: reusable prediction/residual/surprise primitive
 - `HierarchicalFeatureView`: pooled, predictive, and surprise-style views over fast/mid/slow state
@@ -153,6 +161,10 @@ This implementation synthesizes ideas from:
 - `HormoneModulator`: reusable hormone projection and bounded modulation primitive
 - `SampledMultiscaleReadout`: deterministic banded sampling over multiscale state
 - `ExactContextMemory`: causal exact-history count memory over 1/2/3-step contexts
+- `NgramMemory`: smoothed unigram/bigram/trigram statistical memory primitive
+- `BridgeExportAdapter`: generic export/report surface over paired probability streams
+- `bridge_feature_arrays`: causal proxy features derived from probability arrays
+- `BidirectionalContextProbe`: noncausal context determinism and leave-one-out probe
 - `SupportWeightedMixer`: support-biased blending over base and exact-context experts
 - `ArtifactMetadata`, `ReplaySpan`, and `ArtifactAccounting`: causal artifact/replay/accounting primitives
 - `CausalTrace`, `CausalSequenceReport`, and `CausalFitReport`: causal reporting wrappers over runtime/accounting surfaces
@@ -204,7 +216,7 @@ opc fit --input ./corpus.txt --prompt "predictive " --generate 80
 
 ## Repo Layout
 
-- `src/open_predictive_coder/`: reusable kernel primitives plus extracted causal and byte-latent adapters
+- `src/open_predictive_coder/`: reusable kernel primitives plus extracted causal, oracle, bridge, and byte-latent adapters
 - `docs/`: architecture, roadmap, literature, landscape, and extraction notes
 - `examples/`: quickstart, descendant-shaped example projects, and development tools
 - `tests/`: kernel, runtime, boundary, and project-descendant test suites
@@ -225,6 +237,9 @@ the shared kernel cleanly enough that multiple descendants can be built on top o
 back into the primitive layer. In the current replication round, the repeated promotions from project code into the
 kernel were `LinearMemorySubstrate`, `LinearMemoryFeatureView`, `FrozenReadoutExpert`, `PredictiveSurpriseController`,
 `HormoneModulator`, `SampledMultiscaleReadout`, `TrainModeConfig`, the first `ArtifactMetadata` / `ReplaySpan` /
-`ArtifactAccounting` runtime slice, and the first shared `CausalPredictiveAdapter` plus `OracleAnalysisAdapter`;
-descendant mixer policies, noncausal replay economics, and patch-latent bridge composition policy remain deliberately
-project-local, and diagnostics stayed under `examples/`.
+`ArtifactAccounting` runtime slice, the first shared `CausalPredictiveAdapter` plus `OracleAnalysisAdapter` plus
+`BridgeExportAdapter`, the first learned patch-latent kernel blocks (`LearnedSegmenter`, `LocalByteEncoder`,
+`PatchPooler`, `GlobalLocalBridge`), and the next statistical/kernel additions (`OscillatoryMemorySubstrate`,
+`NgramMemory`, `bridge_feature_arrays`, `BidirectionalContextProbe`); descendant mixer policies, noncausal replay
+economics, rate-distortion objectives, and quantization/export policy remain deliberately project-local, and
+diagnostics stayed under `examples/`.

@@ -22,6 +22,7 @@ from .delay import DelayLineSubstrate
 from .hierarchical import HierarchicalSubstrate
 from .linear_memory import LinearMemorySubstrate
 from .mixed_memory import MixedMemorySubstrate
+from .oscillatory_memory import OscillatoryMemorySubstrate
 
 __all__ = [
     "DelayLineSubstrate",
@@ -29,6 +30,7 @@ __all__ = [
     "HierarchicalSubstrate",
     "LinearMemorySubstrate",
     "MixedMemorySubstrate",
+    "OscillatoryMemorySubstrate",
     "TokenSubstrate",
     "build_recurrent_matrix",
     "spectral_radius",

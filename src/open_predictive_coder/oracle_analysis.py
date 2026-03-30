@@ -13,6 +13,7 @@ from .artifacts import (
 )
 from .codecs import ensure_tokens
 from .config import HierarchicalSubstrateConfig, OpenPredictiveCoderConfig, SampledReadoutBandConfig, SampledReadoutConfig
+from .bidirectional_context import BidirectionalContextConfig, BidirectionalContextProbe, BidirectionalContextStats
 from .control import ControllerSummary
 from .hierarchical import HierarchicalSubstrate
 from .hierarchical_views import HierarchicalFeatureView
@@ -77,6 +78,7 @@ class OracleAnalysisConfig:
     slow_sample_size: int = 12
     route_oracle_bias: float = 0.05
     route_temperature: float = 1.0
+    bidirectional_context: BidirectionalContextConfig | None = None
 
     def __post_init__(self) -> None:
         hierarchical = _resolve_hierarchical_config(self.model)
@@ -88,6 +90,11 @@ class OracleAnalysisConfig:
             raise ValueError("slow_sample_size must lie within the slow bank size")
         if self.route_temperature <= 0.0:
             raise ValueError("route_temperature must be > 0")
+        if self.bidirectional_context is not None:
+            if self.bidirectional_context.left_order < 0:
+                raise ValueError("bidirectional_context.left_order must be >= 0")
+            if self.bidirectional_context.right_order < 0:
+                raise ValueError("bidirectional_context.right_order must be >= 0")
 
 
 @dataclass(frozen=True)
@@ -122,6 +129,7 @@ class OracleAnalysisReport:
     mean_route_bits_per_byte: float
     oracle_preference_rate: float
     accounting: ArtifactAccounting
+    bidirectional_context: BidirectionalContextStats | None = None
 
     @property
     def bits_per_byte(self) -> float:
@@ -139,6 +147,7 @@ class OracleAnalysisFitReport:
     mean_alignment_rmse: float
     oracle_preference_rate: float
     accounting: ArtifactAccounting
+    bidirectional_context: BidirectionalContextStats | None = None
 
     @property
     def bits_per_byte(self) -> float:
@@ -156,6 +165,11 @@ class OracleAnalysisAdapter:
         self.config = config or OracleAnalysisConfig()
         hierarchical = self.config.model.hierarchical
         self.train_mode = self.config.train_mode
+        self.bidirectional_probe = (
+            BidirectionalContextProbe(self.config.bidirectional_context)
+            if self.config.bidirectional_context is not None
+            else None
+        )
         self.substrate = HierarchicalSubstrate(hierarchical)
         self.feature_view = HierarchicalFeatureView(hierarchical)
         self.sampled_readout = SampledMultiscaleReadout(
@@ -244,6 +258,37 @@ class OracleAnalysisAdapter:
             ]
         )
 
+    @staticmethod
+    def _combine_bidirectional_stats(stats: Sequence[BidirectionalContextStats]) -> BidirectionalContextStats | None:
+        if not stats:
+            return None
+        candidate_sizes = tuple(size for stat in stats for size in stat.candidate_sizes)
+        neighborhoods = tuple(neighborhood for stat in stats for neighborhood in stat.neighborhoods)
+        sequence_length = sum(stat.sequence_length for stat in stats)
+        neighborhood_count = sum(stat.neighborhood_count for stat in stats)
+        left_context_count = sum(stat.left_context_count for stat in stats)
+        right_context_count = sum(stat.right_context_count for stat in stats)
+        pair_context_count = sum(stat.pair_context_count for stat in stats)
+        return BidirectionalContextStats(
+            sequence_length=sequence_length,
+            neighborhood_count=neighborhood_count,
+            left_context_count=left_context_count,
+            right_context_count=right_context_count,
+            pair_context_count=pair_context_count,
+            deterministic_fraction=float(np.mean([stat.deterministic_fraction for stat in stats])),
+            candidate_le_2_rate=float(np.mean([stat.candidate_le_2_rate for stat in stats])),
+            candidate_le_4_rate=float(np.mean([stat.candidate_le_4_rate for stat in stats])),
+            candidate_le_8_rate=float(np.mean([stat.candidate_le_8_rate for stat in stats])),
+            mean_candidate_size=float(np.mean([stat.mean_candidate_size for stat in stats])),
+            median_candidate_size=float(np.median(candidate_sizes)) if candidate_sizes else 0.0,
+            max_candidate_size=max((stat.max_candidate_size for stat in stats), default=0),
+            mean_left_support=float(np.mean([stat.mean_left_support for stat in stats])),
+            mean_right_support=float(np.mean([stat.mean_right_support for stat in stats])),
+            mean_pair_support=float(np.mean([stat.mean_pair_support for stat in stats])),
+            candidate_sizes=candidate_sizes,
+            neighborhoods=neighborhoods,
+        )
+
     def _make_accounting(
         self,
         tokens: np.ndarray,
@@ -287,6 +332,7 @@ class OracleAnalysisAdapter:
         checkpoints = self.train_mode.resolve_rollout_checkpoints(total_steps)
         forward_states = self._scan_states(tokens)
         reverse_states = self._scan_states(tokens[::-1])
+        bidirectional_context = self.bidirectional_probe.scan(tokens) if self.bidirectional_probe is not None else None
 
         points: list[OracleAnalysisPoint] = []
         pearsons: list[float] = []
@@ -353,6 +399,7 @@ class OracleAnalysisAdapter:
             mean_alignment_rmse=float(np.mean(rmses)),
             mean_route_bits_per_byte=float(np.mean(route_bits)),
             oracle_preference_rate=float(oracle_selected / max(len(points), 1)),
+            bidirectional_context=bidirectional_context,
             accounting=self._make_accounting(tokens, points, checkpoint_values=checkpoints),
         )
 
@@ -377,6 +424,7 @@ class OracleAnalysisAdapter:
         alignment_maes: list[float] = []
         alignment_rmses: list[float] = []
         oracle_selected = 0
+        bidirectional_contexts: list[BidirectionalContextStats] = []
         artifact_bytes = 0
         replay_bytes = 0
         replay_spans = []
@@ -393,6 +441,8 @@ class OracleAnalysisAdapter:
             alignment_maes.append(report.mean_alignment_mae)
             alignment_rmses.append(report.mean_alignment_rmse)
             oracle_selected += sum(int(point.selected_route == "oracle") for point in report.points)
+            if report.bidirectional_context is not None:
+                bidirectional_contexts.append(report.bidirectional_context)
 
             accounting = report.accounting
             artifact_bytes += accounting.artifact_bytes
@@ -429,6 +479,7 @@ class OracleAnalysisAdapter:
             mean_alignment_mae=float(np.mean(alignment_maes)) if alignment_maes else 0.0,
             mean_alignment_rmse=float(np.mean(alignment_rmses)) if alignment_rmses else 0.0,
             oracle_preference_rate=0.0 if total_points == 0 else oracle_selected / float(total_points),
+            bidirectional_context=self._combine_bidirectional_stats(bidirectional_contexts),
             accounting=fit_accounting,
         )
 

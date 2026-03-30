@@ -6,7 +6,13 @@ import unittest
 import numpy as np
 
 from open_predictive_coder.artifacts import ArtifactAccounting
-from open_predictive_coder.exact_context import ExactContextMemory, SupportWeightedMixer
+from open_predictive_coder.exact_context import (
+    ExactContextConfig,
+    ExactContextMemory,
+    SupportMixConfig,
+    SupportWeightedMixer,
+)
+from open_predictive_coder.ngram_memory import NgramMemory, NgramMemoryConfig
 
 
 MODULE_NAME = "open_predictive_coder.causal_predictive"
@@ -35,11 +41,13 @@ class CausalAdapterSurfaceTests(unittest.TestCase):
                 f"{CLASS_NAMES} in {MODULE_NAME}"
             )
 
-    def _make_adapter(self) -> object:
+    def _make_adapter(self, **kwargs) -> object:
         causal_cls = self.adapter_cls
         try:
-            return causal_cls()
+            return causal_cls(**kwargs)
         except TypeError:
+            if kwargs:
+                raise
             try:
                 return causal_cls(vocabulary_size=256)
             except TypeError as exc:  # pragma: no cover - implementation-specific
@@ -82,6 +90,60 @@ class CausalAdapterSurfaceTests(unittest.TestCase):
         self.assertIsInstance(accounting, ArtifactAccounting)
         self.assertGreaterEqual(accounting.artifact_bytes, 0)
         self.assertGreaterEqual(accounting.replay_bytes, 0)
+
+    def test_disabled_ngram_path_preserves_backward_compatibility(self) -> None:
+        corpus = ("abababababab", "abcabcabcabc")
+        baseline = self._make_adapter()
+        explicit_disabled = self._make_adapter(ngram_memory=None)
+
+        baseline.fit(corpus)
+        explicit_disabled.fit(corpus)
+
+        baseline_probs = baseline.predict_proba("ab")
+        disabled_probs = explicit_disabled.predict_proba("ab")
+        baseline_score = baseline.score("abcabc")
+        disabled_score = explicit_disabled.score("abcabc")
+
+        np.testing.assert_allclose(baseline_probs, disabled_probs)
+        self.assertAlmostEqual(baseline_score.bits_per_byte, disabled_score.bits_per_byte, places=12)
+        self.assertAlmostEqual(
+            baseline_score.exact_bits_per_byte,
+            disabled_score.exact_bits_per_byte,
+            places=12,
+        )
+        self.assertIsNone(baseline_score.ngram_bits_per_byte)
+        self.assertIsNone(disabled_score.ngram_bits_per_byte)
+
+    def test_ngram_path_changes_blended_probabilities_in_controlled_case(self) -> None:
+        exact_config = ExactContextConfig(max_order=1, alpha=0.0)
+        ngram_config = NgramMemoryConfig(vocabulary_size=256, bigram_alpha=0.0, trigram_alpha=0.0)
+        mixer = SupportWeightedMixer(SupportMixConfig(base_bias=0.0, expert_bias=0.0, support_scale=0.0))
+        corpus = ("abcabcabcabc", "ebdebdebde")
+
+        baseline = self._make_adapter(
+            exact_context=ExactContextMemory(exact_config),
+            mixer=mixer,
+        )
+        with_ngram = self._make_adapter(
+            exact_context=ExactContextMemory(exact_config),
+            ngram_memory=NgramMemory(ngram_config),
+            mixer=mixer,
+        )
+
+        baseline_fit = baseline.fit(corpus)
+        ngram_fit = with_ngram.fit(corpus)
+
+        baseline_probs = baseline.predict_proba("ab")
+        ngram_probs = with_ngram.predict_proba("ab")
+        baseline_score = baseline.score("abcabc")
+        ngram_score = with_ngram.score("abcabc")
+
+        self.assertIsNone(baseline_fit.ngram_fit)
+        self.assertIsNotNone(ngram_fit.ngram_fit)
+        self.assertGreater(ngram_probs[ord("c")], baseline_probs[ord("c")])
+        self.assertFalse(np.allclose(baseline_probs, ngram_probs))
+        self.assertLess(ngram_score.bits_per_byte, baseline_score.bits_per_byte)
+        self.assertIsNotNone(ngram_score.ngram_bits_per_byte)
 
 
 class CausalKernelSplitTests(unittest.TestCase):

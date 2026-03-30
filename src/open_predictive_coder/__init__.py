@@ -28,6 +28,7 @@ from .config import (
     LinearMemoryConfig,
     MemoryMergeMode,
     MixedMemoryConfig,
+    OscillatoryMemoryConfig,
     OpenPredictiveCoderConfig,
     ReservoirConfig,
     ReservoirTopology,
@@ -63,6 +64,20 @@ from .predictive_surprise import PredictionState, PredictiveSurpriseConfig, Pred
 from .routing import RoutingConfig, RoutingDecision, RoutingMode, SummaryRouter
 
 # Memory, latent, and feature-view primitives.
+from .bidirectional_context import (
+    BidirectionalContextConfig,
+    BidirectionalContextLeaveOneOutStats,
+    BidirectionalContextNeighborhood,
+    BidirectionalContextProbe,
+    BidirectionalContextStats,
+)
+from .bridge_export import (
+    BridgeExportAdapter,
+    BridgeExportConfig,
+    BridgeExportFitReport,
+    BridgeExportReport,
+)
+from .bridge_features import BridgeFeatureArrays, BridgeFeatureConfig, bridge_feature_arrays
 from .exact_context import (
     ExactContextConfig,
     ExactContextFitReport,
@@ -73,8 +88,25 @@ from .exact_context import (
     SupportWeightedMixer,
 )
 from .latents import LatentCommitter, LatentObservation, LatentState
+from .learned_segmentation import (
+    BoundaryDecision,
+    BoundaryFeatures,
+    BoundaryScorerConfig,
+    LearnedBoundaryScorer,
+    LearnedSegmenter,
+    LearnedSegmenterConfig,
+)
 from .hierarchical_views import HierarchicalFeatureView, HierarchicalSummary
 from .linear_views import LinearMemoryFeatureView
+from .ngram_memory import NgramMemory, NgramMemoryConfig, NgramMemoryReport
+from .patch_latent_blocks import (
+    GlobalLocalBridge,
+    GlobalLocalBridgeConfig,
+    LocalByteEncoder,
+    LocalByteEncoderConfig,
+    PatchPooler,
+    PatchPoolerConfig,
+)
 from .sampled_readout import SampledBandSummary, SampledMultiscaleReadout
 from .views import ByteLatentFeatureView
 
@@ -84,6 +116,7 @@ from .factories import (
     create_echo_state_substrate,
     create_hierarchical_substrate,
     create_mixed_memory_substrate,
+    create_oscillatory_memory_substrate,
     create_substrate,
     create_substrate_for_model,
 )
@@ -95,6 +128,7 @@ from .substrates import (
     HierarchicalSubstrate,
     LinearMemorySubstrate,
     MixedMemorySubstrate,
+    OscillatoryMemorySubstrate,
     TokenSubstrate,
 )
 
@@ -145,6 +179,21 @@ __all__ = [
     "ByteSequenceDataset",
     "bits_per_byte_from_logits",
     "bits_per_byte_from_probabilities",
+    "BidirectionalContextConfig",
+    "BidirectionalContextLeaveOneOutStats",
+    "BidirectionalContextNeighborhood",
+    "BidirectionalContextProbe",
+    "BidirectionalContextStats",
+    "BridgeExportAdapter",
+    "BridgeExportConfig",
+    "BridgeExportFitReport",
+    "BridgeExportReport",
+    "BoundaryDecision",
+    "BoundaryFeatures",
+    "BoundaryScorerConfig",
+    "BridgeFeatureArrays",
+    "BridgeFeatureConfig",
+    "bridge_feature_arrays",
     "CausalFitReport",
     "CausalPredictiveAdapter",
     "CausalPredictiveFitReport",
@@ -159,6 +208,7 @@ __all__ = [
     "create_echo_state_substrate",
     "create_hierarchical_substrate",
     "create_mixed_memory_substrate",
+    "create_oscillatory_memory_substrate",
     "create_substrate",
     "create_substrate_for_model",
     "DelayLineConfig",
@@ -184,14 +234,21 @@ __all__ = [
     "HierarchicalSubstrate",
     "HierarchicalSubstrateConfig",
     "hierarchical_small",
+    "GlobalLocalBridge",
+    "GlobalLocalBridgeConfig",
     "LatentConfig",
     "LatentCommitter",
     "LatentControllerConfig",
     "LatentObservation",
     "LatentState",
+    "LearnedBoundaryScorer",
+    "LearnedSegmenter",
+    "LearnedSegmenterConfig",
     "LinearMemoryConfig",
     "LinearMemoryFeatureView",
     "LinearMemorySubstrate",
+    "LocalByteEncoder",
+    "LocalByteEncoderConfig",
     "make_artifact_accounting",
     "make_replay_span",
     "MemoryMergeMode",
@@ -199,6 +256,9 @@ __all__ = [
     "MixedMemorySubstrate",
     "mixed_memory_small",
     "NextStepScore",
+    "NgramMemory",
+    "NgramMemoryConfig",
+    "NgramMemoryReport",
     "OracleAnalysisAdapter",
     "OracleAnalysisConfig",
     "OracleAnalysisFitReport",
@@ -206,10 +266,14 @@ __all__ = [
     "OracleAnalysisReport",
     "OpenPredictiveCoder",
     "OpenPredictiveCoderConfig",
+    "OscillatoryMemoryConfig",
+    "OscillatoryMemorySubstrate",
     "PathwayGateConfig",
     "PathwayGateController",
     "PathwayGateState",
     "PathwayGateValues",
+    "PatchPooler",
+    "PatchPoolerConfig",
     "PredictiveController",
     "PredictiveObservation",
     "PredictiveState",

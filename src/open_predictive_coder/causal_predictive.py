@@ -20,6 +20,7 @@ from .exact_context import (
 )
 from .experts import ExpertFitReport, FrozenReadoutExpert
 from .metrics import bits_per_byte_from_probabilities
+from .ngram_memory import NgramMemory, NgramMemoryReport
 
 
 @dataclass(frozen=True)
@@ -29,6 +30,7 @@ class CausalPredictiveFitReport:
     train_bits_per_byte: float
     exact_fit: ExactContextFitReport
     expert_fits: tuple[ExpertFitReport, ...]
+    ngram_fit: NgramMemoryReport | None
     accounting: ArtifactAccounting
 
     @property
@@ -42,6 +44,7 @@ class CausalPredictiveScore:
     bits_per_byte: float
     exact_bits_per_byte: float
     auxiliary_bits_per_byte: float | None
+    ngram_bits_per_byte: float | None
     exact_support: float
     accounting: ArtifactAccounting
 
@@ -59,12 +62,14 @@ class CausalPredictiveAdapter:
         exact_context: ExactContextMemory | None = None,
         *,
         experts: Sequence[FrozenReadoutExpert] = (),
+        ngram_memory: NgramMemory | None = None,
         mixer: SupportWeightedMixer | None = None,
         artifact_name: str = "causal_predictive",
         metadata: ArtifactMetadata | None = None,
     ):
         self.exact_context = exact_context or ExactContextMemory()
         self.experts = tuple(experts)
+        self.ngram_memory = ngram_memory
         self.mixer = mixer or SupportWeightedMixer()
         self.artifact_name = artifact_name
         self.metadata = metadata or ArtifactMetadata()
@@ -78,6 +83,7 @@ class CausalPredictiveAdapter:
             exact_orders=0,
         )
         self._validate_experts()
+        self._validate_ngram_memory()
 
     def _validate_experts(self) -> None:
         vocab_size = self.exact_context.config.vocabulary_size
@@ -87,6 +93,15 @@ class CausalPredictiveAdapter:
                     f"expert {expert.name!r} has vocabulary_size={expert.vocabulary_size}, "
                     f"expected {vocab_size}"
                 )
+
+    def _validate_ngram_memory(self) -> None:
+        if self.ngram_memory is None:
+            return
+        vocab_size = self.exact_context.config.vocabulary_size
+        if self.ngram_memory.config.vocabulary_size != vocab_size:
+            raise ValueError(
+                "ngram_memory vocabulary_size must match exact_context vocabulary_size"
+            )
 
     @staticmethod
     def _coerce_sequences(
@@ -119,6 +134,34 @@ class CausalPredictiveAdapter:
             )
         return tuple(components)
 
+    def _ngram_prediction(self, prompt: np.ndarray) -> ExactContextPrediction | None:
+        if self.ngram_memory is None:
+            return None
+
+        tokens = ensure_tokens(prompt).astype(np.int64, copy=False)
+        if tokens.size == 0:
+            probabilities = self.ngram_memory.unigram_probs()
+            context: tuple[int, ...] = ()
+            order = 0
+        elif tokens.size == 1:
+            probabilities = self.ngram_memory.bigram_probs(int(tokens[-1]))
+            context = (int(tokens[-1]),)
+            order = 1
+        else:
+            probabilities = self.ngram_memory.trigram_probs(int(tokens[-2]), int(tokens[-1]))
+            context = (int(tokens[-2]), int(tokens[-1]))
+            order = 2
+
+        support = float(np.max(probabilities))
+        return ExactContextPrediction(
+            name="ngram",
+            order=order,
+            context=context,
+            probabilities=np.asarray(probabilities, dtype=np.float64),
+            support=support,
+            total=support,
+        )
+
     @staticmethod
     def _pack_prediction(
         name: str,
@@ -142,13 +185,17 @@ class CausalPredictiveAdapter:
         exact_predictions = self.exact_context.experts(prefix)
         base_support = max((prediction.support for prediction in exact_predictions), default=0.0)
         aux_predictions = self._auxiliary_predictions(prefix)
+        ngram_prediction = self._ngram_prediction(prefix)
         packed_aux = tuple(
             self._pack_prediction(component.name, component.probabilities, component.support)
             for component in aux_predictions
         )
+        ngram_expert: tuple[ExactContextPrediction, ...] = ()
+        if ngram_prediction is not None:
+            ngram_expert = (ngram_prediction,)
         blend = self.mixer.mix(
             base_probs=base_probs,
-            experts=tuple(exact_predictions) + packed_aux,
+            experts=tuple(exact_predictions) + packed_aux + ngram_expert,
             base_name="exact_context",
             base_support=base_support,
         )
@@ -227,6 +274,7 @@ class CausalPredictiveAdapter:
     ) -> CausalPredictiveFitReport:
         sequences = self._coerce_sequences(data)
         exact_fit = self.exact_context.fit(sequences)
+        ngram_fit = self.ngram_memory.fit(sequences) if self.ngram_memory is not None else None
 
         fit_sequences = tuple(sequence for sequence in sequences if ensure_tokens(sequence).size >= 2)
         expert_fits: list[ExpertFitReport] = []
@@ -282,6 +330,7 @@ class CausalPredictiveAdapter:
             train_bits_per_byte=train_bits,
             exact_fit=exact_fit,
             expert_fits=tuple(expert_fits),
+            ngram_fit=ngram_fit,
             accounting=accounting,
         )
 
@@ -306,6 +355,7 @@ class CausalPredictiveAdapter:
         exact_rows: list[np.ndarray] = []
         final_rows: list[np.ndarray] = []
         exact_support = 0.0
+        ngram_rows: list[np.ndarray] = []
 
         for index in range(1, tokens.size):
             prefix = tokens[:index]
@@ -313,10 +363,15 @@ class CausalPredictiveAdapter:
             exact_predictions = self.exact_context.experts(prefix)
             base_support = max((prediction.support for prediction in exact_predictions), default=0.0)
             aux_predictions = self._auxiliary_predictions(prefix)
+            ngram_prediction = self._ngram_prediction(prefix)
             packed_aux = tuple(
                 self._pack_prediction(component.name, component.probabilities, component.support)
                 for component in aux_predictions
             )
+            ngram_expert: tuple[ExactContextPrediction, ...] = ()
+            if ngram_prediction is not None:
+                ngram_rows.append(np.asarray(ngram_prediction.probabilities, dtype=np.float64))
+                ngram_expert = (ngram_prediction,)
             exact_blend = self.mixer.mix(
                 base_probs=exact_probs,
                 experts=tuple(exact_predictions),
@@ -325,7 +380,7 @@ class CausalPredictiveAdapter:
             )
             final_blend = self.mixer.mix(
                 base_probs=exact_probs,
-                experts=tuple(exact_predictions) + packed_aux,
+                experts=tuple(exact_predictions) + packed_aux + ngram_expert,
                 base_name="exact_context",
                 base_support=base_support,
             )
@@ -336,6 +391,11 @@ class CausalPredictiveAdapter:
         targets = tokens[1:].astype(np.int64, copy=False)
         exact_bpb = bits_per_byte_from_probabilities(np.vstack(exact_rows), targets)
         final_bpb = bits_per_byte_from_probabilities(np.vstack(final_rows), targets)
+        ngram_bpb = (
+            None
+            if not ngram_rows
+            else bits_per_byte_from_probabilities(np.vstack(ngram_rows), targets[: len(ngram_rows)])
+        )
         auxiliary_bpb = (
             None
             if not self.experts
@@ -346,6 +406,7 @@ class CausalPredictiveAdapter:
             bits_per_byte=final_bpb,
             exact_bits_per_byte=exact_bpb,
             auxiliary_bits_per_byte=auxiliary_bpb,
+            ngram_bits_per_byte=ngram_bpb,
             exact_support=exact_support,
             accounting=self.accounting(tokens),
         )

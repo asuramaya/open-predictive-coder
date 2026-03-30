@@ -21,10 +21,16 @@ They are self-contained descendants that live in this repo. They are not imports
   early exact-context causal example in `projects/causal/`
 - `memory_stability`, `linear_correction`, `residual_repair`
   three causal composition variants in `projects/causal/`
+- `statistical_memory`
+  causal statistical-memory composition example in `projects/causal/`
+- `proxy_features`
+  bridge-style descendant in `projects/bridge/`
+- `feature_export`
+  bridge export/report descendant in `projects/bridge/`
 - `bidirectional_analysis`
   analysis-only descendant in `projects/oracle/`
 - `patch_latent`
-  byte-patch latent descendant in `projects/byte_latent/`
+  learned byte-patch latent descendant in `projects/byte_latent/`
 
 Read the project README before reading the code. Each one explains which parts are kernel reuse and which parts are
 still project policy.
@@ -47,6 +53,8 @@ If you want to understand the repo through examples:
 1. `quickstart.py`
 2. `projects/ancestor/hierarchical_predictive`
 3. `projects/causal/exact_context_repair`
-4. `projects/causal/memory_stability` through `causal/residual_repair`
-5. `projects/oracle/bidirectional_analysis`
-6. `projects/byte_latent/patch_latent`
+4. `projects/causal/memory_stability` through `causal/statistical_memory`
+5. `projects/bridge/proxy_features`
+6. `projects/bridge/feature_export`
+7. `projects/oracle/bidirectional_analysis`
+8. `projects/byte_latent/patch_latent`

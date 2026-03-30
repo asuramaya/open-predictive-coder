@@ -2,7 +2,14 @@ from __future__ import annotations
 
 import unittest
 
-from open_predictive_coder import ByteCodec, OracleAnalysisAdapter, OracleAnalysisConfig, OracleAnalysisReport, TrainModeConfig
+from open_predictive_coder import (
+    BidirectionalContextConfig,
+    ByteCodec,
+    OracleAnalysisAdapter,
+    OracleAnalysisConfig,
+    OracleAnalysisReport,
+    TrainModeConfig,
+)
 from open_predictive_coder.train_eval import evaluate_dataset
 
 
@@ -55,6 +62,33 @@ class OracleAdapterTests(unittest.TestCase):
         self.assertGreaterEqual(dataset_eval.bits_per_byte, 0.0)
         self.assertEqual(dataset_eval.sequences, len(corpus))
         self.assertEqual(model.accounting().artifact_name, "oracle_analysis")
+
+    def test_bidirectional_analysis_is_opt_in_and_report_only(self) -> None:
+        tokens = ByteCodec.encode_text("oracle analysis compares left and right context for stability.")
+
+        baseline = OracleAnalysisAdapter()
+        augmented = OracleAnalysisAdapter(
+            OracleAnalysisConfig(
+                bidirectional_context=BidirectionalContextConfig(left_order=1, right_order=1),
+            )
+        )
+
+        baseline_report = baseline.compare(tokens)
+        augmented_report = augmented.compare(tokens)
+        augmented_fit = augmented.fit((tokens,))
+
+        self.assertIsNone(baseline_report.bidirectional_context)
+        self.assertIsNotNone(augmented_report.bidirectional_context)
+        self.assertIsNotNone(augmented_fit.bidirectional_context)
+        self.assertEqual(augmented_report.bidirectional_context.sequence_length, len(tokens))
+        self.assertEqual(
+            augmented_report.bits_per_byte,
+            baseline_report.bits_per_byte,
+        )
+        self.assertEqual(
+            augmented_report.oracle_preference_rate,
+            baseline_report.oracle_preference_rate,
+        )
 
     def test_short_sequence_is_rejected(self) -> None:
         model = OracleAnalysisAdapter()

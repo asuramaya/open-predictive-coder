@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from importlib import util
+import inspect
 from pathlib import Path
 import sys
 import unittest
@@ -62,6 +63,19 @@ class KernelProjectSplitTests(unittest.TestCase):
         self.assertTrue(hasattr(module, "BidirectionalAnalysisModel"))
         self.assertTrue(hasattr(module, "BidirectionalAnalysisConfig"))
         self.assertFalse(hasattr(opc, "BidirectionalAnalysisModel"))
+
+    def test_causal_adapter_construction_stays_free_of_bridge_and_bidirectional_hooks(self) -> None:
+        params = tuple(inspect.signature(opc.CausalPredictiveAdapter.__init__).parameters)
+
+        self.assertEqual(
+            params[1:],
+            ("exact_context", "experts", "ngram_memory", "mixer", "artifact_name", "metadata"),
+        )
+        self.assertNotIn("bridge", params)
+        self.assertNotIn("bridge_features", params)
+        self.assertNotIn("bidirectional", params)
+        self.assertNotIn("right_context", params)
+        self.assertNotIn("left_context", params)
 
 
 if __name__ == "__main__":

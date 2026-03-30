@@ -7,12 +7,14 @@ from .config import (
     HierarchicalSubstrateConfig,
     MixedMemoryConfig,
     OpenPredictiveCoderConfig,
+    OscillatoryMemoryConfig,
     ReservoirConfig,
     SubstrateKind,
 )
 from .delay import DelayLineSubstrate
 from .hierarchical import HierarchicalSubstrate
 from .mixed_memory import MixedMemorySubstrate
+from .oscillatory_memory import OscillatoryMemorySubstrate
 from .reservoir import EchoStateReservoir
 from .substrates import TokenSubstrate
 
@@ -30,6 +32,12 @@ def create_echo_state_substrate(
 
 def create_delay_line_substrate(config: DelayLineConfig | None = None) -> DelayLineSubstrate:
     return DelayLineSubstrate(config=config)
+
+
+def create_oscillatory_memory_substrate(
+    config: OscillatoryMemoryConfig | None = None,
+) -> OscillatoryMemorySubstrate:
+    return OscillatoryMemorySubstrate(config=config)
 
 
 def create_mixed_memory_substrate(config: MixedMemoryConfig | None = None) -> MixedMemorySubstrate:
@@ -52,6 +60,10 @@ def create_substrate_for_model(config: OpenPredictiveCoderConfig) -> TokenSubstr
         return create_delay_line_substrate(
             replace(config.delay, vocabulary_size=config.vocabulary_size),
         )
+    if config.substrate_kind == "oscillatory":
+        return create_oscillatory_memory_substrate(
+            replace(config.oscillatory, vocabulary_size=config.vocabulary_size),
+        )
     if config.substrate_kind == "mixed_memory":
         return create_mixed_memory_substrate(
             replace(
@@ -71,6 +83,8 @@ def create_substrate(config: object | None = None) -> TokenSubstrate:
         return create_echo_state_substrate(config)
     if isinstance(config, DelayLineConfig):
         return create_delay_line_substrate(config)
+    if isinstance(config, OscillatoryMemoryConfig):
+        return create_oscillatory_memory_substrate(config)
     if isinstance(config, MixedMemoryConfig):
         return create_mixed_memory_substrate(config)
     if isinstance(config, HierarchicalSubstrateConfig):
@@ -86,6 +100,7 @@ __all__ = [
     "create_echo_state_substrate",
     "create_hierarchical_substrate",
     "create_mixed_memory_substrate",
+    "create_oscillatory_memory_substrate",
     "create_substrate",
     "create_substrate_for_model",
 ]

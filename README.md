@@ -165,6 +165,7 @@ This implementation synthesizes ideas from:
 - `BridgeExportAdapter`: generic export/report surface over paired probability streams
 - `bridge_feature_arrays`: causal proxy features derived from probability arrays
 - `BidirectionalContextProbe`: noncausal context determinism and leave-one-out probe
+- `select_scored_spans` and `replay_spans_from_scores`: reusable score-to-span selection helpers
 - `SupportWeightedMixer`: support-biased blending over base and exact-context experts
 - `ArtifactMetadata`, `ReplaySpan`, and `ArtifactAccounting`: causal artifact/replay/accounting primitives
 - `CausalTrace`, `CausalSequenceReport`, and `CausalFitReport`: causal reporting wrappers over runtime/accounting surfaces
@@ -240,6 +241,6 @@ kernel were `LinearMemorySubstrate`, `LinearMemoryFeatureView`, `FrozenReadoutEx
 `ArtifactAccounting` runtime slice, the first shared `CausalPredictiveAdapter` plus `OracleAnalysisAdapter` plus
 `BridgeExportAdapter`, the first learned patch-latent kernel blocks (`LearnedSegmenter`, `LocalByteEncoder`,
 `PatchPooler`, `GlobalLocalBridge`), and the next statistical/kernel additions (`OscillatoryMemorySubstrate`,
-`NgramMemory`, `bridge_feature_arrays`, `BidirectionalContextProbe`); descendant mixer policies, noncausal replay
-economics, rate-distortion objectives, and quantization/export policy remain deliberately project-local, and
-diagnostics stayed under `examples/`.
+`NgramMemory`, `bridge_feature_arrays`, `BidirectionalContextProbe`, `select_scored_spans`,
+`replay_spans_from_scores`); descendant mixer policies, noncausal replay economics, rate-distortion objectives, and
+quantization/export policy remain deliberately project-local, and diagnostics stayed under `examples/`.

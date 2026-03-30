@@ -4,8 +4,8 @@ This document turns the current state into the next concrete implementation pass
 
 ## Goal
 
-Harden the shared `src/`-level causal, oracle, and bridge adapters, then use that cleaner family surface to extract
-the first real `noncausal_reconstructive` contract.
+Use the new noncausal and bridge descendants to decide whether the first real `noncausal_reconstructive` contract is
+now specific enough to extract into `src/`, while keeping the kernel readable and generic.
 
 ## Why This Is The Next Pass
 
@@ -21,6 +21,9 @@ The repo now has:
 - a first `src/`-level `bridge_export` adapter
 - a first learned patch-latent kernel slice for segmentation, local encoding, pooling, and bridging
 - the next statistical/kernel slice for oscillatory memory, n-gram memory, bridge features, and bidirectional context
+- a first reusable scored-span selection primitive
+- a first noncausal field-reconstruction descendant built from current primitives
+- a second and third bridge-shaped descendants beyond the first bridge export surface
 
 That changes the problem.
 
@@ -64,19 +67,21 @@ Acceptance criteria:
 - causal reports are useful outside one example
 - artifact/replay helpers stay policy-free
 
-### 3. Add a second consumer of the shared family layer
+### 3. Decide the first noncausal adapter boundary
 
-The shared adapters are not stable until something besides the current causal and oracle examples pushes on them.
+The shared adapters are more credible now, but the next missing family is still a real noncausal adapter in `src/`.
 
-Best candidates:
+Use the current descendants:
 
-- a second bridge/export-shaped descendant beyond the first export/report example
-- a noncausal reconstructive descendant with replay and side-data accounting
+- `examples/projects/noncausal/field_reconstruction`
+- `examples/projects/bridge/proxy_features`
+- `examples/projects/bridge/feature_export`
+- `examples/projects/bridge/agreement_export`
 
 Acceptance criteria:
 
-- at least one more descendant reuses some of the same causal contract
-- any new promotion into `src/` is justified by repeated use
+- the noncausal adapter boundary is specific enough to name without descendant policy leaking into it
+- any new promotion into `src/` is justified by repeated use across at least two descendants
 
 ### 4. Keep refining `hierarchical_predictive`, but only in project space
 
@@ -105,7 +110,7 @@ Every pass should also improve orientation:
 
 1. thin causal and oracle examples around the shared adapters
 2. harden runtime and accounting
-3. add the first noncausal reconstructive consumer
+3. extract the first minimal `noncausal_reconstructive` contract if the boundary is now clear
 4. only then consider wider family abstractions
 
 ## Non-Goals For The Next Pass
@@ -114,7 +119,7 @@ These should wait:
 
 - full optimizer/training harness extraction
 - full legality framework
-- noncausal replay economics in `src/`
+- noncausal replay economics beyond the minimal shared contract
 - patch-latent rate-distortion, QAT, or second-stage downsampling in `src/` before a second consumer asks for them
 - preset stabilization
 
@@ -123,6 +128,7 @@ These should wait:
 The pass is done when:
 
 - the shared causal, oracle, and bridge adapters clearly read as `src/` contracts
+- the next noncausal contract is either clearly extracted or clearly deferred
 - the corresponding examples look thinner around those contracts
 - at least one more descendant pushes on one of the same shared surfaces
 - docs explain the boundary without requiring project history to decode the codebase

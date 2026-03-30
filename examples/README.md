@@ -27,8 +27,12 @@ They are self-contained descendants that live in this repo. They are not imports
   bridge-style descendant in `projects/bridge/`
 - `feature_export`
   bridge export/report descendant in `projects/bridge/`
+- `agreement_export`
+  bridge agreement-focused descendant in `projects/bridge/`
 - `bidirectional_analysis`
   analysis-only descendant in `projects/oracle/`
+- `field_reconstruction`
+  noncausal reconstruction descendant in `projects/noncausal/`
 - `patch_latent`
   learned byte-patch latent descendant in `projects/byte_latent/`
 
@@ -56,5 +60,7 @@ If you want to understand the repo through examples:
 4. `projects/causal/memory_stability` through `causal/statistical_memory`
 5. `projects/bridge/proxy_features`
 6. `projects/bridge/feature_export`
-7. `projects/oracle/bidirectional_analysis`
-8. `projects/byte_latent/patch_latent`
+7. `projects/bridge/agreement_export`
+8. `projects/noncausal/field_reconstruction`
+9. `projects/oracle/bidirectional_analysis`
+10. `projects/byte_latent/patch_latent`

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Sequence
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 import numpy as np
 
@@ -14,6 +14,7 @@ from .artifacts import (
 from .bridge_features import BridgeFeatureArrays, BridgeFeatureConfig, bridge_feature_arrays
 from .codecs import ensure_tokens
 from .metrics import bits_per_byte_from_probabilities
+from .span_selection import SpanSelectionConfig, replay_spans_from_scores
 
 
 def _coerce_probability_array(
@@ -34,12 +35,6 @@ def _coerce_targets(targets: object, expected_tokens: int) -> np.ndarray:
     if token_array.size != expected_tokens:
         raise ValueError("targets must align with the probability rows")
     return token_array
-
-
-def _mean_or_none(values: Sequence[float]) -> float | None:
-    if not values:
-        return None
-    return float(np.mean(np.asarray(values, dtype=np.float64)))
 
 
 @dataclass(frozen=True)
@@ -140,40 +135,20 @@ class BridgeExportAdapter:
         source_names: tuple[str, str],
     ) -> ArtifactAccounting:
         feature_rows = np.asarray(features.entropy, dtype=np.float64).reshape(-1)
-        replay_mask = np.asarray(features.agreement_mass, dtype=np.float64).reshape(-1) > self.config.replay_threshold
-        replay_indices = np.flatnonzero(replay_mask)
-        replay_spans = []
-        if replay_indices.size > 0:
-            start = int(replay_indices[0])
-            previous = int(replay_indices[0])
-            for index in replay_indices[1:]:
-                index = int(index)
-                if index == previous + 1:
-                    previous = index
-                    continue
-                replay_spans.append(
-                    make_replay_span(
-                        start,
-                        previous + 1,
-                        label="bridge_export",
-                        source_names=source_names,
-                    )
-                )
-                start = previous = index
-            replay_spans.append(
-                make_replay_span(
-                    start,
-                    previous + 1,
-                    label="bridge_export",
-                    source_names=source_names,
-                )
-            )
+        replay_scores = np.asarray(features.agreement_mass, dtype=np.float64).reshape(-1)
+        replay_mask = replay_scores > self.config.replay_threshold
+        replay_spans = replay_spans_from_scores(
+            replay_scores,
+            SpanSelectionConfig(threshold=self.config.replay_threshold, min_span=1, max_gap=0),
+            label="bridge_export",
+            source_names=source_names,
+        )
 
         return make_artifact_accounting(
             self.artifact_name,
             int(tokens),
             int(replay_mask.sum()),
-            replay_spans=tuple(replay_spans),
+            replay_spans=replay_spans,
             metadata=self.metadata,
             tokens=int(tokens),
             bridge_rows=int(feature_rows.size),

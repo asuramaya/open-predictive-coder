@@ -17,6 +17,7 @@ Examples:
 - `test_bridge_export.py`
 - `test_bridge_features.py`
 - `test_bidirectional_context.py`
+- `test_span_selection.py`
 - `test_learned_segmentation.py`
 - `test_patch_latent_blocks.py`
 - `test_causal_adapter.py`
@@ -48,6 +49,7 @@ Examples:
 - `test_kernel_project_split.py`
 - `test_boundary_surfaces.py`
 - `test_bridge_export_isolation.py`
+- `test_noncausal_bridge_boundaries.py`
 - `test_example_projects.py`
 
 ## Project Descendant Tests
@@ -59,7 +61,9 @@ Examples:
 - `test_hierarchical_predictive_example.py`
 - `test_bridge_proxy_example.py`
 - `test_feature_export_example.py`
+- `test_agreement_export_example.py`
 - `test_bidirectional_analysis_example.py`
+- `test_field_reconstruction_example.py`
 - `test_patch_latent_example.py`
 - `test_statistical_memory_example.py`
 - `test_diagnostics_examples.py`

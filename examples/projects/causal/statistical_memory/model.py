@@ -18,7 +18,6 @@ from open_predictive_coder import (
     NgramMemory,
     NgramMemoryConfig,
     NgramMemoryReport,
-    SupportMixConfig,
     SupportWeightedMixer,
     ensure_tokens,
 )
@@ -36,9 +35,6 @@ class StatisticalMemoryConfig:
     ngram_bigram_alpha: float = 0.5
     ngram_trigram_alpha: float = 0.5
     ngram_trigram_bucket_count: int = 2048
-    base_bias: float = 0.35
-    expert_bias: float = 0.65
-    support_scale: float = 0.4
 
     def __post_init__(self) -> None:
         if self.vocabulary_size < 2:
@@ -53,8 +49,6 @@ class StatisticalMemoryConfig:
             raise ValueError("ngram_trigram_alpha must be >= 0")
         if self.ngram_trigram_bucket_count < 1:
             raise ValueError("ngram_trigram_bucket_count must be >= 1")
-        if self.support_scale < 0.0:
-            raise ValueError("support_scale must be >= 0")
 
 
 @dataclass(frozen=True)
@@ -81,7 +75,6 @@ class StatisticalMemoryTrace:
     exact_probs: np.ndarray
     mixed_probs: np.ndarray
     component_names: tuple[tuple[str, ...], ...]
-    component_weights: tuple[np.ndarray, ...]
 
 
 class StatisticalMemoryModel:
@@ -102,13 +95,7 @@ class StatisticalMemoryModel:
                 alpha=self.config.exact_alpha,
             )
         )
-        self.mixer = SupportWeightedMixer(
-            SupportMixConfig(
-                base_bias=self.config.base_bias,
-                expert_bias=self.config.expert_bias,
-                support_scale=self.config.support_scale,
-            )
-        )
+        self.mixer = SupportWeightedMixer()
 
     @classmethod
     def build(cls, **kwargs: object) -> "StatisticalMemoryModel":
@@ -133,7 +120,7 @@ class StatisticalMemoryModel:
     def _mixed_distribution(
         self,
         prefix: np.ndarray,
-    ) -> tuple[np.ndarray, np.ndarray, np.ndarray, tuple[str, ...], np.ndarray]:
+    ) -> tuple[np.ndarray, np.ndarray, np.ndarray, tuple[str, ...]]:
         base_probs = self._ngram_distribution(prefix)
         exact_experts = self.exact_memory.experts(prefix)
         exact_probs = self.exact_memory.predictive_distribution(prefix)
@@ -143,7 +130,7 @@ class StatisticalMemoryModel:
             base_name="ngram",
             base_support=float(np.log1p(prefix.size)),
         )
-        return base_probs, exact_probs, blend.probabilities, blend.component_names, blend.weights
+        return base_probs, exact_probs, blend.probabilities, blend.component_names
 
     def trace(
         self,
@@ -157,16 +144,14 @@ class StatisticalMemoryModel:
         exact_rows: list[np.ndarray] = []
         mixed_rows: list[np.ndarray] = []
         component_names: list[tuple[str, ...]] = []
-        component_weights: list[np.ndarray] = []
 
         for index in range(1, tokens.size):
             prefix = tokens[:index]
-            base_probs, exact_probs, mixed_probs, names, weights = self._mixed_distribution(prefix)
+            base_probs, exact_probs, mixed_probs, names = self._mixed_distribution(prefix)
             base_rows.append(base_probs)
             exact_rows.append(exact_probs)
             mixed_rows.append(mixed_probs)
             component_names.append(names)
-            component_weights.append(weights)
 
         return StatisticalMemoryTrace(
             tokens=int(tokens.size),
@@ -175,7 +160,6 @@ class StatisticalMemoryModel:
             exact_probs=np.vstack(exact_rows),
             mixed_probs=np.vstack(mixed_rows),
             component_names=tuple(component_names),
-            component_weights=tuple(component_weights),
         )
 
     def predict_proba(
@@ -185,9 +169,7 @@ class StatisticalMemoryModel:
         tokens = _coerce_tokens(prompt)
         if tokens.size == 0:
             raise ValueError("prompt must contain at least one token")
-        base_probs, _, mixed_probs, _, _ = self._mixed_distribution(tokens)
-        if tokens.size == 1:
-            return mixed_probs
+        _, _, mixed_probs, _ = self._mixed_distribution(tokens)
         return mixed_probs
 
     def score(

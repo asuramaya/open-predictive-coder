@@ -1,11 +1,13 @@
 # Statistical Memory
 
-This example stays in the project layer and composes two existing kernel primitives:
+This example stays in the project layer and composes existing kernel primitives directly:
 
 - `NgramMemory` for smoothed unigram, bigram, and trigram statistics
 - `ExactContextMemory` for exact-context repair
+- `SupportWeightedMixer` for the local blend policy
 
-The policy here is intentionally local. The example fits both memories on the same corpus, uses n-gram probabilities as the base distribution, and uses exact-context predictions as repair experts through `SupportWeightedMixer`.
+The policy here is intentionally local. The example fits both memories on the same corpus and uses the kernel
+memory outputs directly without inventing a new shared abstraction.
 
 Files:
 

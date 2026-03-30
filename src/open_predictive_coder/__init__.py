@@ -108,6 +108,7 @@ from .patch_latent_blocks import (
     PatchPoolerConfig,
 )
 from .sampled_readout import SampledBandSummary, SampledMultiscaleReadout
+from .span_selection import ScoredSpan, SpanSelectionConfig, replay_spans_from_scores, select_scored_spans
 from .views import ByteLatentFeatureView
 
 # Substrates, factories, and presets.
@@ -287,6 +288,7 @@ __all__ = [
     "SampledMultiscaleReadout",
     "SampledReadoutBandConfig",
     "SampledReadoutConfig",
+    "ScoredSpan",
     "RidgeReadout",
     "RolloutCurveEvaluation",
     "RolloutCurve",
@@ -313,6 +315,8 @@ __all__ = [
     "evaluate_rollout_curve",
     "evaluate_transfer_probe",
     "score_dataset",
+    "select_scored_spans",
+    "SpanSelectionConfig",
     "stack_summaries",
     "SupportBlend",
     "SupportMixConfig",
@@ -321,4 +325,5 @@ __all__ = [
     "SummaryRouter",
     "TrainModeConfig",
     "TrainStateMode",
+    "replay_spans_from_scores",
 ]

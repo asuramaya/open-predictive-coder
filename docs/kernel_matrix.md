@@ -74,6 +74,7 @@ Use [`lineage.md`](./lineage.md) for the attribution rule behind the upstream wo
 | `views.byte_latent` | residual + patch-summary + latent feature construction | current library | Rao and Ballard 1999, BLT 2025 | Implemented |
 | `views.bridge_features` | probability-to-feature bridge between proxy and runtime surfaces | bridge/export descendant framing | causal proxy features from offline or higher-order distributions | Implemented |
 | `analysis.bidirectional_context` | noncausal left/right context determinism probe | oracle-analysis descendant framing | bidirectional context probing and support-size analysis | Implemented |
+| `runtime.span_selection` | shared score-array to replay-span grouping seam | bridge export and noncausal field-reconstruction descendants | reusable scored-position to contiguous-span selection | Implemented |
 | `blocks.patch_latent_local` | local byte encoding, patch pooling, and learned global-to-local bridge | learned patch-latent reconstruction from primitives | local predictive coding over shorter latent streams | Implemented |
 | `views.linear_memory` | reusable features over decay-bank memory state | linear-correction and residual-repair reconstruction from primitives | short/medium-horizon linear summaries | Implemented |
 | `readouts.closed_form` | simple trained readout over frozen state | current library | Jaeger 2001 | Implemented |
@@ -140,6 +141,7 @@ The kernel is no longer just an echo-state toy. It now has:
 - feature-view primitives for both byte-latent and hierarchical state
 - bridge feature utilities over probability arrays
 - bidirectional context analysis primitive
+- scored-span selection primitive
 - local byte encoder, patch pooler, and learned global-to-local bridge primitives
 - deterministic sampled multiscale readout
 - reusable linear-memory feature view

@@ -59,14 +59,18 @@ These are not toy demos. They are boundary tests.
   bridge-style descendant that turns probability streams into causal proxy features
 - `bridge/feature_export/`
   bridge-style descendant that packages paired probability streams into a small export/report flow
+- `bridge/agreement_export/`
+  bridge-style descendant that focuses on agreement and disagreement over paired probability streams
+- `noncausal/field_reconstruction/`
+  noncausal field reconstruction descendant built from bidirectional context, exact-context memory, and replay accounting
 - `oracle/bidirectional_analysis/`
   analysis-only descendant that reuses sampled readout, routing, and train-mode checkpoints
 - `byte_latent/patch_latent/`
   byte-patch latent descendant shaped as a general patch-latent example
 
 If a mechanism is repeated across multiple descendants, it is a candidate for promotion into `src/`.
-The first causal adapter is the next example of that rule: it should live in `src/` only when it reads as a shared
-contract rather than a descendant-specific model.
+The shared causal, oracle, and bridge adapters are the current examples of that rule: they live in `src/` only where
+they read as shared contracts rather than descendant-specific models.
 
 ### 3. Development Tooling
 
@@ -129,6 +133,7 @@ The kernel is easiest to understand by category rather than by filename order.
 - [`experts.py`](../src/open_predictive_coder/experts.py)
 - [`runtime.py`](../src/open_predictive_coder/runtime.py)
 - [`eval.py`](../src/open_predictive_coder/eval.py)
+- [`span_selection.py`](../src/open_predictive_coder/span_selection.py)
 - [`train_eval.py`](../src/open_predictive_coder/train_eval.py)
 - [`train_modes.py`](../src/open_predictive_coder/train_modes.py)
 - [`artifacts.py`](../src/open_predictive_coder/artifacts.py)
@@ -164,6 +169,7 @@ Stable kernel examples of the right kind of promotion:
 - `SampledMultiscaleReadout`
 - `TrainModeConfig`
 - `ArtifactMetadata` / `ReplaySpan` / `ArtifactAccounting`
+- `select_scored_spans` / `replay_spans_from_scores`
 
 Still project-local on purpose:
 
@@ -182,7 +188,8 @@ Recent shared promotion:
 ## Immediate Architectural Direction
 
 The next real jump is not another single descendant. It is pressure-testing the shared causal, oracle, and bridge
-adapters across more than one consumer while keeping descendant policy out of `src/`.
+adapters across more than one consumer while deciding whether the first `noncausal_reconstructive` contract is now
+specific enough to extract into `src/`.
 
 That means:
 
@@ -190,6 +197,6 @@ That means:
 - keeping the bidirectional-analysis example thin around the oracle adapter
 - hardening the shared runtime/accounting contract
 - keeping bridge export generic while more than one bridge-shaped consumer pushes on it
-- starting the first truly noncausal reconstructive consumer
+- using the noncausal field-reconstruction example to decide what a real shared noncausal adapter should own
 
 That is how the repo graduates from "first shared contracts exist" to "the contracts are actually stable enough to keep."

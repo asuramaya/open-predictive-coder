@@ -10,11 +10,9 @@ What stays in the kernel:
 
 What stays here:
 
-- the decision to use two causal experts
 - the choice of a memory path plus a stability path
 - the token-wise mixer policy used to combine them
-- the stability branch now uses the kernel `OscillatoryMemorySubstrate` as the pressure test for oscillatory memory
-- even though the kernel now has sampled readout, this descendant does not need it; the mixer policy is still the real project-local seam
+- the stability branch uses the kernel `OscillatoryMemorySubstrate` as the pressure test for oscillatory memory
 
-That keeps this causal dual-path policy out of `src/` until it proves useful beyond this descendant while still
-exercising the oscillatory substrate in a real causal example.
+That keeps the dual-path policy out of `src/` while still exercising the oscillatory substrate in a real causal
+example.

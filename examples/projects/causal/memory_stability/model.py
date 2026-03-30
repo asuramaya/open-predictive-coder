@@ -31,10 +31,9 @@ class OscillatoryStabilityView:
             2,
             self.config.embedding_dim,
         )
-        if previous_state is None:
-            drift = 0.0
-        else:
-            drift = float(np.mean(np.abs(state - np.asarray(previous_state, dtype=np.float64))))
+        oscillatory_abs = np.abs(oscillatory)
+        previous = None if previous_state is None else np.asarray(previous_state, dtype=np.float64)
+        drift = 0.0 if previous is None else float(np.mean(np.abs(state - previous)))
         return np.asarray(
             [
                 float(np.mean(decay)),
@@ -44,7 +43,7 @@ class OscillatoryStabilityView:
                 float(np.mean(np.square(oscillatory))),
                 float(np.mean(np.abs(oscillatory[:, 0] - oscillatory[:, 1]))),
                 drift,
-                float(np.max(np.abs(oscillatory))) if oscillatory.size else 0.0,
+                float(np.max(oscillatory_abs)) if oscillatory.size else 0.0,
                 float(np.mean(np.linalg.norm(oscillatory, axis=2))) if oscillatory.size else 0.0,
             ],
             dtype=np.float64,

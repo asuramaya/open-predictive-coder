@@ -82,8 +82,9 @@ class NgramMemory:
         self.unigram_counts = np.zeros(self.config.vocabulary_size, dtype=np.float64)
         self.bigram_counts = np.zeros((self.config.vocabulary_size, self.config.vocabulary_size), dtype=np.float64)
         self.trigram_counts = np.zeros((self.config.trigram_bucket_count, self.config.vocabulary_size), dtype=np.float64)
-        self._bigram_contexts = 0
-        self._trigram_buckets_used = 0
+        self._unigram_total = 0.0
+        self._bigram_totals = np.zeros((self.config.vocabulary_size,), dtype=np.float64)
+        self._trigram_totals = np.zeros((self.config.trigram_bucket_count,), dtype=np.float64)
         self._tokens_seen = 0
         self._sequences_seen = 0
 
@@ -91,8 +92,9 @@ class NgramMemory:
         self.unigram_counts.fill(0.0)
         self.bigram_counts.fill(0.0)
         self.trigram_counts.fill(0.0)
-        self._bigram_contexts = 0
-        self._trigram_buckets_used = 0
+        self._unigram_total = 0.0
+        self._bigram_totals.fill(0.0)
+        self._trigram_totals.fill(0.0)
         self._tokens_seen = 0
         self._sequences_seen = 0
 
@@ -110,11 +112,16 @@ class NgramMemory:
         value = (np.uint64(left) * np.uint64(1_315_423_911)) ^ (np.uint64(right) * np.uint64(2_654_435_761))
         return int(value % np.uint64(self.config.trigram_bucket_count))
 
-    def fit(
+    def _trigram_buckets(self, left: np.ndarray, right: np.ndarray) -> np.ndarray:
+        left_u = np.asarray(left, dtype=np.uint64)
+        right_u = np.asarray(right, dtype=np.uint64)
+        values = (left_u * np.uint64(1_315_423_911)) ^ (right_u * np.uint64(2_654_435_761))
+        return np.asarray(values % np.uint64(self.config.trigram_bucket_count), dtype=np.int64)
+
+    def update(
         self,
         data: str | bytes | bytearray | memoryview | np.ndarray | Sequence[int] | Sequence[object],
     ) -> NgramMemoryReport:
-        self.clear()
         sequences = _coerce_sequences(data)
         for sequence in sequences:
             tokens = self._check_tokens(ensure_tokens(sequence).astype(np.int64, copy=False))
@@ -123,31 +130,46 @@ class NgramMemory:
             if tokens.size == 0:
                 continue
 
-            self.unigram_counts += np.bincount(tokens, minlength=self.config.vocabulary_size)
+            unigram_delta = np.bincount(tokens, minlength=self.config.vocabulary_size).astype(np.float64, copy=False)
+            self.unigram_counts += unigram_delta
+            self._unigram_total += float(tokens.size)
 
             if tokens.size >= 2:
                 prev = tokens[:-1]
                 curr = tokens[1:]
                 np.add.at(self.bigram_counts, (prev, curr), 1.0)
-                self._bigram_contexts += int(np.count_nonzero(np.bincount(prev, minlength=self.config.vocabulary_size)))
+                self._bigram_totals += np.bincount(prev, minlength=self.config.vocabulary_size).astype(
+                    np.float64,
+                    copy=False,
+                )
 
             if tokens.size >= 3:
                 left = tokens[:-2]
                 right = tokens[1:-1]
                 target = tokens[2:]
-                buckets = np.asarray([self._trigram_bucket(int(a), int(b)) for a, b in zip(left, right)], dtype=np.int64)
+                buckets = self._trigram_buckets(left, right)
                 np.add.at(self.trigram_counts, (buckets, target), 1.0)
-                self._trigram_buckets_used += int(np.count_nonzero(np.bincount(buckets, minlength=self.config.trigram_bucket_count)))
+                self._trigram_totals += np.bincount(buckets, minlength=self.config.trigram_bucket_count).astype(
+                    np.float64,
+                    copy=False,
+                )
 
         return self.report()
+
+    def fit(
+        self,
+        data: str | bytes | bytearray | memoryview | np.ndarray | Sequence[int] | Sequence[object],
+    ) -> NgramMemoryReport:
+        self.clear()
+        return self.update(data)
 
     def report(self) -> NgramMemoryReport:
         return NgramMemoryReport(
             sequences=self._sequences_seen,
             tokens=self._tokens_seen,
             vocabulary_size=self.config.vocabulary_size,
-            bigram_contexts=int(np.count_nonzero(np.sum(self.bigram_counts, axis=1))),
-            trigram_buckets_used=int(np.count_nonzero(np.sum(self.trigram_counts, axis=1))),
+            bigram_contexts=int(np.count_nonzero(self._bigram_totals)),
+            trigram_buckets_used=int(np.count_nonzero(self._trigram_totals)),
             unigram_bytes=int(self.unigram_counts.nbytes),
             bigram_bytes=int(self.bigram_counts.nbytes),
             trigram_bytes=int(self.trigram_counts.nbytes),
@@ -168,9 +190,11 @@ class NgramMemory:
         counts = self.trigram_counts[bucket]
         return _laplace_smooth(counts, self.config.trigram_alpha)
 
-    def log_probs(
+    def chosen_probs(
         self,
         tokens: str | bytes | bytearray | memoryview | np.ndarray | Sequence[int] | Sequence[object],
+        *,
+        order: str = "max",
     ) -> np.ndarray:
         sequence = _coerce_sequences(tokens)[0]
         sequence = self._check_tokens(sequence.astype(np.int64, copy=False))
@@ -178,16 +202,50 @@ class NgramMemory:
             return np.zeros((0,), dtype=np.float64)
 
         values = np.empty(sequence.size, dtype=np.float64)
-        unigram = self.unigram_probs()
-        for index, token in enumerate(sequence):
-            if index == 0:
-                probs = unigram
-            elif index == 1:
-                probs = self.bigram_probs(int(sequence[index - 1]))
-            else:
-                probs = self.trigram_probs(int(sequence[index - 2]), int(sequence[index - 1]))
-            values[index] = float(np.log(max(float(probs[int(token)]), 1e-300)))
-        return values
+        vocab = float(self.config.vocabulary_size)
+        unigram_alpha = float(self.config.bigram_alpha)
+        unigram_denom = max(self._unigram_total + unigram_alpha, np.finfo(np.float64).tiny)
+        values[:] = (self.unigram_counts[sequence] + (unigram_alpha / vocab)) / unigram_denom
+
+        if sequence.size >= 2 and order in {"bigram", "trigram", "max"}:
+            prev = sequence[:-1]
+            curr = sequence[1:]
+            bigram_counts = self.bigram_counts[prev, curr]
+            bigram_totals = self._bigram_totals[prev]
+            values[1:] = (bigram_counts + (self.config.bigram_alpha / vocab)) / np.maximum(
+                bigram_totals + self.config.bigram_alpha,
+                np.finfo(np.float64).tiny,
+            )
+
+        if sequence.size >= 3 and order in {"trigram", "max"}:
+            left = sequence[:-2]
+            right = sequence[1:-1]
+            target = sequence[2:]
+            buckets = self._trigram_buckets(left, right)
+            trigram_counts = self.trigram_counts[buckets, target]
+            trigram_totals = self._trigram_totals[buckets]
+            values[2:] = (trigram_counts + (self.config.trigram_alpha / vocab)) / np.maximum(
+                trigram_totals + self.config.trigram_alpha,
+                np.finfo(np.float64).tiny,
+            )
+
+        if order not in {"unigram", "bigram", "trigram", "max"}:
+            raise ValueError(f"unknown order: {order}")
+        return np.clip(values, 1e-300, 1.0)
+
+    def chosen_log_probs(
+        self,
+        tokens: str | bytes | bytearray | memoryview | np.ndarray | Sequence[int] | Sequence[object],
+        *,
+        order: str = "max",
+    ) -> np.ndarray:
+        return np.log(self.chosen_probs(tokens, order=order))
+
+    def log_probs(
+        self,
+        tokens: str | bytes | bytearray | memoryview | np.ndarray | Sequence[int] | Sequence[object],
+    ) -> np.ndarray:
+        return self.chosen_log_probs(tokens, order="max")
 
 
 __all__ = [

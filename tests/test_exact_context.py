@@ -36,6 +36,12 @@ class ExactContextTests(unittest.TestCase):
         unigram = memory.unigram_probabilities()
         self.assertTrue(np.allclose(probs, unigram))
 
+    def test_exact_context_supports_token_ids_above_255(self) -> None:
+        memory = ExactContextMemory(ExactContextConfig(vocabulary_size=2048, max_order=2, alpha=0.05))
+        memory.fit([1000, 1001, 1000, 1001, 1000, 1001])
+        probs = memory.predictive_distribution([1000, 1001])
+        self.assertEqual(int(np.argmax(probs)), 1000)
+
     def test_support_weighted_mixer_can_shift_mass_toward_exact_expert(self) -> None:
         memory = ExactContextMemory(ExactContextConfig(vocabulary_size=4, max_order=2, alpha=0.05))
         memory.fit([0, 1, 0, 1, 0, 1, 0, 1])

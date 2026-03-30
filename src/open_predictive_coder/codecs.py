@@ -29,10 +29,17 @@ def ensure_tokens(value: str | bytes | bytearray | memoryview | np.ndarray | Seq
             raise ValueError("token arrays must be one-dimensional")
         if not np.issubdtype(value.dtype, np.integer):
             raise TypeError("token arrays must contain integers")
-        return value.astype(np.uint8, copy=True)
+        return value.astype(np.int64, copy=True)
     if _is_sequence_of_ints(value):
-        return np.asarray(list(value), dtype=np.uint8)
+        return np.asarray(list(value), dtype=np.int64)
     raise TypeError(f"Unsupported token input type: {type(value)!r}")
+
+
+def ensure_byte_tokens(value: str | bytes | bytearray | memoryview | np.ndarray | Sequence[int]) -> np.ndarray:
+    tokens = ensure_tokens(value)
+    if tokens.size and (int(np.min(tokens)) < 0 or int(np.max(tokens)) > 255):
+        raise ValueError("byte tokens must lie in [0, 255]")
+    return tokens.astype(np.uint8, copy=False)
 
 
 class ByteCodec:
@@ -42,7 +49,7 @@ class ByteCodec:
 
     @staticmethod
     def decode_text(tokens: str | bytes | bytearray | memoryview | np.ndarray | Sequence[int], encoding: str = "utf-8") -> str:
-        return bytes(ensure_tokens(tokens).tolist()).decode(encoding, errors="replace")
+        return bytes(ensure_byte_tokens(tokens).tolist()).decode(encoding, errors="replace")
 
     @staticmethod
     def encode_bytes(payload: bytes | bytearray | memoryview) -> np.ndarray:
@@ -50,5 +57,4 @@ class ByteCodec:
 
     @staticmethod
     def decode_bytes(tokens: str | bytes | bytearray | memoryview | np.ndarray | Sequence[int]) -> bytes:
-        return bytes(ensure_tokens(tokens).tolist())
-
+        return bytes(ensure_byte_tokens(tokens).tolist())

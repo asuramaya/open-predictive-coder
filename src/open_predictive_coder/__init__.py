@@ -19,7 +19,7 @@ from .artifacts import (
     ReplaySpan,
 )
 from .artifacts_audits import ArtifactAuditRecord, ArtifactAuditSummary, audit_artifact, summarize_artifact_audits
-from .codecs import ByteCodec, ensure_tokens
+from .codecs import ByteCodec, ensure_byte_tokens, ensure_tokens
 from .config import (
     ByteLatentPredictiveCoderConfig,
     DelayLineConfig,
@@ -157,7 +157,12 @@ from .substrates import (
 from .datasets import ByteSequenceDataset
 from .eval import NextStepScore, RolloutEvaluation, RolloutMode, evaluate_rollout, score_next_step
 from .experts import ExpertFitReport, ExpertScore, FrozenReadoutExpert
-from .metrics import bits_per_byte_from_logits, bits_per_byte_from_probabilities
+from .metrics import (
+    bits_per_byte_from_logits,
+    bits_per_byte_from_probabilities,
+    bits_per_token_from_logits,
+    bits_per_token_from_probabilities,
+)
 from .readouts import RidgeReadout
 from .runtime import (
     CausalFitReport,
@@ -198,12 +203,15 @@ __all__ = [
     "audit_artifact",
     "coerce_artifact_metadata",
     "ByteCodec",
+    "ensure_byte_tokens",
     "ByteLatentFeatureView",
     "ByteLatentPredictiveCoder",
     "ByteLatentPredictiveCoderConfig",
     "ByteSequenceDataset",
     "bits_per_byte_from_logits",
     "bits_per_byte_from_probabilities",
+    "bits_per_token_from_logits",
+    "bits_per_token_from_probabilities",
     "BidirectionalContextConfig",
     "BidirectionalContextLeaveOneOutStats",
     "BidirectionalContextNeighborhood",

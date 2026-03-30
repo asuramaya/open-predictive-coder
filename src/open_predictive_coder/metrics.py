@@ -33,3 +33,11 @@ def bits_per_byte_from_logits(logits: np.ndarray, targets: np.ndarray) -> float:
 def bits_per_byte_from_probabilities(probabilities: np.ndarray, targets: np.ndarray) -> float:
     losses = cross_entropy_from_probabilities(probabilities, targets)
     return float(np.mean(losses) / np.log(2.0))
+
+
+def bits_per_token_from_logits(logits: np.ndarray, targets: np.ndarray) -> float:
+    return bits_per_byte_from_logits(logits, targets)
+
+
+def bits_per_token_from_probabilities(probabilities: np.ndarray, targets: np.ndarray) -> float:
+    return bits_per_byte_from_probabilities(probabilities, targets)

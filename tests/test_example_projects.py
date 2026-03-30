@@ -27,19 +27,19 @@ def run_example(relative_path: str) -> str:
 
 
 class ExampleProjectTests(unittest.TestCase):
-    def test_carving_machine_like_probe_runs(self) -> None:
-        output = run_example("examples/projects/carving_machine_like/probe.py")
+    def test_hierarchical_predictive_probe_runs(self) -> None:
+        output = run_example("examples/projects/ancestor/hierarchical_predictive/probe.py")
         self.assertIn("state_dim:", output)
         self.assertIn("feature_dim:", output)
         self.assertIn("bank_slices:", output)
 
-    def test_carving_machine_like_smoke_runs(self) -> None:
-        output = run_example("examples/projects/carving_machine_like/smoke.py")
+    def test_hierarchical_predictive_smoke_runs(self) -> None:
+        output = run_example("examples/projects/ancestor/hierarchical_predictive/smoke.py")
         self.assertIn("train bits/byte:", output)
         self.assertIn("score bits/byte:", output)
 
-    def test_causal_exact_context_like_smoke_runs(self) -> None:
-        output = run_example("examples/projects/causal_exact_context_like/smoke.py")
+    def test_exact_context_repair_smoke_runs(self) -> None:
+        output = run_example("examples/projects/causal/exact_context_repair/smoke.py")
         self.assertIn("base bits/byte:", output)
         self.assertIn("mixed bits/byte:", output)
         values: dict[str, float] = {}
@@ -55,25 +55,25 @@ class ExampleProjectTests(unittest.TestCase):
                 continue
         self.assertLess(values["mixed bits/byte"], values["base bits/byte"])
 
-    def test_causal_memory_stability_like_smoke_runs(self) -> None:
-        output = run_example("examples/projects/causal_memory_stability_like/smoke.py")
-        self.assertIn("project: causal_memory_stability_like", output)
+    def test_memory_stability_smoke_runs(self) -> None:
+        output = run_example("examples/projects/causal/memory_stability/smoke.py")
+        self.assertIn("project: memory_stability", output)
         self.assertIn("mixed score bits/byte:", output)
 
-    def test_causal_linear_correction_like_smoke_runs(self) -> None:
-        output = run_example("examples/projects/causal_linear_correction_like/smoke.py")
-        self.assertIn("project: causal_linear_correction_like", output)
+    def test_linear_correction_smoke_runs(self) -> None:
+        output = run_example("examples/projects/causal/linear_correction/smoke.py")
+        self.assertIn("project: linear_correction", output)
         self.assertIn("mixed score bits/byte:", output)
 
-    def test_causal_residual_repair_like_smoke_runs(self) -> None:
-        output = run_example("examples/projects/causal_residual_repair_like/smoke.py")
-        self.assertIn("project: causal_residual_repair_like", output)
+    def test_residual_repair_smoke_runs(self) -> None:
+        output = run_example("examples/projects/causal/residual_repair/smoke.py")
+        self.assertIn("project: residual_repair", output)
         self.assertIn("corrected score bits/byte:", output)
 
     def test_causal_variant_readmes_record_boundary_decisions(self) -> None:
-        variant_1_readme = (PROJECTS_ROOT / "causal_memory_stability_like" / "README.md").read_text(encoding="utf-8")
-        variant_2_readme = (PROJECTS_ROOT / "causal_linear_correction_like" / "README.md").read_text(encoding="utf-8")
-        variant_3_readme = (PROJECTS_ROOT / "causal_residual_repair_like" / "README.md").read_text(encoding="utf-8")
+        variant_1_readme = (PROJECTS_ROOT / "causal" / "memory_stability" / "README.md").read_text(encoding="utf-8")
+        variant_2_readme = (PROJECTS_ROOT / "causal" / "linear_correction" / "README.md").read_text(encoding="utf-8")
+        variant_3_readme = (PROJECTS_ROOT / "causal" / "residual_repair" / "README.md").read_text(encoding="utf-8")
 
         self.assertIn("kernel now has sampled readout", variant_1_readme)
         self.assertIn("runtime rollout and slow-update knobs already live in the kernel", variant_2_readme)

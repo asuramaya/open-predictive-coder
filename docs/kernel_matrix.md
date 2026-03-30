@@ -81,10 +81,10 @@ Use [`lineage.md`](./lineage.md) for the attribution rule behind the upstream wo
 | `adapters.byte_latent` | first concrete downstream adapter | current library | BLT 2025, UT 2018 | Implemented |
 | `adapters.causal_predictive` | causal predictive/compressive runtime systems | causal descendant docs | sequence predictive coding | Implemented |
 | `adapters.noncausal_reconstructive` | document-field replay systems | noncausal descendant docs | reconstruction and side-data economics | Not started |
-| `adapters.oracle_analysis` | bidirectional structure analysis | oracle analysis docs | predictive coding as analysis, not runtime | Not started |
+| `adapters.oracle_analysis` | bidirectional structure analysis | oracle analysis docs | predictive coding as analysis, not runtime | Implemented |
 | `adapters.bridge_export` | offline teacher to causal export layer | bridge-export docs | explicit boundary discipline | Not started |
 | `presets` | reproducible named bundles over primitives | `carving_machine/catalog.py#L1` | engineering convenience, not theory | Not started |
-| `examples.reference_projects` | thin project-shaped models over the kernel, used for smoke/dev loops | `carving_machine`, causal descendant docs, oracle-analysis docs, and `brelt` docs as downstream shapes | engineering bridge from primitives to dev/test targets | Implemented |
+| `examples.reference_projects` | thin project-shaped models over the kernel, used for smoke/dev loops | upstream ancestor docs, causal descendant docs, oracle-analysis docs, and byte-latent downstream docs as downstream shapes | engineering bridge from primitives to dev/test targets | Implemented |
 
 ## Priority
 
@@ -137,6 +137,7 @@ The kernel is no longer just an echo-state toy. It now has:
 - weighted dataset eval, rollout curves, and transfer probes
 - frozen readout expert primitive
 - first shared causal adapter
+- first shared oracle-analysis adapter
 - byte-latent adapter
 - example-project smoke surfaces for `carving_machine`-like and early causal-exact-context builds
 - causal mixture/correction/repair replica projects built from primitives

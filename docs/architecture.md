@@ -47,16 +47,16 @@ The `examples/projects/` tree is where the kernel gets pressure-tested by actual
 
 These are not toy demos. They are boundary tests.
 
-- `carving_machine_like/`
+- `ancestor/hierarchical_predictive/`
   ancestor-style hierarchical substrate plus predictor/gating policy
-- `causal_exact_context_like/`
+- `causal/exact_context_repair/`
   early exact-context causal memory shape
-- `causal_memory_stability_like/`, `causal_linear_correction_like/`, `causal_residual_repair_like/`
+- `causal/memory_stability/`, `causal/linear_correction/`, `causal/residual_repair/`
   three different causal composition policies built from kernel primitives
-- `oracle_analysis_like/`
+- `oracle/bidirectional_analysis/`
   analysis-only descendant that reuses sampled readout, routing, and train-mode checkpoints
-- `brelt_like/`
-  byte-patch latent descendant shaped after the real `brelt` repo
+- `byte_latent/patch_latent/`
+  byte-patch latent descendant shaped as a general patch-latent example
 
 If a mechanism is repeated across multiple descendants, it is a candidate for promotion into `src/`.
 The first causal adapter is the next example of that rule: it should live in `src/` only when it reads as a shared
@@ -125,6 +125,7 @@ The kernel is easiest to understand by category rather than by filename order.
 
 - [`adapters.py`](../src/open_predictive_coder/adapters.py)
 - [`causal_predictive.py`](../src/open_predictive_coder/causal_predictive.py)
+- [`oracle_analysis.py`](../src/open_predictive_coder/oracle_analysis.py)
 - [`model.py`](../src/open_predictive_coder/model.py)
 - [`presets.py`](../src/open_predictive_coder/presets.py)
 - [`cli.py`](../src/open_predictive_coder/cli.py)
@@ -154,23 +155,25 @@ Stable kernel examples of the right kind of promotion:
 Still project-local on purpose:
 
 - descendant mixer and residual-repair policy
-- oracle-vs-causal comparison policy
-- `brelt` patch-boundary tuning and local/global bridge composition
+- interpretation and reporting around oracle comparisons
+- patch-boundary tuning and local/global bridge composition in the patch-latent example
 - ancestor-specific predictor head choices
 
 Recent shared promotion:
 
 - `CausalPredictiveAdapter`
+- `OracleAnalysisAdapter`
 
 ## Immediate Architectural Direction
 
-The next real jump is not another single descendant. It is pressure-testing the new shared causal adapter across more
-than one consumer while keeping descendant policy out of `src/`.
+The next real jump is not another single descendant. It is pressure-testing the shared causal and oracle adapters
+across more than one consumer while keeping descendant policy out of `src/`.
 
 That means:
 
 - thinning the causal descendants around the causal adapter
-- hardening the causal runtime/accounting contract
-- adding a second consumer, likely bridge-shaped or noncausal, that reuses some of the same causal surfaces
+- keeping the bidirectional-analysis example thin around the oracle adapter
+- hardening the shared runtime/accounting contract
+- starting the first truly noncausal reconstructive or bridge/export consumer
 
-That is how the repo graduates from "first causal contract exists" to "the contract is actually stable enough to keep."
+That is how the repo graduates from "first shared contracts exist" to "the contracts are actually stable enough to keep."

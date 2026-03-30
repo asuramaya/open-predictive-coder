@@ -10,13 +10,14 @@ import numpy as np
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SRC_ROOT = REPO_ROOT / "src"
 PROJECTS_ROOT = REPO_ROOT / "examples" / "projects"
+CAUSAL_ROOT = PROJECTS_ROOT / "causal"
 if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
-if str(PROJECTS_ROOT) not in sys.path:
-    sys.path.insert(0, str(PROJECTS_ROOT))
+if str(CAUSAL_ROOT) not in sys.path:
+    sys.path.insert(0, str(CAUSAL_ROOT))
 
 from open_predictive_coder import HierarchicalSubstrate, TrainModeConfig, hierarchical_small  # noqa: E402
-from causal_descendants import build_hierarchical_stability_expert  # noqa: E402
+from shared import build_hierarchical_stability_expert  # noqa: E402
 
 
 class TrainModeIntegrationTests(unittest.TestCase):

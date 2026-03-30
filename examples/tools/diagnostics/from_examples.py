@@ -38,8 +38,8 @@ def _sys_path(*paths: Path) -> Iterator[None]:
                 pass
 
 
-def _load_project_module(project: str, relative_path: str, module_name: str) -> ModuleType:
-    project_dir = PROJECTS_ROOT / project
+def _load_project_module(project: str | Path, relative_path: str, module_name: str) -> ModuleType:
+    project_dir = PROJECTS_ROOT / Path(project)
     module_path = project_dir / relative_path
     if not module_path.exists():
         raise FileNotFoundError(module_path)
@@ -139,16 +139,20 @@ def _fit_trace_report(
     )
 
 
-def diagnose_carving_machine_like(
+def diagnose_hierarchical_predictive(
     corpus: str | bytes | bytearray | memoryview | np.ndarray | Sequence[int] = (
-        "carving machine uses a rich substrate with a learned readout.\n"
+        "hierarchical prediction uses a rich substrate with a learned readout.\n"
         "hierarchical views expose fast, mid, and slow dynamics.\n"
     )
     * 8,
 ) -> ExampleDiagnosticsReport:
-    module = _load_project_module("carving_machine_like", "model.py", "diagnostics_examples.carving_machine_like.model")
-    config = module.CarvingMachineKernelConfig()
-    model = module.CarvingMachineKernelAdapter(config)
+    module = _load_project_module(
+        "ancestor/hierarchical_predictive",
+        "model.py",
+        "diagnostics_examples.hierarchical_predictive.model",
+    )
+    config = module.HierarchicalPredictiveConfig()
+    model = module.HierarchicalPredictiveModel(config)
     fit_report = model.fit(corpus)
     trace = model.trace(corpus[:128] if isinstance(corpus, str) else corpus)
     score_report = model.score(corpus)
@@ -160,7 +164,7 @@ def diagnose_carving_machine_like(
         name="fit vs score",
     )
     return _fit_trace_report(
-        project="carving_machine_like",
+        project="hierarchical_predictive",
         flow="hierarchical_trace",
         trace=trace,
         fit_bits_per_byte=fit_report.train_bits_per_byte,
@@ -174,7 +178,7 @@ def diagnose_carving_machine_like(
     )
 
 
-def diagnose_causal_exact_context_like(
+def diagnose_exact_context_repair(
     corpus: str | bytes | bytearray | memoryview | np.ndarray | Sequence[int] = (
         "exact history should help when the local suffix is stable.\n"
         "the support mixer should keep the base model in charge when support is thin.\n"
@@ -182,9 +186,9 @@ def diagnose_causal_exact_context_like(
     * 2,
 ) -> ExampleDiagnosticsReport:
     module = _load_project_module(
-        "causal_exact_context_like",
+        "causal/exact_context_repair",
         "run.py",
-        "diagnostics_examples.causal_exact_context_like.run",
+        "diagnostics_examples.exact_context_repair.run",
     )
     model = module.build_model()
     fit_report = model.fit(corpus)
@@ -205,7 +209,7 @@ def diagnose_causal_exact_context_like(
         exact_support=np.asarray([score.exact_support], dtype=np.float64),
     )
     return ExampleDiagnosticsReport(
-        project="causal_exact_context_like",
+        project="exact_context_repair",
         flow="exact_context_repair",
         snapshot=snapshot,
         series=None,
@@ -225,18 +229,18 @@ def _diagnose_causal_variant(
     *,
     corpus: str,
 ) -> ExampleDiagnosticsReport:
-    module = _load_project_module(project, "model.py", f"diagnostics_examples.{project}.model")
-    if project == "causal_memory_stability_like":
-        model = module.CausalMemoryStabilityModel.build()
-    elif project == "causal_linear_correction_like":
-        model = module.CausalLinearCorrectionModel.build()
-    elif project == "causal_residual_repair_like":
-        model = module.CausalResidualRepairModel.build()
+    module = _load_project_module(Path("causal") / project, "model.py", f"diagnostics_examples.{project}.model")
+    if project == "memory_stability":
+        model = module.MemoryStabilityModel.build()
+    elif project == "linear_correction":
+        model = module.LinearCorrectionModel.build()
+    elif project == "residual_repair":
+        model = module.ResidualRepairModel.build()
     else:
         raise ValueError(f"unsupported causal variant: {project}")
     model.fit(corpus)
     score = model.score(corpus[:128] if isinstance(corpus, str) else corpus)
-    if project == "causal_residual_repair_like":
+    if project == "residual_repair":
         ablations = (
             compare_ablation("base", score.base_bits_per_byte, "corrected", score.corrected_bits_per_byte, name="base vs corrected"),
             compare_ablation("local", score.local_bits_per_byte, "corrected", score.corrected_bits_per_byte, name="local vs corrected"),
@@ -281,25 +285,25 @@ def _diagnose_causal_variant(
     )
 
 
-def diagnose_causal_memory_stability_like(corpus: str | bytes | bytearray | memoryview | np.ndarray | Sequence[int] = (
+def diagnose_memory_stability(corpus: str | bytes | bytearray | memoryview | np.ndarray | Sequence[int] = (
     "memory should beat stability when the suffix is narrow.\n"
     "stability should win when the substrate is already clean.\n"
 ) * 2) -> ExampleDiagnosticsReport:
-    return _diagnose_causal_variant("causal_memory_stability_like", corpus=corpus)
+    return _diagnose_causal_variant("memory_stability", corpus=corpus)
 
 
-def diagnose_causal_linear_correction_like(corpus: str | bytes | bytearray | memoryview | np.ndarray | Sequence[int] = (
+def diagnose_linear_correction(corpus: str | bytes | bytearray | memoryview | np.ndarray | Sequence[int] = (
     "linear memory carries the main path while local correction stays smaller.\n"
     "the correction expert should only matter when the base path misses detail.\n"
 ) * 2) -> ExampleDiagnosticsReport:
-    return _diagnose_causal_variant("causal_linear_correction_like", corpus=corpus)
+    return _diagnose_causal_variant("linear_correction", corpus=corpus)
 
 
-def diagnose_causal_residual_repair_like(corpus: str | bytes | bytearray | memoryview | np.ndarray | Sequence[int] = (
+def diagnose_residual_repair(corpus: str | bytes | bytearray | memoryview | np.ndarray | Sequence[int] = (
     "local residual repair should stay narrow and selective.\n"
     "the base path should remain responsible for most of the distribution.\n"
 ) * 2) -> ExampleDiagnosticsReport:
-    return _diagnose_causal_variant("causal_residual_repair_like", corpus=corpus)
+    return _diagnose_causal_variant("residual_repair", corpus=corpus)
 
 
 def format_example_diagnostics(report: ExampleDiagnosticsReport) -> str:
@@ -308,10 +312,10 @@ def format_example_diagnostics(report: ExampleDiagnosticsReport) -> str:
 
 __all__ = [
     "ExampleDiagnosticsReport",
-    "diagnose_carving_machine_like",
-    "diagnose_causal_exact_context_like",
-    "diagnose_causal_linear_correction_like",
-    "diagnose_causal_memory_stability_like",
-    "diagnose_causal_residual_repair_like",
+    "diagnose_exact_context_repair",
+    "diagnose_hierarchical_predictive",
+    "diagnose_linear_correction",
+    "diagnose_memory_stability",
+    "diagnose_residual_repair",
     "format_example_diagnostics",
 ]

@@ -1,9 +1,9 @@
 # open predictive coder
 
-`open-predictive-coder` is a Python library for extracting the reusable kernel inside the `carving_machine` line of
-work. That line evolves into causal, noncausal, bridge, oracle, and byte-latent descendants, so the point of
-this repo is to draw the boundary once: keep the shared substrate, control, memory, view, readout, and runtime
-primitives in one place, and let downstream systems specialize from there.
+`open-predictive-coder` is a Python library for extracting a reusable predictive substrate kernel from a broader
+upstream experiment family. That family evolves into causal, noncausal, bridge, oracle, and byte-latent descendants,
+so the point of this repo is to draw the boundary once: keep the shared substrate, control, memory, view, readout,
+and runtime primitives in one place, and let downstream systems specialize from there.
 
 It is designed as a kernel extraction scaffold, not a benchmark claim. The current implementation includes
 multiscale substrates, predictive and exact-context memory primitives, control-side summaries, gates and routing,
@@ -41,15 +41,15 @@ the reusable kernel behind this workspace's project family:
 - compression-aware sequence experiments without dragging in a giant training stack
 
 So the goal here is not "another general predictive coding framework" and not "a toy byte model." The goal is a
-readable extraction of the `carving_machine` core, positioned so causal, noncausal, oracle, bridge, and byte-latent
-systems can all grow from the same primitive layer.
+readable extraction of a reusable predictive substrate core, positioned so causal, noncausal, oracle, bridge, and
+byte-latent systems can all grow from the same primitive layer.
 
 ## Line Drawing
 
 The intended line is:
 
-- `carving_machine`: the upstream design language and source lineage
 - `open-predictive-coder`: the extracted kernel of reusable primitives
+- upstream workspace experiments: source lineage and attribution live in [`docs/lineage.md`](./docs/lineage.md)
 - downstream descendants and future descendants: systems that add policy, runtime contracts, and
   task-specific claims
 
@@ -75,7 +75,7 @@ What does not belong in the kernel:
 - one project's noncausal privileges
 - one project's bridge contract
 
-That is the reason to build `carving_machine`-like example projects on top of the kernel: they let the repo test
+That is the reason to build hierarchical and family-shaped example projects on top of the kernel: they let the repo test
 whether the line is drawn correctly before more primitives are promoted into `src/`.
 
 ## Downstream Pattern Types
@@ -98,8 +98,8 @@ repo, and the public framing is by idea rather than by codename.
   See the attribution notes in [`docs/lineage.md`](./docs/lineage.md).
 - `byte-latent`:
   byte-visible systems with adaptive patches, shorter internal latent streams, and recurrent latent refinement.
-  This repo is the first reference implementation for that pattern, and the public downstream reference is
-  [`guilhhotina/brelt`](https://github.com/guilhhotina/brelt).
+  This repo is the first reference implementation for that pattern, and public lineage notes are tracked in
+  [`docs/lineage.md`](./docs/lineage.md).
 
 Those patterns illustrate the problem family:
 
@@ -110,8 +110,8 @@ Those patterns illustrate the problem family:
 - byte-patch latent modeling over a shorter internal sequence
 
 The extracted adapters in `src/` today are `byte-latent` and the first reusable `causal_predictive` contract.
-The kernel also carries example-project surfaces for both a `carving_machine`-like hierarchical path and the more
-specific causal descendants that sit on top of the shared causal layer.
+The kernel also carries example-project surfaces for an ancestor-style hierarchical path and the more specific
+causal descendants that sit on top of the shared causal layer.
 
 ## Design Thesis
 
@@ -218,13 +218,13 @@ For the detailed map, use:
 ## Scope
 
 This is a reference implementation for research and prototyping. It is not a frontier language model,
-not a production compression stack, and not yet a faithful reproduction of the full `carving_machine` family. It also
-does not yet implement the full causal/noncausal/oracle/bridge surface described in the docs, and its runtime layer
-still stops short of the full `carving_machine` training/runtime harness and legality tooling. The point is to expose
+not a production compression stack, and not yet a faithful reproduction of the full upstream experiment family. It
+also does not yet implement the full causal/noncausal/oracle/bridge surface described in the docs, and its runtime
+layer still stops short of the full upstream training/runtime harness and legality tooling. The point is to expose
 the shared kernel cleanly enough that multiple descendants can be built on top of it without forcing their policies
 back into the primitive layer. In the current replication round, the repeated promotions from project code into the
 kernel were `LinearMemorySubstrate`, `LinearMemoryFeatureView`, `FrozenReadoutExpert`, `PredictiveSurpriseController`,
 `HormoneModulator`, `SampledMultiscaleReadout`, `TrainModeConfig`, the first `ArtifactMetadata` / `ReplaySpan` /
-`ArtifactAccounting` runtime slice, and the first shared `CausalPredictiveAdapter`; descendant mixer policies, oracle
-comparison logic, and `brelt` composition policy remain deliberately project-local, and diagnostics stayed under
-`examples/`.
+`ArtifactAccounting` runtime slice, and the first shared `CausalPredictiveAdapter` plus `OracleAnalysisAdapter`;
+descendant mixer policies, noncausal replay economics, and patch-latent bridge composition policy remain deliberately
+project-local, and diagnostics stayed under `examples/`.

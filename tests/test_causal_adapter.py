@@ -92,8 +92,8 @@ class CausalKernelSplitTests(unittest.TestCase):
         self.assertTrue(hasattr(opc, "SupportWeightedMixer"))
         self.assertTrue(hasattr(opc, "ArtifactAccounting"))
 
-        self.assertFalse(hasattr(opc, "CausalMemoryStabilityModel"))
-        self.assertFalse(hasattr(opc, "CausalResidualRepairModel"))
+        self.assertFalse(hasattr(opc, "MemoryStabilityModel"))
+        self.assertFalse(hasattr(opc, "ResidualRepairModel"))
         self.assertFalse(hasattr(opc, "CausalVariantPolicy"))
 
     def test_exact_context_and_mixer_remain_project_independent(self) -> None:

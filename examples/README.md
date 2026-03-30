@@ -15,16 +15,16 @@ honestly.
 
 They are self-contained descendants that live in this repo. They are not imports from sibling repositories.
 
-- `carving_machine_like`
-  ancestor-style hierarchical descendant
-- `causal_exact_context_like`
-  early exact-context causal descendant
-- `causal_memory_stability_like`, `causal_linear_correction_like`, `causal_residual_repair_like`
-  three causal composition variants
-- `oracle_analysis_like`
-  analysis-only descendant that reuses sampled readout, routing, and train-mode checkpoints
-- `brelt_like`
-  byte-patch latent descendant shaped after the real `brelt` repo
+- `hierarchical_predictive`
+  ancestor-style hierarchical predictive example in `projects/ancestor/`
+- `exact_context_repair`
+  early exact-context causal example in `projects/causal/`
+- `memory_stability`, `linear_correction`, `residual_repair`
+  three causal composition variants in `projects/causal/`
+- `bidirectional_analysis`
+  analysis-only descendant in `projects/oracle/`
+- `patch_latent`
+  byte-patch latent descendant in `projects/byte_latent/`
 
 Read the project README before reading the code. Each one explains which parts are kernel reuse and which parts are
 still project policy.
@@ -45,8 +45,8 @@ That tooling exists to replace ad hoc analysis scripts with reusable example-fac
 If you want to understand the repo through examples:
 
 1. `quickstart.py`
-2. `projects/carving_machine_like`
-3. `projects/causal_exact_context_like`
-4. `projects/causal_memory_stability_like` through `causal_residual_repair_like`
-5. `projects/oracle_analysis_like`
-6. `projects/brelt_like`
+2. `projects/ancestor/hierarchical_predictive`
+3. `projects/causal/exact_context_repair`
+4. `projects/causal/memory_stability` through `causal/residual_repair`
+5. `projects/oracle/bidirectional_analysis`
+6. `projects/byte_latent/patch_latent`

@@ -47,9 +47,9 @@ These validate the example descendants directly.
 
 Examples:
 
-- `test_carving_machine_like_fidelity.py`
-- `test_oracle_analysis_like.py`
-- `test_brelt_like.py`
+- `test_hierarchical_predictive_example.py`
+- `test_bidirectional_analysis_example.py`
+- `test_patch_latent_example.py`
 - `test_diagnostics_examples.py`
 
 ## Practical Rule

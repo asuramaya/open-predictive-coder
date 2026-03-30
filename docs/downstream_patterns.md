@@ -154,7 +154,7 @@ Primary sources:
 
 - this repo's current implementation
 - the broader `carving_machine` extraction direction
-- [`guilhhotina/brelt`](https://github.com/guilhhotina/brelt) as a downstream adaptation in the same family
+- public byte-latent downstream repos as adaptations in the same family
 
 Problem shape:
 

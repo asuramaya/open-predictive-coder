@@ -28,11 +28,11 @@ from .snapshots import (
 )
 from .from_examples import (
     ExampleDiagnosticsReport,
-    diagnose_carving_machine_like,
-    diagnose_causal_exact_context_like,
-    diagnose_causal_linear_correction_like,
-    diagnose_causal_memory_stability_like,
-    diagnose_causal_residual_repair_like,
+    diagnose_exact_context_repair,
+    diagnose_hierarchical_predictive,
+    diagnose_linear_correction,
+    diagnose_memory_stability,
+    diagnose_residual_repair,
     format_example_diagnostics,
 )
 
@@ -46,11 +46,11 @@ __all__ = [
     "SnapshotSeries",
     "TwoFactorDecomposition",
     "capture_snapshot",
-    "diagnose_carving_machine_like",
-    "diagnose_causal_exact_context_like",
-    "diagnose_causal_linear_correction_like",
-    "diagnose_causal_memory_stability_like",
-    "diagnose_causal_residual_repair_like",
+    "diagnose_exact_context_repair",
+    "diagnose_hierarchical_predictive",
+    "diagnose_linear_correction",
+    "diagnose_memory_stability",
+    "diagnose_residual_repair",
     "compare_ablation",
     "compare_ablation_map",
     "decompose_two_factor",

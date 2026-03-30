@@ -4,8 +4,8 @@ This document turns the current state into the next concrete implementation pass
 
 ## Goal
 
-Harden the new `src/`-level causal adapter and prove that it is a real shared contract rather than a renamed single
-descendant branch.
+Harden the new `src/`-level causal and oracle adapters, then use that cleaner family surface to extract the first real
+`noncausal_reconstructive` or `bridge_export` contract.
 
 ## Why This Is The Next Pass
 
@@ -17,11 +17,12 @@ The repo now has:
 - enough runtime scaffolding
 - enough project descendants to test the boundary
 - a first `src/`-level `causal_predictive` adapter
+- a first `src/`-level `oracle_analysis` adapter
 
 That changes the problem.
 
-The next step is not to invent another core abstraction immediately. The next step is to pressure-test the new causal
-contract across descendants and keep the kernel readable while doing it.
+The next step is not to invent another abstract substrate mechanism immediately. The next step is to pressure-test the
+new shared adapters across descendants and keep the kernel readable while doing it.
 
 ## Workstreams
 
@@ -57,21 +58,21 @@ Acceptance criteria:
 - causal reports are useful outside one example
 - artifact/replay helpers stay policy-free
 
-### 3. Add a second consumer of the causal layer
+### 3. Add a second consumer of the shared family layer
 
-The causal adapter is not stable until something besides the current causal descendants pushes on it.
+The shared adapters are not stable until something besides the current causal and oracle examples pushes on them.
 
 Best candidates:
 
 - a bridge/export-shaped descendant
-- a noncausal analysis or replay descendant that still reuses part of the causal surface
+- a noncausal reconstructive descendant with replay and side-data accounting
 
 Acceptance criteria:
 
 - at least one more descendant reuses some of the same causal contract
 - any new promotion into `src/` is justified by repeated use
 
-### 4. Keep refining `carving_machine_like`, but only in project space
+### 4. Keep refining `hierarchical_predictive`, but only in project space
 
 The ancestor example remains a boundary test, not a reason to widen `src/` recklessly.
 
@@ -96,10 +97,10 @@ Every pass should also improve orientation:
 
 ## Recommended Order
 
-1. thin causal descendants around the shared causal adapter
-2. harden causal runtime and accounting
-3. add a second consumer of the causal layer
-4. only then consider wider causal abstractions
+1. thin causal and oracle examples around the shared adapters
+2. harden runtime and accounting
+3. add the first noncausal reconstructive or bridge/export consumer
+4. only then consider wider family abstractions
 
 ## Non-Goals For The Next Pass
 
@@ -115,7 +116,7 @@ These should wait:
 
 The pass is done when:
 
-- the causal adapter clearly reads as a shared `src/` contract
-- causal descendants look thinner around that contract
-- at least one more descendant pushes on the same causal surface
+- the shared causal and oracle adapters clearly read as `src/` contracts
+- the corresponding examples look thinner around those contracts
+- at least one more descendant pushes on one of the same shared surfaces
 - docs explain the boundary without requiring project history to decode the codebase

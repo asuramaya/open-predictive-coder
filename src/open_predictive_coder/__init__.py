@@ -52,6 +52,13 @@ from .controllers import (
 )
 from .gating import PathwayGateConfig, PathwayGateController, PathwayGateState, PathwayGateValues
 from .modulation import HormoneModulationConfig, HormoneModulator, HormoneState
+from .oracle_analysis import (
+    OracleAnalysisAdapter,
+    OracleAnalysisConfig,
+    OracleAnalysisFitReport,
+    OracleAnalysisPoint,
+    OracleAnalysisReport,
+)
 from .predictive_surprise import PredictionState, PredictiveSurpriseConfig, PredictiveSurpriseController, SummaryMode
 from .routing import RoutingConfig, RoutingDecision, RoutingMode, SummaryRouter
 
@@ -192,6 +199,11 @@ __all__ = [
     "MixedMemorySubstrate",
     "mixed_memory_small",
     "NextStepScore",
+    "OracleAnalysisAdapter",
+    "OracleAnalysisConfig",
+    "OracleAnalysisFitReport",
+    "OracleAnalysisPoint",
+    "OracleAnalysisReport",
     "OpenPredictiveCoder",
     "OpenPredictiveCoderConfig",
     "PathwayGateConfig",

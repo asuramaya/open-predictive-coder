@@ -39,7 +39,7 @@ The public downstream reference for the byte-latent branch is:
 
 - [`guilhhotina/brelt`](https://github.com/guilhhotina/brelt)
 
-The `brelt_like` example in this repo is a project-layer reconstruction shaped by that public repository. It is not a
+The `patch_latent` example in this repo is a project-layer reconstruction shaped by that public repository. It is not a
 checkout in `/tmp`, and it should not rely on any external local clone to make sense.
 
 ## Citation Rule In This Repo

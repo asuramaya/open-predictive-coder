@@ -1,7 +1,7 @@
 # Diagnostics
 
 This package contains project-only analysis helpers for the old `look.py`, `look2.py`, and `silence_test.py` lineage,
-plus thin example-flow adapters that can run the existing `carving_machine_like` and causal descendant variants without touching
+plus thin example-flow adapters that can run the existing hierarchical and causal example variants without touching
 `src/`.
 
 It stays out of `src/` by design. Use it for:
@@ -9,7 +9,7 @@ It stays out of `src/` by design. Use it for:
 - mask, gate, and surprise snapshots
 - ablation comparisons and two-factor decompositions
 - simple info-flow summaries over numeric arrays
-- example-flow reports for `carving_machine_like`, `causal_exact_context_like`, and the causal variant examples
+- example-flow reports for `hierarchical_predictive`, `exact_context_repair`, and the causal variant examples
 
 The surface is intentionally lightweight and text-first.
 
@@ -20,7 +20,7 @@ from examples.tools.diagnostics import (
     capture_snapshot,
     summarize_binary_mask,
     compare_ablation,
-    diagnose_carving_machine_like,
+    diagnose_hierarchical_predictive,
 )
 ```
 
@@ -52,6 +52,6 @@ result = compare_ablation("baseline", 1.23, "no_mask", 1.31)
 Run an example-flow report:
 
 ```python
-report = diagnose_carving_machine_like()
+report = diagnose_hierarchical_predictive()
 print(report.format_lines()[0])
 ```

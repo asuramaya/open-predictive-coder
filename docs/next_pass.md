@@ -4,8 +4,8 @@ This document turns the current state into the next concrete implementation pass
 
 ## Goal
 
-Use the new noncausal and bridge descendants to decide whether the first real `noncausal_reconstructive` contract is
-now specific enough to extract into `src/`, while keeping the kernel readable and generic.
+Use the new noncausal, bridge, and teacher-export descendants to pressure-test the shared contracts that just landed
+in `src/`, while keeping the kernel readable and generic.
 
 The live sibling-frontier read that informs this pass is tracked in [`frontier_pass.md`](./frontier_pass.md).
 
@@ -21,9 +21,12 @@ The repo now has:
 - a first `src/`-level `causal_predictive` adapter
 - a first `src/`-level `oracle_analysis` adapter
 - a first `src/`-level `bridge_export` adapter
+- a first `src/`-level `noncausal_reconstructive` adapter
+- a first `src/`-level `teacher_export` contract over paired probability sources
+- a first generic `artifacts_audits` helper layer over artifact accounting
+- a first family-neutral probability diagnostics seam over scored distributions
 - a first learned patch-latent kernel slice for segmentation, local encoding, pooling, and bridging
 - the next statistical/kernel slice for oscillatory memory, n-gram memory, bridge features, and bidirectional context
-- a first family-neutral probability diagnostics seam over scored distributions
 - a first reusable scored-span selection primitive
 - a first causal packed-memory controller descendant built from current primitives
 - a first noncausal field-reconstruction descendant built from current primitives
@@ -65,6 +68,7 @@ Focus on:
 - metadata tagging
 - lightweight causal report wrappers
 - evaluation hooks that do not import descendant policy
+- artifact-boundary helpers that stay generic and composable instead of encoding legality policy
 
 Acceptance criteria:
 
@@ -81,6 +85,7 @@ Use the current descendants:
 - `examples/projects/bridge/proxy_features`
 - `examples/projects/bridge/feature_export`
 - `examples/projects/bridge/agreement_export`
+- the new bridge-side teacher-export contract, now that it exists as a shared paired-export surface
 
 Acceptance criteria:
 
@@ -114,7 +119,7 @@ Every pass should also improve orientation:
 
 1. thin causal and oracle examples around the shared adapters
 2. harden runtime and accounting
-3. extract the first minimal `noncausal_reconstructive` contract if the boundary is now clear
+3. pressure-test `noncausal_reconstructive`, `teacher_export`, and `artifacts_audits` across more than one consumer
 4. only then consider wider family abstractions
 5. keep the current live `Conker` / `BLINX` / `Giddy-Up` frontier read synced into the descendant rebuild plan
 
@@ -127,6 +132,7 @@ These should wait:
 - noncausal replay economics beyond the minimal shared contract
 - patch-latent rate-distortion, QAT, or second-stage downsampling in `src/` before a second consumer asks for them
 - preset stabilization
+- higher-order causal program/controller policy in `src/`
 
 ## Definition Of Done
 

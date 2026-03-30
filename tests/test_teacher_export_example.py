@@ -8,6 +8,7 @@ import sys
 import unittest
 
 import numpy as np
+from open_predictive_coder.teacher_export import TeacherExportAdapter
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -53,7 +54,9 @@ class TeacherExportExampleTests(unittest.TestCase):
         trace = model.export(corpus[:192])
         report = model.report(corpus)
         summary = model.summary(corpus)
+        shared_report = model.teacher_export.export(trace.teacher_probs, trace.student_probs, targets=trace.teacher_labels)
 
+        self.assertIsInstance(model.teacher_export, TeacherExportAdapter)
         self.assertEqual(trace.teacher_probs.shape, trace.student_probs.shape)
         self.assertEqual(trace.teacher_probs.shape, trace.attacked_probs.shape)
         self.assertEqual(trace.teacher_labels.shape[0], trace.steps)
@@ -77,6 +80,13 @@ class TeacherExportExampleTests(unittest.TestCase):
         self.assertAlmostEqual(summary["label_flip_rate"], report.label_flip_rate, places=12)
         self.assertAlmostEqual(summary["mean_teacher_margin"], report.mean_teacher_margin, places=12)
         self.assertAlmostEqual(summary["mean_attack_margin"], report.mean_attack_margin, places=12)
+        self.assertAlmostEqual(report.teacher_bits_per_byte, float(shared_report.teacher_bits_per_byte), places=12)
+        self.assertAlmostEqual(report.student_bits_per_byte, float(shared_report.student_bits_per_byte), places=12)
+        self.assertAlmostEqual(report.student_label_disagreement, shared_report.label_flip_rate, places=12)
+        self.assertAlmostEqual(report.mean_candidate4, float(np.mean(trace.features.top_k_mass)), places=12)
+        self.assertAlmostEqual(report.mean_agreement, float(np.mean(trace.features.overlap)), places=12)
+        self.assertAlmostEqual(report.mean_agreement_mass, float(np.mean(trace.features.shared_top_k_mass)), places=12)
+        self.assertTrue(np.all(trace.features.top2_margin >= 0.0))
 
     def test_trace_arrays_are_probability_like(self) -> None:
         module = load_module("teacher_export_model_prob_test", "examples/projects/bridge/teacher_export/model.py")
@@ -88,6 +98,9 @@ class TeacherExportExampleTests(unittest.TestCase):
         self.assertTrue(np.allclose(trace.attacked_probs.sum(axis=-1), 1.0, atol=1e-8))
         self.assertTrue(np.all(trace.features.entropy >= 0.0))
         self.assertTrue(np.all(trace.features.peak <= 1.0))
+        self.assertTrue(np.all(trace.features.top_k_mass <= 1.0))
+        self.assertTrue(np.all(trace.features.overlap <= 1.0))
+        self.assertTrue(np.all(trace.features.shared_top_k_mass <= 1.0))
 
     def test_scripts_run(self) -> None:
         probe_output = run_example("examples/projects/bridge/teacher_export/probe.py")

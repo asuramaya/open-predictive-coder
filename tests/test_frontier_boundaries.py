@@ -34,7 +34,7 @@ class FrontierBoundaryTests(unittest.TestCase):
         self.assertTrue(hasattr(opc, "bridge_feature_arrays"))
         self.assertFalse(
             any(
-                ("prob" in name.lower() or "diagn" in name.lower())
+                ("prob" in name.lower() or "diagn" in name.lower() or "artifact" in name.lower())
                 and any(fragment in name.lower() for fragment in ("payload", "teacher", "program", "controller"))
                 for name in public_names
             )
@@ -75,11 +75,31 @@ class FrontierBoundaryTests(unittest.TestCase):
 
     def test_bridge_teacher_policy_internals_stay_project_local(self) -> None:
         public_names = set(dir(opc))
+        public_classes = _public_class_names()
         bridge_params = tuple(inspect.signature(opc.BridgeExportAdapter.__init__).parameters)
         bridge_report_fields = _field_names(opc.BridgeExportReport)
         bridge_fit_fields = _field_names(opc.BridgeExportFitReport)
+        teacher_params = tuple(inspect.signature(opc.TeacherExportAdapter.__init__).parameters)
+        teacher_report_fields = _field_names(opc.TeacherExportReport)
 
-        self.assertFalse(any("teacher" in name.lower() for name in public_names))
+        allowed_teacher_names = {
+            "teacher_export",
+            "TeacherExportAdapter",
+            "TeacherExportConfig",
+            "TeacherExportRecord",
+            "TeacherExportReport",
+        }
+
+        self.assertEqual({name for name in public_names if "teacher" in name.lower()}, allowed_teacher_names)
+        self.assertTrue(
+            {
+                "TeacherExportAdapter",
+                "TeacherExportConfig",
+                "TeacherExportRecord",
+                "TeacherExportReport",
+            }
+            <= public_classes
+        )
         self.assertNotIn("teacher", bridge_params)
         self.assertNotIn("teacher_policy", bridge_params)
         self.assertNotIn("teacher_forcing", bridge_params)
@@ -87,6 +107,19 @@ class FrontierBoundaryTests(unittest.TestCase):
 
         bridge_field_names = bridge_report_fields | bridge_fit_fields
         self.assertFalse(any("teacher" in field.lower() for field in bridge_field_names))
+
+        forbidden_teacher_params = {
+            "attack",
+            "attack_policy",
+            "teacher_policy",
+            "teacher_forcing",
+            "payload",
+            "payload_policy",
+            "wire_format",
+        }
+        self.assertFalse(forbidden_teacher_params & set(teacher_params))
+        self.assertFalse(any("attack" in field.lower() for field in teacher_report_fields))
+        self.assertFalse(any("payload" in field.lower() for field in teacher_report_fields))
 
     def test_higher_order_causal_program_controller_policy_stays_out_of_src(self) -> None:
         causal_params = tuple(inspect.signature(opc.CausalPredictiveAdapter.__init__).parameters)

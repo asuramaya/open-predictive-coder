@@ -9,6 +9,12 @@ This matrix lays out the kernel-first build order for `open-predictive-coder` us
 The point is not to preserve every historical branch name. The point is to extract the smallest reusable kernel from
 the upstream workspace that can still support causal, noncausal, oracle, bridge, and byte-latent downstream systems.
 
+This matrix is written against the current kernel, including the recent shared-contract wave:
+
+- a family-neutral noncausal adapter
+- a paired teacher/export contract above the shared bridge layer
+- a generic artifact-boundary audit helper
+
 Use [`lineage.md`](./lineage.md) for the attribution rule behind the upstream workspace paths named below.
 Use [`frontier_pass.md`](./frontier_pass.md) for the current descendant-frontier read across the live sibling repos.
 
@@ -85,12 +91,13 @@ Use [`frontier_pass.md`](./frontier_pass.md) for the current descendant-frontier
 | `runtime.eval_light` | next-step and single-rollout scoring over current adapters | `carving_machine/training.py#L64` | sequence predictive coding and continual modeling | Implemented |
 | `runtime.train_eval` | weighted dataset eval, checkpointed rollout curves, and transfer probes | `carving_machine/training.py#L54`, `carving_machine/training.py#L111`, `carving_machine/experiments.py#L493` | sequence predictive coding and continual modeling | Implemented |
 | `runtime.train_modes` | detached vs through-state semantics, sparse slow updates, rollout checkpoints | `bptt_test.py` | BPTT versus detached-state runtime regimes | Implemented |
-| `runtime.artifacts_audits` | legality, replay, artifact-boundary surfaces | downstream causal docs | compression/accounting discipline | Partial: metadata, replay spans, accounting helpers, and causal report wrappers implemented |
+| `runtime.artifacts_audits` | legality, replay, artifact-boundary surfaces | downstream causal docs | compression/accounting discipline | Implemented as generic audit helpers over artifact accounting; legality policy stays downstream |
 | `adapters.byte_latent` | first concrete downstream adapter | current library | BLT 2025, UT 2018 | Implemented |
 | `adapters.causal_predictive` | causal predictive/compressive runtime systems | causal descendant docs | sequence predictive coding | Implemented |
-| `adapters.noncausal_reconstructive` | document-field replay systems | noncausal descendant docs | reconstruction and side-data economics | Not started |
+| `adapters.noncausal_reconstructive` | document-field replay systems | noncausal descendant docs | reconstruction and side-data economics | Implemented |
 | `adapters.oracle_analysis` | bidirectional structure analysis | oracle analysis docs | predictive coding as analysis, not runtime | Implemented |
 | `adapters.bridge_export` | offline teacher to causal export layer | bridge-export docs | explicit boundary discipline | Implemented |
+| `adapters.teacher_export` | paired teacher/student export records over shared diagnostics | bridge-side teacher-export descendants | explicit offline teacher-label export without attack policy | Implemented |
 | `presets` | reproducible named bundles over primitives | `carving_machine/catalog.py#L1` | engineering convenience, not theory | Not started |
 | `examples.reference_projects` | thin project-shaped models over the kernel, used for smoke/dev loops | upstream ancestor docs, causal descendant docs, oracle-analysis docs, and byte-latent downstream docs as downstream shapes | engineering bridge from primitives to dev/test targets | Implemented |
 
@@ -160,6 +167,9 @@ The kernel is no longer just an echo-state toy. It now has:
 - example-project smoke surfaces for the hierarchical ancestor path and early exact-context repair builds
 - causal mixture/correction/repair replica projects built from primitives
 - bridge proxy-feature and feature-export consumers built from primitives
+- a first shared noncausal reconstruction adapter
+- a first shared paired teacher/export contract
+- a first generic artifact-boundary audit helper over artifact accounting
 
 The line to preserve is:
 

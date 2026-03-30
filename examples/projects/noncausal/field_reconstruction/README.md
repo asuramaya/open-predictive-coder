@@ -1,10 +1,11 @@
 # field_reconstruction
 
-This example stays in the project layer and composes existing kernel primitives into a noncausal reconstruction and
-replay-style probe.
+This example stays in the project layer and wraps the shared `NoncausalReconstructiveAdapter` with local
+field-reconstruction policy.
 
 Kernel pieces reused here:
 
+- `NoncausalReconstructiveAdapter` for bidirectional reconstruction, replay spans, and accounting
 - `ExactContextMemory` for forward and reverse exact-context distributions
 - `BidirectionalContextProbe` for left/right determinism statistics
 - `ReplaySpan` and `ArtifactAccounting` for replay-boundary accounting

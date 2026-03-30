@@ -25,6 +25,13 @@ class FieldReconstructionExampleTests(unittest.TestCase):
             "the replay span should capture repeated field structure.\n"
         ) * 3
 
+    def test_model_wraps_shared_adapter_policy(self) -> None:
+        self.assertTrue(hasattr(self.model, "adapter"))
+        self.assertEqual(self.model.adapter.artifact_name, self.model.config.artifact_name)
+        self.assertAlmostEqual(self.model.adapter.config.blend_temperature, self.model.config.blend_temperature)
+        self.assertAlmostEqual(self.model.adapter.config.replay_threshold, self.model.config.replay_threshold)
+        self.assertAlmostEqual(self.model.adapter.config.agreement_threshold, self.model.config.agreement_threshold)
+
     def test_fit_tracks_bidirectional_replay_surface(self) -> None:
         fit = self.model.fit(self.corpus)
 

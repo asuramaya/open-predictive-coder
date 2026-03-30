@@ -4,7 +4,7 @@ The package is intentionally organized in layers:
 
 1. foundational types and configs
 2. reusable kernel primitives for substrates, control, memory, views, readouts, and runtime
-3. the first concrete adapter (`ByteLatentPredictiveCoder`)
+3. the shared adapter layer plus the first concrete byte-latent adapter
 
 The full package map and layer boundary are documented in `docs/architecture.md`.
 """
@@ -18,6 +18,7 @@ from .artifacts import (
     make_replay_span,
     ReplaySpan,
 )
+from .artifacts_audits import ArtifactAuditRecord, ArtifactAuditSummary, audit_artifact, summarize_artifact_audits
 from .codecs import ByteCodec, ensure_tokens
 from .config import (
     ByteLatentPredictiveCoderConfig,
@@ -99,6 +100,13 @@ from .learned_segmentation import (
 from .hierarchical_views import HierarchicalFeatureView, HierarchicalSummary
 from .linear_views import LinearMemoryFeatureView
 from .ngram_memory import NgramMemory, NgramMemoryConfig, NgramMemoryReport
+from .noncausal_reconstructive import (
+    NoncausalReconstructiveAdapter,
+    NoncausalReconstructiveConfig,
+    NoncausalReconstructiveFitReport,
+    NoncausalReconstructiveReport,
+    NoncausalReconstructiveTrace,
+)
 from .patch_latent_blocks import (
     GlobalLocalBridge,
     GlobalLocalBridgeConfig,
@@ -179,11 +187,15 @@ from .train_eval import (
 # Concrete adapter surface.
 from .causal_predictive import CausalPredictiveAdapter, CausalPredictiveFitReport, CausalPredictiveScore
 from .model import ByteLatentPredictiveCoder, OpenPredictiveCoder
+from .teacher_export import TeacherExportAdapter, TeacherExportConfig, TeacherExportRecord, TeacherExportReport
 
 __all__ = [
     "AdaptiveSegmenter",
     "ArtifactAccounting",
+    "ArtifactAuditRecord",
+    "ArtifactAuditSummary",
     "ArtifactMetadata",
+    "audit_artifact",
     "coerce_artifact_metadata",
     "ByteCodec",
     "ByteLatentFeatureView",
@@ -272,6 +284,11 @@ __all__ = [
     "NgramMemory",
     "NgramMemoryConfig",
     "NgramMemoryReport",
+    "NoncausalReconstructiveAdapter",
+    "NoncausalReconstructiveConfig",
+    "NoncausalReconstructiveFitReport",
+    "NoncausalReconstructiveReport",
+    "NoncausalReconstructiveTrace",
     "OracleAnalysisAdapter",
     "OracleAnalysisConfig",
     "OracleAnalysisFitReport",
@@ -329,6 +346,10 @@ __all__ = [
     "SequenceTrace",
     "score_next_step",
     "tag_metadata",
+    "TeacherExportAdapter",
+    "TeacherExportConfig",
+    "TeacherExportRecord",
+    "TeacherExportReport",
     "TransferProbeReport",
     "TransferEvaluation",
     "TokenSubstrate",
@@ -343,6 +364,7 @@ __all__ = [
     "SupportBlend",
     "SupportMixConfig",
     "SupportWeightedMixer",
+    "summarize_artifact_audits",
     "SummaryMode",
     "SummaryRouter",
     "TrainModeConfig",

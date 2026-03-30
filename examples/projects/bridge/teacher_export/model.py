@@ -15,10 +15,15 @@ if str(SRC) not in sys.path:
 from open_predictive_coder.artifacts import ArtifactAccounting
 from open_predictive_coder.bidirectional_context import BidirectionalContextConfig, BidirectionalContextProbe, BidirectionalContextStats
 from open_predictive_coder.bridge_export import BridgeExportAdapter, BridgeExportConfig
-from open_predictive_coder.bridge_features import BridgeFeatureArrays, BridgeFeatureConfig, bridge_feature_arrays
+from open_predictive_coder.bridge_features import BridgeFeatureConfig
 from open_predictive_coder.codecs import ensure_tokens
 from open_predictive_coder.metrics import bits_per_byte_from_probabilities
-from open_predictive_coder.probability_diagnostics import top2_margin
+from open_predictive_coder.probability_diagnostics import (
+    ProbabilityDiagnostics,
+    ProbabilityDiagnosticsConfig,
+    top2_margin,
+)
+from open_predictive_coder.teacher_export import TeacherExportAdapter, TeacherExportConfig as SharedTeacherExportConfig
 
 
 def _softmax(logits: np.ndarray) -> np.ndarray:
@@ -72,7 +77,7 @@ class TeacherExportTrace:
     teacher_labels: np.ndarray
     student_labels: np.ndarray
     attacked_labels: np.ndarray
-    features: BridgeFeatureArrays
+    features: ProbabilityDiagnostics
     clean_context: BidirectionalContextStats
     attacked_context: BidirectionalContextStats
 
@@ -119,6 +124,13 @@ class TeacherExportModel:
         self.teacher_bias = rng.normal(loc=0.0, scale=0.03, size=(self.config.vocabulary_size,)).astype(np.float64)
         self.student_bias = rng.normal(loc=0.0, scale=0.03, size=(self.config.vocabulary_size,)).astype(np.float64)
         self.bridge = BridgeExportAdapter(self.config.bridge_export)
+        self.teacher_export = TeacherExportAdapter(
+            SharedTeacherExportConfig(
+                vocabulary_size=self.config.vocabulary_size,
+                source_names=self.config.bridge_export.source_names,
+                diagnostics=self._diagnostics_config(),
+            )
+        )
         self.context_probe = BidirectionalContextProbe(self.config.bidirectional_context)
 
     def _coerce_tokens(
@@ -166,6 +178,12 @@ class TeacherExportModel:
             return empty, empty
         return np.vstack(teacher_probs), np.vstack(student_probs)
 
+    def _diagnostics_config(self) -> ProbabilityDiagnosticsConfig:
+        return ProbabilityDiagnosticsConfig(
+            top_k=self.config.bridge.candidate_count,
+            epsilon=self.config.bridge.epsilon,
+        )
+
     def export(
         self,
         data: str | bytes | bytearray | memoryview | np.ndarray | Sequence[int] | Sequence[object],
@@ -181,16 +199,16 @@ class TeacherExportModel:
 
         teacher_probs, student_probs = self._scan_probabilities(clean_tokens[:-1])
         attacked_probs, _ = self._scan_probabilities(attacked_tokens[:-1])
-        teacher_labels = np.argmax(teacher_probs, axis=-1)
-        student_labels = np.argmax(student_probs, axis=-1)
-        attacked_labels = np.argmax(attacked_probs, axis=-1)
-
-        features = bridge_feature_arrays(
+        shared_record = self.teacher_export.record(
             teacher_probs,
             student_probs,
-            self.config.vocabulary_size,
-            config=self.config.bridge,
+            source_names=self.config.bridge_export.source_names,
         )
+        teacher_probs = shared_record.teacher_probs
+        student_probs = shared_record.student_probs
+        teacher_labels = shared_record.teacher_labels
+        student_labels = shared_record.student_labels
+        attacked_labels = np.argmax(attacked_probs, axis=-1)
         return TeacherExportTrace(
             tokens=int(clean_tokens.size),
             clean_tokens=clean_tokens,
@@ -201,7 +219,7 @@ class TeacherExportModel:
             teacher_labels=teacher_labels,
             student_labels=student_labels,
             attacked_labels=attacked_labels,
-            features=features,
+            features=shared_record.diagnostics,
             clean_context=clean_context,
             attacked_context=attacked_context,
         )
@@ -211,6 +229,12 @@ class TeacherExportModel:
         data: str | bytes | bytearray | memoryview | np.ndarray | Sequence[int] | Sequence[object],
     ) -> TeacherExportReport:
         trace = self.export(data)
+        shared_report = self.teacher_export.export(
+            trace.teacher_probs,
+            trace.student_probs,
+            targets=trace.teacher_labels,
+            source_names=self.config.bridge_export.source_names,
+        )
         bridge_report = self.bridge.export(
             trace.teacher_probs,
             trace.student_probs,
@@ -221,7 +245,7 @@ class TeacherExportModel:
         teacher_margin = top2_margin(trace.teacher_probs)
         attack_margin = top2_margin(trace.attacked_probs)
         label_flip_rate = float(np.mean(trace.attacked_labels != trace.teacher_labels))
-        student_label_disagreement = float(np.mean(trace.student_labels != trace.teacher_labels))
+        student_label_disagreement = float(shared_report.label_flip_rate)
         attack_mutation_rate = float(np.mean(trace.clean_tokens != trace.attacked_tokens))
         clean_deterministic_fraction = float(trace.clean_context.deterministic_fraction)
         attacked_deterministic_fraction = float(trace.attacked_context.deterministic_fraction)
@@ -230,18 +254,14 @@ class TeacherExportModel:
         return TeacherExportReport(
             tokens=trace.tokens,
             steps=trace.steps,
-            teacher_bits_per_byte=float(
-                bridge_report.base_bits_per_byte if bridge_report.base_bits_per_byte is not None else 0.0
-            ),
-            student_bits_per_byte=float(
-                bridge_report.proxy_bits_per_byte if bridge_report.proxy_bits_per_byte is not None else 0.0
-            ),
+            teacher_bits_per_byte=float(shared_report.teacher_bits_per_byte if shared_report.teacher_bits_per_byte is not None else 0.0),
+            student_bits_per_byte=float(shared_report.student_bits_per_byte if shared_report.student_bits_per_byte is not None else 0.0),
             attack_bits_per_byte=float(attack_bits_per_byte),
-            mean_entropy=float(np.mean(trace.features.entropy)),
-            mean_peak=float(np.mean(trace.features.peak)),
-            mean_candidate4=float(np.mean(trace.features.candidate4)),
-            mean_agreement=float(np.mean(trace.features.agreement)),
-            mean_agreement_mass=float(np.mean(trace.features.agreement_mass)),
+            mean_entropy=float(shared_report.mean_entropy),
+            mean_peak=float(shared_report.mean_peak),
+            mean_candidate4=float(shared_report.mean_top_k_mass),
+            mean_agreement=float(shared_report.mean_overlap),
+            mean_agreement_mass=float(shared_report.mean_shared_top_k_mass),
             mean_teacher_margin=float(np.mean(teacher_margin)) if teacher_margin.size else 0.0,
             mean_attack_margin=float(np.mean(attack_margin)) if attack_margin.size else 0.0,
             label_flip_rate=label_flip_rate,

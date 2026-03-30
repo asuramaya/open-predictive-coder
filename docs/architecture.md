@@ -34,6 +34,7 @@ It owns:
 - feature views and sampled readout
 - readouts, experts, and scoring utilities
 - runtime surfaces like traces, eval, train modes, and artifact accounting
+- the shared contracts above those primitives when they stay mechanism-level: causal, oracle, bridge-export, noncausal reconstruction, paired teacher/export, and artifact-boundary audit helpers
 
 It does not own:
 
@@ -42,6 +43,9 @@ It does not own:
 - one descendant's routing policy
 - one descendant's latent composition policy
 - one descendant's oracle privileges
+- teacher-export policy
+- payload-wire policy
+- higher-order causal program/controller policy
 
 ### 2. Project-Layer Descendants
 
@@ -190,12 +194,18 @@ Recent shared promotion:
 - `CausalPredictiveAdapter`
 - `OracleAnalysisAdapter`
 - `BridgeExportAdapter`
+- `NoncausalReconstructiveAdapter`
+- `TeacherExportAdapter`
+- `ArtifactAuditRecord` / `ArtifactAuditSummary`
 
 ## Immediate Architectural Direction
 
-The next real jump is not another single descendant. It is pressure-testing the shared causal, oracle, and bridge
-adapters across more than one consumer while deciding whether the first `noncausal_reconstructive` contract is now
-specific enough to extract into `src/`.
+The next real jump is not another single descendant. It is pressure-testing the shared causal, oracle, bridge,
+noncausal, and teacher/export adapters across more than one consumer so the current contract line either holds or
+shrinks.
+
+That next shared layer now includes a noncausal reconstruction adapter, a paired teacher/export contract, and generic
+artifact-boundary audit helpers. Keep their policy use local even though the contracts now live in `src/`.
 
 That means:
 
@@ -203,6 +213,6 @@ That means:
 - keeping the bidirectional-analysis example thin around the oracle adapter
 - hardening the shared runtime/accounting contract
 - keeping bridge export generic while more than one bridge-shaped consumer pushes on it
-- using the noncausal field-reconstruction example to decide what a real shared noncausal adapter should own
+- using the noncausal descendants to decide whether the shared noncausal contract should stay narrow or absorb one more seam
 
 That is how the repo graduates from "first shared contracts exist" to "the contracts are actually stable enough to keep."

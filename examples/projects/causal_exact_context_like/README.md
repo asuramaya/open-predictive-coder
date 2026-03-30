@@ -1,8 +1,8 @@
-# Early Conker-Like Example
+# causal_exact_context_like
 
 This folder is a small downstream example for the library kernel.
 
-It models the early `conker` direction as:
+It models a causal exact-context repair path as:
 
 - a base byte model
 - an exact-context count memory with `exact1`, `exact2`, and `exact3` style backoff levels
@@ -21,8 +21,8 @@ The example uses the kernel API directly:
 From the repository root:
 
 ```bash
-PYTHONPATH=src python3 examples/projects/conker_early_like/smoke.py
-PYTHONPATH=src python3 examples/projects/conker_early_like/run.py --mode demo
+PYTHONPATH=src python3 examples/projects/causal_exact_context_like/smoke.py
+PYTHONPATH=src python3 examples/projects/causal_exact_context_like/run.py --mode demo
 ```
 
 ## What It Shows

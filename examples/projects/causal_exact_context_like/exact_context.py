@@ -38,7 +38,7 @@ class SequenceScore:
 
 
 @dataclass
-class EarlyConkerLikeModel:
+class ExactContextRepairModel:
     base_model: ByteLatentPredictiveCoder
     exact_memory: ExactContextMemory
     mixer: SupportWeightedMixer
@@ -50,7 +50,7 @@ class EarlyConkerLikeModel:
         reservoir_size: int = 96,
         latent_dim: int = 24,
         exact_order: int = 3,
-    ) -> "EarlyConkerLikeModel":
+    ) -> "ExactContextRepairModel":
         config = OpenPredictiveCoderConfig(
             segmenter=SegmenterConfig(mode="adaptive", patch_size=4, min_patch_size=2, max_patch_size=8, novelty_threshold=0.08),
             reservoir=ReservoirConfig(size=reservoir_size, connectivity=0.12, spectral_radius=0.9, leak=0.35, seed=11),
@@ -178,6 +178,6 @@ class EarlyConkerLikeModel:
 
 
 __all__ = [
-    "EarlyConkerLikeModel",
+    "ExactContextRepairModel",
     "SequenceScore",
 ]

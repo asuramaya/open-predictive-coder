@@ -174,14 +174,18 @@ def diagnose_carving_machine_like(
     )
 
 
-def diagnose_conker_early_like(
+def diagnose_causal_exact_context_like(
     corpus: str | bytes | bytearray | memoryview | np.ndarray | Sequence[int] = (
         "exact history should help when the local suffix is stable.\n"
         "the support mixer should keep the base model in charge when support is thin.\n"
     )
     * 2,
 ) -> ExampleDiagnosticsReport:
-    module = _load_project_module("conker_early_like", "run.py", "diagnostics_examples.conker_early_like.run")
+    module = _load_project_module(
+        "causal_exact_context_like",
+        "run.py",
+        "diagnostics_examples.causal_exact_context_like.run",
+    )
     model = module.build_model()
     fit_report = model.fit(corpus)
     score = model.score(corpus[:128] if isinstance(corpus, str) else corpus)
@@ -201,7 +205,7 @@ def diagnose_conker_early_like(
         exact_support=np.asarray([score.exact_support], dtype=np.float64),
     )
     return ExampleDiagnosticsReport(
-        project="conker_early_like",
+        project="causal_exact_context_like",
         flow="exact_context_repair",
         snapshot=snapshot,
         series=None,
@@ -216,23 +220,23 @@ def diagnose_conker_early_like(
     )
 
 
-def _diagnose_conker_replica(
+def _diagnose_causal_variant(
     project: str,
     *,
     corpus: str,
 ) -> ExampleDiagnosticsReport:
     module = _load_project_module(project, "model.py", f"diagnostics_examples.{project}.model")
-    if project == "conker_1_like":
-        model = module.Conker1Replica.build()
-    elif project == "conker_2_like":
-        model = module.Conker2Replica.build()
-    elif project == "conker_3_like":
-        model = module.Conker3Replica.build()
+    if project == "causal_memory_stability_like":
+        model = module.CausalMemoryStabilityModel.build()
+    elif project == "causal_linear_correction_like":
+        model = module.CausalLinearCorrectionModel.build()
+    elif project == "causal_residual_repair_like":
+        model = module.CausalResidualRepairModel.build()
     else:
-        raise ValueError(f"unsupported conker replica: {project}")
+        raise ValueError(f"unsupported causal variant: {project}")
     model.fit(corpus)
     score = model.score(corpus[:128] if isinstance(corpus, str) else corpus)
-    if project == "conker_3_like":
+    if project == "causal_residual_repair_like":
         ablations = (
             compare_ablation("base", score.base_bits_per_byte, "corrected", score.corrected_bits_per_byte, name="base vs corrected"),
             compare_ablation("local", score.local_bits_per_byte, "corrected", score.corrected_bits_per_byte, name="local vs corrected"),
@@ -268,7 +272,7 @@ def _diagnose_conker_replica(
         )
     return ExampleDiagnosticsReport(
         project=project,
-        flow="conker_replica",
+        flow="causal_variant",
         snapshot=snapshot,
         series=None,
         signal_summaries=tuple(signal_summaries),
@@ -277,25 +281,25 @@ def _diagnose_conker_replica(
     )
 
 
-def diagnose_conker_1_like(corpus: str | bytes | bytearray | memoryview | np.ndarray | Sequence[int] = (
+def diagnose_causal_memory_stability_like(corpus: str | bytes | bytearray | memoryview | np.ndarray | Sequence[int] = (
     "memory should beat stability when the suffix is narrow.\n"
     "stability should win when the substrate is already clean.\n"
 ) * 2) -> ExampleDiagnosticsReport:
-    return _diagnose_conker_replica("conker_1_like", corpus=corpus)
+    return _diagnose_causal_variant("causal_memory_stability_like", corpus=corpus)
 
 
-def diagnose_conker_2_like(corpus: str | bytes | bytearray | memoryview | np.ndarray | Sequence[int] = (
+def diagnose_causal_linear_correction_like(corpus: str | bytes | bytearray | memoryview | np.ndarray | Sequence[int] = (
     "linear memory carries the main path while local correction stays smaller.\n"
     "the correction expert should only matter when the base path misses detail.\n"
 ) * 2) -> ExampleDiagnosticsReport:
-    return _diagnose_conker_replica("conker_2_like", corpus=corpus)
+    return _diagnose_causal_variant("causal_linear_correction_like", corpus=corpus)
 
 
-def diagnose_conker_3_like(corpus: str | bytes | bytearray | memoryview | np.ndarray | Sequence[int] = (
+def diagnose_causal_residual_repair_like(corpus: str | bytes | bytearray | memoryview | np.ndarray | Sequence[int] = (
     "local residual repair should stay narrow and selective.\n"
     "the base path should remain responsible for most of the distribution.\n"
 ) * 2) -> ExampleDiagnosticsReport:
-    return _diagnose_conker_replica("conker_3_like", corpus=corpus)
+    return _diagnose_causal_variant("causal_residual_repair_like", corpus=corpus)
 
 
 def format_example_diagnostics(report: ExampleDiagnosticsReport) -> str:
@@ -305,9 +309,9 @@ def format_example_diagnostics(report: ExampleDiagnosticsReport) -> str:
 __all__ = [
     "ExampleDiagnosticsReport",
     "diagnose_carving_machine_like",
-    "diagnose_conker_1_like",
-    "diagnose_conker_2_like",
-    "diagnose_conker_3_like",
-    "diagnose_conker_early_like",
+    "diagnose_causal_exact_context_like",
+    "diagnose_causal_linear_correction_like",
+    "diagnose_causal_memory_stability_like",
+    "diagnose_causal_residual_repair_like",
     "format_example_diagnostics",
 ]

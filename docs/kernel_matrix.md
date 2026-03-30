@@ -57,34 +57,34 @@ Use [`lineage.md`](./lineage.md) for the attribution rule behind the upstream wo
 | --- | --- | --- | --- | --- |
 | `substrates.echo_state` | fixed recurrent baseline substrate | `carving_machine/reservoir.py#L85` | Jaeger 2001, Maass et al. 2002 | Implemented |
 | `substrates.delay` | deterministic fading-memory control line | `carving_machine/models.py#L384` | fading-memory / liquid-state intuition | Implemented |
-| `substrates.linear_memory` | frozen linear multiscale decay-bank memory | `Conker-2/3` reconstruction from primitives | short/medium-horizon linear memory scaffold | Implemented |
+| `substrates.linear_memory` | frozen linear multiscale decay-bank memory | linear-correction and residual-repair reconstruction from primitives | short/medium-horizon linear memory scaffold | Implemented |
 | `substrates.mixed_memory` | recurrent plus delay hybrid | `carving_machine/models.py#L484`, `carving_machine/models.py#L609` | sequence memory and continual modeling | Implemented |
 | `substrates.hierarchical` | fast/mid/slow multi-timescale substrate | `carving_machine/models.py#L224` | predictive coding hierarchies, multi-timescale memory | Implemented |
 | `factories.substrates` | config-driven substrate construction and adapter dispatch | `carving_machine` harness principle: compare substrate designs | engineering bridge from research kernel to adapters | Implemented |
 | `controllers.summary` | generic summary contract shared by gates and routing | `carving_machine/models.py#L224`, `carving_machine/models.py#L1129` | control-side summary views over substrate state | Implemented |
 | `controllers.predictive` | latent commit, prediction, surprise, residual paths | `carving_machine/models.py#L224`, `carving_machine/models.py#L609` | Rao and Ballard 1999, Friston 2005 | Partial: generic predictive/surprise primitive implemented |
-| `memory.exact_context` | causal exact-history experts over exact1/exact2/exact3 style contexts | `conker` archive docs and early exact-count branches | count-based language modeling, causal support-aware correction | Implemented |
+| `memory.exact_context` | causal exact-history experts over exact1/exact2/exact3 style contexts | causal descendant docs and early exact-count branches | count-based language modeling, causal support-aware correction | Implemented |
 | `controllers.gating` | reusable fast-to-mid and mid-to-slow pathway gates | `carving_machine/models.py#L224` | adaptive control over multiscale substrate paths | Implemented |
 | `controllers.routing` | causal substrate/path selection over branch summaries | `carving_machine/models.py#L1129` | adaptive control over substrate views | Implemented |
 | `controllers.modulation` | hormone/modulation paths | `carving_machine/models.py#L1354` | side-channel modulation over substrate | Implemented as primitive |
 | `views.hierarchical` | pooled and predictive views over fast/mid/slow banks | `carving_machine/models.py#L224` | predictive coding hierarchies and surprise-style residuals | Implemented |
 | `views.sampled_readout` | deterministic sampled bands over multiscale state | `ablations.py`, `v6.py` | sampled multiscale readout over fixed state | Implemented |
 | `views.byte_latent` | residual + patch-summary + latent feature construction | current library | Rao and Ballard 1999, BLT 2025 | Implemented |
-| `views.linear_memory` | reusable features over decay-bank memory state | `Conker-2/3` reconstruction from primitives | short/medium-horizon linear summaries | Implemented |
+| `views.linear_memory` | reusable features over decay-bank memory state | linear-correction and residual-repair reconstruction from primitives | short/medium-horizon linear summaries | Implemented |
 | `readouts.closed_form` | simple trained readout over frozen state | current library | Jaeger 2001 | Implemented |
-| `experts.frozen_readout` | frozen substrate plus feature-function expert wrapper | `Conker-1/2/3` reconstruction from primitives | mixture-of-experts over fixed dynamical state | Implemented |
+| `experts.frozen_readout` | frozen substrate plus feature-function expert wrapper | causal variant reconstruction from primitives | mixture-of-experts over fixed dynamical state | Implemented |
 | `runtime.trace_reporting` | sequence traces, reports, accounting | current library | Shannon 1948 | Implemented |
 | `runtime.eval_light` | next-step and single-rollout scoring over current adapters | `carving_machine/training.py#L64` | sequence predictive coding and continual modeling | Implemented |
 | `runtime.train_eval` | weighted dataset eval, checkpointed rollout curves, and transfer probes | `carving_machine/training.py#L54`, `carving_machine/training.py#L111`, `carving_machine/experiments.py#L493` | sequence predictive coding and continual modeling | Implemented |
 | `runtime.train_modes` | detached vs through-state semantics, sparse slow updates, rollout checkpoints | `bptt_test.py` | BPTT versus detached-state runtime regimes | Implemented |
-| `runtime.artifacts_audits` | legality, replay, artifact-boundary surfaces | downstream docs, especially Conker family | compression/accounting discipline | Partial: metadata, replay spans, accounting helpers, and causal report wrappers implemented |
+| `runtime.artifacts_audits` | legality, replay, artifact-boundary surfaces | downstream causal docs | compression/accounting discipline | Partial: metadata, replay spans, accounting helpers, and causal report wrappers implemented |
 | `adapters.byte_latent` | first concrete downstream adapter | current library | BLT 2025, UT 2018 | Implemented |
-| `adapters.causal_predictive` | causal predictive/compressive runtime systems | `conker`-family docs | sequence predictive coding | Implemented |
-| `adapters.noncausal_reconstructive` | document-field replay systems | `blinx`-family docs | reconstruction and side-data economics | Not started |
-| `adapters.oracle_analysis` | bidirectional structure analysis | `blinx oracle` docs | predictive coding as analysis, not runtime | Not started |
-| `adapters.bridge_export` | offline teacher to causal export layer | `giddy-up` docs | explicit boundary discipline | Not started |
+| `adapters.causal_predictive` | causal predictive/compressive runtime systems | causal descendant docs | sequence predictive coding | Implemented |
+| `adapters.noncausal_reconstructive` | document-field replay systems | noncausal descendant docs | reconstruction and side-data economics | Not started |
+| `adapters.oracle_analysis` | bidirectional structure analysis | oracle analysis docs | predictive coding as analysis, not runtime | Not started |
+| `adapters.bridge_export` | offline teacher to causal export layer | bridge-export docs | explicit boundary discipline | Not started |
 | `presets` | reproducible named bundles over primitives | `carving_machine/catalog.py#L1` | engineering convenience, not theory | Not started |
-| `examples.reference_projects` | thin project-shaped models over the kernel, used for smoke/dev loops | `carving_machine`, `conker`, `blinx oracle`, and `brelt` docs as downstream shapes | engineering bridge from primitives to dev/test targets | Implemented |
+| `examples.reference_projects` | thin project-shaped models over the kernel, used for smoke/dev loops | `carving_machine`, causal descendant docs, oracle-analysis docs, and `brelt` docs as downstream shapes | engineering bridge from primitives to dev/test targets | Implemented |
 
 ## Priority
 
@@ -138,8 +138,8 @@ The kernel is no longer just an echo-state toy. It now has:
 - frozen readout expert primitive
 - first shared causal adapter
 - byte-latent adapter
-- example-project smoke surfaces for `carving_machine`-like and early `conker`-like builds
-- `Conker-1/2/3` style replica projects built from primitives
+- example-project smoke surfaces for `carving_machine`-like and early causal-exact-context builds
+- causal mixture/correction/repair replica projects built from primitives
 
 The line to preserve is:
 
@@ -149,6 +149,6 @@ The line to preserve is:
 
 That is why `carving_machine` remains the main source anchor even now that `src/` contains both `byte-latent` and a
 first `causal_predictive` adapter. The line still matters: descendants can thin around the causal contract without
-forcing Conker policy back into the kernel.
+forcing descendant-specific policy back into the kernel.
 
 That is enough to justify continuing kernel-first rather than inventing downstream codenames too early.

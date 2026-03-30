@@ -8,7 +8,7 @@ _SRC_ROOT = Path(__file__).resolve().parents[3] / "src"
 if _SRC_ROOT.exists() and str(_SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(_SRC_ROOT))
 
-from exact_context import EarlyConkerLikeModel
+from exact_context import ExactContextRepairModel
 
 
 SMOKE_CORPUS = (
@@ -19,13 +19,13 @@ SMOKE_CORPUS = (
 
 DEMO_CORPUS = (
     "predictive coding keeps the useful substrate and asks exact-context memory to repair local continuations.\n"
-    "this early conker-like example mixes a byte model with exact1 exact2 exact3 count memories.\n"
+    "this exact-context repair example mixes a byte model with exact1 exact2 exact3 count memories.\n"
     "support should matter more than lore and less than evidence.\n"
 ) * 8
 
 
-def build_model() -> EarlyConkerLikeModel:
-    return EarlyConkerLikeModel.build(reservoir_size=64, latent_dim=16, exact_order=2)
+def build_model() -> ExactContextRepairModel:
+    return ExactContextRepairModel.build(reservoir_size=64, latent_dim=16, exact_order=2)
 
 
 def run(mode: str) -> None:
@@ -53,7 +53,7 @@ def run(mode: str) -> None:
 
 
 def main(argv: list[str] | None = None) -> None:
-    parser = argparse.ArgumentParser(description="Run the early conker-like example project.")
+    parser = argparse.ArgumentParser(description="Run the causal exact-context example project.")
     parser.add_argument("--mode", choices=("smoke", "demo"), default="demo")
     args = parser.parse_args(argv)
     run(args.mode)

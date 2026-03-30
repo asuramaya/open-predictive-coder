@@ -29,16 +29,15 @@ which several descendants grow. The kernel is therefore made of:
 - runtime and audit utilities
 
 The library should therefore present a reusable kernel first, with downstream adapters layered on top of it. In this
-framing, `conker`, `blinx`, and `giddy-up` are not peers of the kernel. They are evidence about where the line should
-be drawn.
+framing, named descendants are not peers of the kernel. They are evidence about where the line should be drawn.
 
 ## Pattern: Causal Predictive Or Compressive Systems
 
-Primary sibling sources:
+Primary descendant sources:
 
-- `conker/docs/current_frontier.md`
-- `conker/docs/validity.md`
-- `conker/docs/negative_results.md`
+- causal runtime frontier notes from the broader workspace
+- causal validity notes from the broader workspace
+- causal negative-results notes from the broader workspace
 
 Problem shape:
 
@@ -67,10 +66,10 @@ Key lessons from the docs:
 
 ## Pattern: Noncausal Reconstructive Systems
 
-Primary sibling sources:
+Primary descendant sources:
 
-- `blinx/README.md`
-- `blinx/conker/docs/BLINX6.md`
+- noncausal reconstruction notes from the broader workspace
+- noncausal replay/accounting notes from the broader workspace
 
 Problem shape:
 
@@ -98,9 +97,9 @@ Key lessons from the docs:
 
 ## Pattern: Oracle Analysis Systems
 
-Primary sibling source:
+Primary descendant source:
 
-- `blinx/conker/docs/BLINX_ORACLE.md`
+- oracle-analysis notes from the broader workspace
 
 Problem shape:
 
@@ -125,10 +124,10 @@ Key lessons from the docs:
 
 ## Pattern: Bridge Export Systems
 
-Primary sibling sources:
+Primary descendant sources:
 
-- `giddy-up/README.md`
-- `giddy-up/docs/ARCHITECTURE.md`
+- bridge/export notes from the broader workspace
+- bridge architecture notes from the broader workspace
 
 Problem shape:
 
@@ -212,13 +211,7 @@ Likely adapter names:
 - `bridge_export`
 - `byte_latent`
 
-## Historical Mapping
+## Lineage Note
 
-The local project names still map cleanly into the generalized vocabulary:
-
-- `conker` -> `causal.byte.compressive`
-- `blinx` -> `noncausal.field.reconstructive`
-- `giddy-up` -> `oracle.analysis` plus `bridge.export`
-- `brelt` -> `byte.patch.predictive` or `byte.latent.compressive`
-
-That mapping is useful for internal orientation, but it should stay secondary to the idea-based library surface.
+Named descendants still exist in the broader workspace and in the repo lineage note. They are useful for attribution,
+but they should stay secondary to the idea-based library surface.

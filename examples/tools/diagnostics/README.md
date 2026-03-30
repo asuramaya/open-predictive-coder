@@ -1,7 +1,7 @@
 # Diagnostics
 
 This package contains project-only analysis helpers for the old `look.py`, `look2.py`, and `silence_test.py` lineage,
-plus thin example-flow adapters that can run the existing `carving_machine_like` and Conker replicas without touching
+plus thin example-flow adapters that can run the existing `carving_machine_like` and causal descendant variants without touching
 `src/`.
 
 It stays out of `src/` by design. Use it for:
@@ -9,7 +9,7 @@ It stays out of `src/` by design. Use it for:
 - mask, gate, and surprise snapshots
 - ablation comparisons and two-factor decompositions
 - simple info-flow summaries over numeric arrays
-- example-flow reports for `carving_machine_like`, `conker_early_like`, and `conker_1/2/3_like`
+- example-flow reports for `carving_machine_like`, `causal_exact_context_like`, and the causal variant examples
 
 The surface is intentionally lightweight and text-first.
 

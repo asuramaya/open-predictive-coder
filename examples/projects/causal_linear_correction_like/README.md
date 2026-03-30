@@ -1,10 +1,10 @@
-# conker_2_like
+# causal_linear_correction_like
 
-This folder is a from-scratch `Conker-2` style replica built on top of extracted primitives.
+This folder is a from-scratch causal linear-plus-correction replica built on top of extracted primitives.
 
 Kernel promotion in this round:
 
-- `LinearMemorySubstrate` moved into `src/` because both the `Conker-2` and `Conker-3` replicas need the same
+- `LinearMemorySubstrate` moved into `src/` because both the linear-correction and residual-repair descendants need the same
   frozen linear multiscale memory bank.
 
 Project-local decisions:

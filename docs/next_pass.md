@@ -4,8 +4,8 @@ This document turns the current state into the next concrete implementation pass
 
 ## Goal
 
-Harden the new `src/`-level causal adapter and prove that it is a real shared contract rather than a renamed Conker
-branch.
+Harden the new `src/`-level causal adapter and prove that it is a real shared contract rather than a renamed single
+descendant branch.
 
 ## Why This Is The Next Pass
 
@@ -25,9 +25,9 @@ contract across descendants and keep the kernel readable while doing it.
 
 ## Workstreams
 
-### 1. Thin Conker around the causal contract
+### 1. Thin causal descendants around the causal contract
 
-Make the Conker replicas consume the shared causal layer wherever the behavior is actually common.
+Make the causal descendants consume the shared causal layer wherever the behavior is actually common.
 
 What should stay local:
 
@@ -38,8 +38,8 @@ What should stay local:
 
 Acceptance criteria:
 
-- less duplicate causal boilerplate in `examples/projects/conker_*`
-- Conker policy still clearly lives in project code
+- less duplicate causal boilerplate in `examples/projects/causal_*`
+- descendant policy still clearly lives in project code
 
 ### 2. Harden causal runtime and accounting
 
@@ -59,7 +59,7 @@ Acceptance criteria:
 
 ### 3. Add a second consumer of the causal layer
 
-The causal adapter is not stable until something besides the Conker line pushes on it.
+The causal adapter is not stable until something besides the current causal descendants pushes on it.
 
 Best candidates:
 
@@ -96,7 +96,7 @@ Every pass should also improve orientation:
 
 ## Recommended Order
 
-1. thin Conker around the shared causal adapter
+1. thin causal descendants around the shared causal adapter
 2. harden causal runtime and accounting
 3. add a second consumer of the causal layer
 4. only then consider wider causal abstractions
@@ -116,6 +116,6 @@ These should wait:
 The pass is done when:
 
 - the causal adapter clearly reads as a shared `src/` contract
-- Conker descendants look thinner around that contract
+- causal descendants look thinner around that contract
 - at least one more descendant pushes on the same causal surface
 - docs explain the boundary without requiring project history to decode the codebase

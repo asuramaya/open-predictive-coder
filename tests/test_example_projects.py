@@ -38,8 +38,8 @@ class ExampleProjectTests(unittest.TestCase):
         self.assertIn("train bits/byte:", output)
         self.assertIn("score bits/byte:", output)
 
-    def test_conker_early_like_smoke_runs(self) -> None:
-        output = run_example("examples/projects/conker_early_like/smoke.py")
+    def test_causal_exact_context_like_smoke_runs(self) -> None:
+        output = run_example("examples/projects/causal_exact_context_like/smoke.py")
         self.assertIn("base bits/byte:", output)
         self.assertIn("mixed bits/byte:", output)
         values: dict[str, float] = {}
@@ -55,29 +55,29 @@ class ExampleProjectTests(unittest.TestCase):
                 continue
         self.assertLess(values["mixed bits/byte"], values["base bits/byte"])
 
-    def test_conker_1_like_smoke_runs(self) -> None:
-        output = run_example("examples/projects/conker_1_like/smoke.py")
-        self.assertIn("project: conker_1_like", output)
+    def test_causal_memory_stability_like_smoke_runs(self) -> None:
+        output = run_example("examples/projects/causal_memory_stability_like/smoke.py")
+        self.assertIn("project: causal_memory_stability_like", output)
         self.assertIn("mixed score bits/byte:", output)
 
-    def test_conker_2_like_smoke_runs(self) -> None:
-        output = run_example("examples/projects/conker_2_like/smoke.py")
-        self.assertIn("project: conker_2_like", output)
+    def test_causal_linear_correction_like_smoke_runs(self) -> None:
+        output = run_example("examples/projects/causal_linear_correction_like/smoke.py")
+        self.assertIn("project: causal_linear_correction_like", output)
         self.assertIn("mixed score bits/byte:", output)
 
-    def test_conker_3_like_smoke_runs(self) -> None:
-        output = run_example("examples/projects/conker_3_like/smoke.py")
-        self.assertIn("project: conker_3_like", output)
+    def test_causal_residual_repair_like_smoke_runs(self) -> None:
+        output = run_example("examples/projects/causal_residual_repair_like/smoke.py")
+        self.assertIn("project: causal_residual_repair_like", output)
         self.assertIn("corrected score bits/byte:", output)
 
-    def test_conker_readmes_record_boundary_decisions(self) -> None:
-        conker_1_readme = (PROJECTS_ROOT / "conker_1_like" / "README.md").read_text(encoding="utf-8")
-        conker_2_readme = (PROJECTS_ROOT / "conker_2_like" / "README.md").read_text(encoding="utf-8")
-        conker_3_readme = (PROJECTS_ROOT / "conker_3_like" / "README.md").read_text(encoding="utf-8")
+    def test_causal_variant_readmes_record_boundary_decisions(self) -> None:
+        variant_1_readme = (PROJECTS_ROOT / "causal_memory_stability_like" / "README.md").read_text(encoding="utf-8")
+        variant_2_readme = (PROJECTS_ROOT / "causal_linear_correction_like" / "README.md").read_text(encoding="utf-8")
+        variant_3_readme = (PROJECTS_ROOT / "causal_residual_repair_like" / "README.md").read_text(encoding="utf-8")
 
-        self.assertIn("kernel now has sampled readout", conker_1_readme)
-        self.assertIn("runtime rollout and slow-update knobs already live in the kernel", conker_2_readme)
-        self.assertIn("rollout mode switches already live in the kernel", conker_3_readme)
+        self.assertIn("kernel now has sampled readout", variant_1_readme)
+        self.assertIn("runtime rollout and slow-update knobs already live in the kernel", variant_2_readme)
+        self.assertIn("rollout mode switches already live in the kernel", variant_3_readme)
 
 
 if __name__ == "__main__":

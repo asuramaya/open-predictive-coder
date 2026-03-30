@@ -32,14 +32,14 @@ class KernelProjectSplitTests(unittest.TestCase):
 
         self.assertFalse(hasattr(opc, "ExpertMixtureModel"))
         self.assertFalse(hasattr(opc, "ResidualCorrectionModel"))
-        self.assertFalse(hasattr(opc, "Conker1Replica"))
-        self.assertFalse(hasattr(opc, "Conker2Replica"))
-        self.assertFalse(hasattr(opc, "Conker3Replica"))
+        self.assertFalse(hasattr(opc, "CausalMemoryStabilityModel"))
+        self.assertFalse(hasattr(opc, "CausalLinearCorrectionModel"))
+        self.assertFalse(hasattr(opc, "CausalResidualRepairModel"))
         self.assertFalse(hasattr(opc, "CarvingMachineKernelAdapter"))
         self.assertFalse(hasattr(opc, "GateSource"))
 
-    def test_conker_shared_keeps_policy_in_project_code(self) -> None:
-        module = load_module("conker_shared_test", "conker_shared.py")
+    def test_causal_descendant_helpers_keep_policy_in_project_code(self) -> None:
+        module = load_module("causal_descendants_test", "causal_descendants.py")
         self.assertTrue(hasattr(module, "ExpertMixtureModel"))
         self.assertTrue(hasattr(module, "ResidualCorrectionModel"))
         self.assertTrue(hasattr(module, "build_linear_memory_expert"))

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from model import Conker3Replica
+from model import CausalResidualRepairModel
 
 
 SMOKE_CORPUS = (
@@ -11,11 +11,11 @@ SMOKE_CORPUS = (
 
 
 def main() -> None:
-    model = Conker3Replica.build()
+    model = CausalResidualRepairModel.build()
     fit = model.fit(SMOKE_CORPUS)
     score = model.score(SMOKE_CORPUS[:192])
 
-    print("project:", "conker_3_like")
+    print("project:", "causal_residual_repair_like")
     print("linear train bits/byte:", round(fit["linear_path"], 4))
     print("local train bits/byte:", round(fit["local_path"], 4))
     print("base score bits/byte:", round(score.base_bits_per_byte, 4))

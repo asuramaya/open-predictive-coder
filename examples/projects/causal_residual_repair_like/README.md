@@ -1,6 +1,6 @@
-# conker_3_like
+# causal_residual_repair_like
 
-This folder is a from-scratch `Conker-3` style replica built on top of extracted primitives.
+This folder is a from-scratch causal residual-repair replica built on top of extracted primitives.
 
 What moved into the kernel:
 

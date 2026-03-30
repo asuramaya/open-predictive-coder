@@ -49,9 +49,9 @@ These are not toy demos. They are boundary tests.
 
 - `carving_machine_like/`
   ancestor-style hierarchical substrate plus predictor/gating policy
-- `conker_early_like/`
+- `causal_exact_context_like/`
   early exact-context causal memory shape
-- `conker_1_like/`, `conker_2_like/`, `conker_3_like/`
+- `causal_memory_stability_like/`, `causal_linear_correction_like/`, `causal_residual_repair_like/`
   three different causal composition policies built from kernel primitives
 - `oracle_analysis_like/`
   analysis-only descendant that reuses sampled readout, routing, and train-mode checkpoints
@@ -59,8 +59,8 @@ These are not toy demos. They are boundary tests.
   byte-patch latent descendant shaped after the real `brelt` repo
 
 If a mechanism is repeated across multiple descendants, it is a candidate for promotion into `src/`.
-The first causal adapter is the next example of that rule: it should land in `src/` only once it reads as a shared
-contract rather than a Conker-specific model.
+The first causal adapter is the next example of that rule: it should live in `src/` only when it reads as a shared
+contract rather than a descendant-specific model.
 
 ### 3. Development Tooling
 
@@ -153,7 +153,7 @@ Stable kernel examples of the right kind of promotion:
 
 Still project-local on purpose:
 
-- Conker mixer and residual-repair policy
+- descendant mixer and residual-repair policy
 - oracle-vs-causal comparison policy
 - `brelt` patch-boundary tuning and local/global bridge composition
 - ancestor-specific predictor head choices
@@ -169,7 +169,7 @@ than one consumer while keeping descendant policy out of `src/`.
 
 That means:
 
-- thinning the Conker descendants around the causal adapter
+- thinning the causal descendants around the causal adapter
 - hardening the causal runtime/accounting contract
 - adding a second consumer, likely bridge-shaped or noncausal, that reuses some of the same causal surfaces
 

@@ -66,7 +66,7 @@ class ArtifactAccountingTests(unittest.TestCase):
             ReplaySpan(8, 11, label="suffix"),
         )
         accounting = ArtifactAccounting(
-            artifact_name="conker",
+            artifact_name="causal_predictive",
             artifact_bytes=20,
             replay_bytes=12,
             replay_spans=spans,

@@ -8,15 +8,15 @@ PROJECTS_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECTS_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECTS_ROOT))
 
-from conker_shared import ConkerReplicaBase, ResidualCorrectionModel, build_delay_local_expert, build_linear_memory_expert
+from causal_descendants import CausalReplicaBase, ResidualCorrectionModel, build_delay_local_expert, build_linear_memory_expert
 
 
 @dataclass
-class Conker3Replica(ConkerReplicaBase):
+class CausalResidualRepairModel(CausalReplicaBase):
     model: ResidualCorrectionModel
 
     @classmethod
-    def build(cls) -> "Conker3Replica":
+    def build(cls) -> "CausalResidualRepairModel":
         linear = build_linear_memory_expert(
             name="linear_path",
             embedding_dim=14,

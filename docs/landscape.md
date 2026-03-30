@@ -276,19 +276,19 @@ Within the current workspace, there are already sibling projects that illustrate
 They should be treated as example downstream patterns, not as code ancestors for this repo.
 See [`lineage.md`](./lineage.md) for the attribution rule and why these are named here without dead local links.
 
-### `giddy-up`
+### `bridge export descendant`
 
 - generalized pattern: `bridge.export`
 - boundary layer between oracle-side discovery and causal exported features
 - good example of a project that needs predictive summaries and strict boundary discipline
 
-### `blinx`
+### `noncausal reconstructive descendant`
 
 - generalized patterns: `noncausal.field.reconstructive` and `oracle.analysis`
 - noncausal lossless-compression research over whole-document reconstruction
 - good example of the "document as field, not only stream" side of the design space
 
-### `conker`
+### `causal predictive descendant`
 
 - generalized pattern: `causal.byte.compressive`
 - causal compression/runtime research with memory-first experiments

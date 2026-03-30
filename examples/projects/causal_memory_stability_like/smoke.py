@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from model import Conker1Replica
+from model import CausalMemoryStabilityModel
 
 
 SMOKE_CORPUS = (
@@ -11,11 +11,11 @@ SMOKE_CORPUS = (
 
 
 def main() -> None:
-    model = Conker1Replica.build()
+    model = CausalMemoryStabilityModel.build()
     fit = model.fit(SMOKE_CORPUS)
     score = model.score(SMOKE_CORPUS[:192])
 
-    print("project:", "conker_1_like")
+    print("project:", "causal_memory_stability_like")
     print("memory train bits/byte:", round(fit["memory_path"], 4))
     print("stability train bits/byte:", round(fit["stability_path"], 4))
     print("memory score bits/byte:", round(score.component_bits_per_byte["memory_path"], 4))

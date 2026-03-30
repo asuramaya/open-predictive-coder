@@ -16,7 +16,7 @@ if str(PROJECTS_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECTS_ROOT))
 
 from open_predictive_coder import HierarchicalSubstrate, TrainModeConfig, hierarchical_small  # noqa: E402
-from conker_shared import build_hierarchical_stability_expert  # noqa: E402
+from causal_descendants import build_hierarchical_stability_expert  # noqa: E402
 
 
 class TrainModeIntegrationTests(unittest.TestCase):
@@ -48,7 +48,7 @@ class TrainModeIntegrationTests(unittest.TestCase):
         self.assertEqual(tuple(checkpoint_states), (2, 4))
         self.assertEqual(checkpoint_states[2].shape[0], substrate.state_dim)
 
-    def test_conker_style_hierarchical_expert_matches_through_state_stride_knob(self) -> None:
+    def test_causal_variant_hierarchical_expert_matches_through_state_stride_knob(self) -> None:
         expert = build_hierarchical_stability_expert(name="stability")
         train_mode = TrainModeConfig(
             state_mode="through_state",

@@ -17,9 +17,9 @@ They are self-contained descendants that live in this repo. They are not imports
 
 - `carving_machine_like`
   ancestor-style hierarchical descendant
-- `conker_early_like`
+- `causal_exact_context_like`
   early exact-context causal descendant
-- `conker_1_like`, `conker_2_like`, `conker_3_like`
+- `causal_memory_stability_like`, `causal_linear_correction_like`, `causal_residual_repair_like`
   three causal composition variants
 - `oracle_analysis_like`
   analysis-only descendant that reuses sampled readout, routing, and train-mode checkpoints
@@ -46,7 +46,7 @@ If you want to understand the repo through examples:
 
 1. `quickstart.py`
 2. `projects/carving_machine_like`
-3. `projects/conker_early_like`
-4. `projects/conker_1_like` through `conker_3_like`
+3. `projects/causal_exact_context_like`
+4. `projects/causal_memory_stability_like` through `causal_residual_repair_like`
 5. `projects/oracle_analysis_like`
 6. `projects/brelt_like`

@@ -1,7 +1,7 @@
 # open predictive coder
 
 `open-predictive-coder` is a Python library for extracting the reusable kernel inside the `carving_machine` line of
-work. That line evolves into things like `conker`, `blinx`, `giddy-up`, and byte-latent descendants, so the point of
+work. That line evolves into causal, noncausal, bridge, oracle, and byte-latent descendants, so the point of
 this repo is to draw the boundary once: keep the shared substrate, control, memory, view, readout, and runtime
 primitives in one place, and let downstream systems specialize from there.
 
@@ -50,13 +50,13 @@ The intended line is:
 
 - `carving_machine`: the upstream design language and source lineage
 - `open-predictive-coder`: the extracted kernel of reusable primitives
-- `conker`, `blinx`, `giddy-up`, and future descendants: downstream systems that add policy, runtime contracts, and
+- downstream descendants and future descendants: systems that add policy, runtime contracts, and
   task-specific claims
 
 This repo is standalone. The example descendants under [`examples/projects`](./examples/projects) are reconstructions
 built in this repo from the extracted primitives; they are not imported or copied from sibling repositories.
-The first causal adapter should be treated as the shared contract that Conker-style descendants thin around, not as a
-Conker-specific branch.
+The first causal adapter should be treated as the shared contract that causal descendants thin around, not as a
+single-descendant branch.
 
 What belongs in the kernel:
 
@@ -111,7 +111,7 @@ Those patterns illustrate the problem family:
 
 The extracted adapters in `src/` today are `byte-latent` and the first reusable `causal_predictive` contract.
 The kernel also carries example-project surfaces for both a `carving_machine`-like hierarchical path and the more
-specific `conker`-family causal descendants that sit on top of the shared causal layer.
+specific causal descendants that sit on top of the shared causal layer.
 
 ## Design Thesis
 
@@ -225,6 +225,6 @@ the shared kernel cleanly enough that multiple descendants can be built on top o
 back into the primitive layer. In the current replication round, the repeated promotions from project code into the
 kernel were `LinearMemorySubstrate`, `LinearMemoryFeatureView`, `FrozenReadoutExpert`, `PredictiveSurpriseController`,
 `HormoneModulator`, `SampledMultiscaleReadout`, `TrainModeConfig`, the first `ArtifactMetadata` / `ReplaySpan` /
-`ArtifactAccounting` runtime slice, and the first shared `CausalPredictiveAdapter`; the Conker-family mixers, oracle
+`ArtifactAccounting` runtime slice, and the first shared `CausalPredictiveAdapter`; descendant mixer policies, oracle
 comparison logic, and `brelt` composition policy remain deliberately project-local, and diagnostics stayed under
 `examples/`.

@@ -1,9 +1,9 @@
-"""Shared Conker replica helpers.
+"""Shared causal descendant helpers.
 
 Kernel code owns reusable primitives such as substrates, views, readouts,
 and runtime evaluation surfaces. This module stays in the project layer and
-only hosts the Conker-family composition policy plus the small builders that
-multiple Conker descendants reuse.
+only hosts the descendant composition policy plus the small builders that
+multiple causal descendants reuse.
 
 It also provides a very thin project-layer replica base so the descendant
 wrappers do not repeat the same fit/score delegation boilerplate.
@@ -104,7 +104,7 @@ class ResidualScore:
     corrected_bits_per_byte: float
 
 
-class ConkerReplicaBase:
+class CausalReplicaBase:
     model: object
 
     def fit(self, data: object):
@@ -441,7 +441,7 @@ def build_hierarchical_stability_expert(
 
 
 __all__ = [
-    "ConkerReplicaBase",
+    "CausalReplicaBase",
     "ExpertMixtureModel",
     "FrozenReadoutExpert",
     "MixtureScore",

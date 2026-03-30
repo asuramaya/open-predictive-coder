@@ -85,16 +85,16 @@ class CausalAdapterSurfaceTests(unittest.TestCase):
 
 
 class CausalKernelSplitTests(unittest.TestCase):
-    def test_kernel_exports_causal_primitives_but_not_conker_policy(self) -> None:
+    def test_kernel_exports_causal_primitives_but_not_descendant_policy(self) -> None:
         import open_predictive_coder as opc
 
         self.assertTrue(hasattr(opc, "ExactContextMemory"))
         self.assertTrue(hasattr(opc, "SupportWeightedMixer"))
         self.assertTrue(hasattr(opc, "ArtifactAccounting"))
 
-        self.assertFalse(hasattr(opc, "ConkerMixerPolicy"))
-        self.assertFalse(hasattr(opc, "ConkerResidualPolicy"))
-        self.assertFalse(hasattr(opc, "ConkerCausalAdapter"))
+        self.assertFalse(hasattr(opc, "CausalMemoryStabilityModel"))
+        self.assertFalse(hasattr(opc, "CausalResidualRepairModel"))
+        self.assertFalse(hasattr(opc, "CausalVariantPolicy"))
 
     def test_exact_context_and_mixer_remain_project_independent(self) -> None:
         memory = ExactContextMemory()

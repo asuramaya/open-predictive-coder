@@ -118,9 +118,14 @@ def _random_in_proj(rng: np.random.Generator, embedding_dim: int, mode_count: in
 def _orthogonal_rows_in_proj(rng: np.random.Generator, embedding_dim: int, mode_count: int) -> np.ndarray:
     if mode_count <= 0:
         return np.zeros((embedding_dim, 0), dtype=np.float32)
-    mat = rng.standard_normal((mode_count, embedding_dim), dtype=np.float32)
+    # When mode_count < embedding_dim, reduced QR on (mode_count, embedding_dim)
+    # gives q of shape (mode_count, mode_count) — too few rows.  Use the
+    # transposed factorisation so q always has embedding_dim rows.
+    k = max(mode_count, embedding_dim)
+    mat = rng.standard_normal((k, embedding_dim), dtype=np.float32)
     q, _ = np.linalg.qr(mat, mode="reduced")
-    proj = q.T.astype(np.float32, copy=False)
+    # q is (k, embedding_dim) → take first mode_count columns of q.T
+    proj = q.T[:, :mode_count].astype(np.float32, copy=False)
     proj *= np.float32(math.sqrt(mode_count / embedding_dim))
     return proj
 

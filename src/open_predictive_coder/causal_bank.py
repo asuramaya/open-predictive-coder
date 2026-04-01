@@ -64,6 +64,7 @@ class CausalBankConfig:
     input_proj_scheme: str = "random"
     init_seed: int = 42
     memory_kind: str = "none"
+    substrate_mode: str = "frozen"  # "frozen", "learnable_decays", "learnable_mixing"
 
 
 @dataclass(frozen=True)
@@ -113,9 +114,26 @@ def validate_config(config: CausalBankConfig) -> None:
             raise ValueError("causal-bank oscillatory_period_min must be positive.")
         if config.oscillatory_period_max <= config.oscillatory_period_min:
             raise ValueError("causal-bank oscillatory_period_max must be > oscillatory_period_min.")
+    if config.substrate_mode not in ("frozen", "learnable_decays", "learnable_mixing"):
+        raise ValueError(f"Unknown causal-bank substrate_mode: {config.substrate_mode!r}")
     from open_predictive_coder.memory_protocol import MEMORY_KINDS
     if config.memory_kind not in MEMORY_KINDS:
         raise ValueError(f"Unknown causal-bank memory_kind: {config.memory_kind!r}; expected one of {MEMORY_KINDS}")
+
+
+def learnable_substrate_keys(config: CausalBankConfig) -> tuple[str, ...]:
+    """Return which substrate tensor names should be trainable parameters.
+
+    Returns empty tuple for frozen mode. Used by downstream Torch/MLX models
+    to decide register_buffer vs nn.Parameter.
+    """
+    if config.substrate_mode == "frozen":
+        return ()
+    if config.substrate_mode == "learnable_decays":
+        return ("linear_decays",)
+    if config.substrate_mode == "learnable_mixing":
+        return ("linear_in_proj",)
+    return ()
 
 
 def osc_pair_count(config: CausalBankConfig) -> int:

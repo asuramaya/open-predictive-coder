@@ -76,6 +76,8 @@ class CausalBankConfig:
     local_poly_order: int = 1  # 1=linear (current), 2=quadratic, 3=cubic feature expansion on local window
     training_noise: float = 0.0  # noise injection σ during training (0=off)
     adaptive_reg: bool = False  # regularization that grows with training steps
+    substrate_poly_order: int = 1  # polynomial expansion on substrate output (1=linear, 2=quadratic, 3=cubic)
+    block_stride: int = 1  # temporal stride for stacked blocks (1=every position, 4=every 4th, etc.)
 
 
 @dataclass(frozen=True)
@@ -152,6 +154,10 @@ def validate_config(config: CausalBankConfig) -> None:
         raise ValueError("causal-bank local_poly_order must be 1, 2, or 3.")
     if config.training_noise < 0:
         raise ValueError("causal-bank training_noise must be >= 0.")
+    if config.substrate_poly_order < 1 or config.substrate_poly_order > 3:
+        raise ValueError("causal-bank substrate_poly_order must be 1, 2, or 3.")
+    if config.block_stride < 1:
+        raise ValueError("causal-bank block_stride must be >= 1.")
 
 
 def learnable_substrate_keys(config: CausalBankConfig) -> tuple[str, ...]:

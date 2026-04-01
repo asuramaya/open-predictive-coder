@@ -207,6 +207,31 @@ Recent shared promotion:
 - `TeacherExportAdapter`
 - `ArtifactAuditRecord` / `ArtifactAuditSummary`
 
+## Causal-Bank Configuration Surface
+
+The causal-bank family (`causal_bank.py`) is the most actively explored
+descendant family. Its configuration surface includes:
+
+### Input Projection Schemes (`input_proj_scheme`)
+
+- `random` — default, Gaussian scaled by 1/sqrt(embedding_dim)
+- `orthogonal_rows` — QR-factorized orthogonal basis
+- `split_banks` — separate subspaces for oscillatory and non-oscillatory modes
+- `kernel_energy` — energy-weighted by mode RMS
+
+### Oscillatory Scheduling (`oscillatory_schedule`)
+
+- `logspace` — simple logarithmic spacing of periods and half-lives
+- `mincorr_greedy` — greedy selection minimizing pairwise correlation among candidate pairs
+- `period_bucket_greedy` — bucketed half-lives with greedy period selection within each bucket
+
+### Downstream Threading
+
+When a new config knob is added to `CausalBankConfig`, the Chronohorn training
+CLI must wire it through its scan system (`_training_spec()` and
+`_torch_train_command()`). Chronohorn maintains a consistency test that validates
+this wiring.
+
 ## Immediate Architectural Direction
 
 The next real jump is not another single descendant. It is pressure-testing the shared causal, oracle, bridge,

@@ -65,6 +65,8 @@ class CausalBankConfig:
     init_seed: int = 42
     memory_kind: str = "none"
     substrate_mode: str = "frozen"  # "frozen", "learnable_decays", "learnable_mixing"
+    num_blocks: int = 1
+    block_mixing_ratio: float = 0.25  # bottleneck ratio for inter-block mixing
 
 
 @dataclass(frozen=True)
@@ -119,6 +121,10 @@ def validate_config(config: CausalBankConfig) -> None:
     from open_predictive_coder.memory_protocol import MEMORY_KINDS
     if config.memory_kind not in MEMORY_KINDS:
         raise ValueError(f"Unknown causal-bank memory_kind: {config.memory_kind!r}; expected one of {MEMORY_KINDS}")
+    if config.num_blocks < 1:
+        raise ValueError("causal-bank num_blocks must be >= 1.")
+    if config.block_mixing_ratio <= 0 or config.block_mixing_ratio > 1:
+        raise ValueError("causal-bank block_mixing_ratio must be in (0, 1].")
 
 
 def learnable_substrate_keys(config: CausalBankConfig) -> tuple[str, ...]:

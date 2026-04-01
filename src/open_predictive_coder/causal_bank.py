@@ -79,6 +79,8 @@ class CausalBankConfig:
     substrate_poly_order: int = 1  # polynomial expansion on substrate output (1=linear, 2=quadratic, 3=cubic)
     block_stride: int = 1  # temporal stride for stacked blocks (1=every position, 4=every 4th, etc.)
     patch_causal_decoder: str = "none"  # "none", "autoregressive", "mlp_factored"
+    trust_routing: bool = False  # enable trust-routing mode
+    table_path: str = ""  # path to packed n-gram table
 
 
 @dataclass(frozen=True)
@@ -164,6 +166,9 @@ def validate_config(config: CausalBankConfig) -> None:
     if config.patch_size > 1 and config.patch_causal_decoder == "none":
         import warnings
         warnings.warn("patch_size > 1 with patch_causal_decoder='none' leaks future bytes within patches")
+    if config.trust_routing and not config.table_path:
+        import warnings
+        warnings.warn("trust_routing=True but no table_path — will use synthetic table")
 
 
 def learnable_substrate_keys(config: CausalBankConfig) -> tuple[str, ...]:

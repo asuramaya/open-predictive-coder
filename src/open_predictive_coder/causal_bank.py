@@ -114,7 +114,7 @@ def validate_config(config: CausalBankConfig) -> None:
             raise ValueError("causal-bank oscillatory_period_min must be positive.")
         if config.oscillatory_period_max <= config.oscillatory_period_min:
             raise ValueError("causal-bank oscillatory_period_max must be > oscillatory_period_min.")
-    if config.substrate_mode not in ("frozen", "learnable_decays", "learnable_mixing"):
+    if config.substrate_mode not in ("frozen", "learnable_decays", "learnable_mixing", "learned_recurrence"):
         raise ValueError(f"Unknown causal-bank substrate_mode: {config.substrate_mode!r}")
     from open_predictive_coder.memory_protocol import MEMORY_KINDS
     if config.memory_kind not in MEMORY_KINDS:
@@ -133,6 +133,8 @@ def learnable_substrate_keys(config: CausalBankConfig) -> tuple[str, ...]:
         return ("linear_decays",)
     if config.substrate_mode == "learnable_mixing":
         return ("linear_in_proj",)
+    if config.substrate_mode == "learned_recurrence":
+        return ("linear_in_proj", "linear_decays", "recurrence_gate")
     return ()
 
 

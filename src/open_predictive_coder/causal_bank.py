@@ -67,6 +67,9 @@ class CausalBankConfig:
     substrate_mode: str = "frozen"  # "frozen", "learnable_decays", "learnable_mixing"
     num_blocks: int = 1
     block_mixing_ratio: float = 0.25  # bottleneck ratio for inter-block mixing
+    state_dim: int = 0  # selective scan state dim (0 = use linear_modes, >0 = compressed state)
+    num_heads: int = 1  # multi-head state (each head runs independent scan)
+    patch_size: int = 1  # byte-to-patch grouping (1 = raw bytes, >1 = patch encoding)
 
 
 @dataclass(frozen=True)
@@ -125,6 +128,14 @@ def validate_config(config: CausalBankConfig) -> None:
         raise ValueError("causal-bank num_blocks must be >= 1.")
     if config.block_mixing_ratio <= 0 or config.block_mixing_ratio > 1:
         raise ValueError("causal-bank block_mixing_ratio must be in (0, 1].")
+    if config.state_dim < 0:
+        raise ValueError("causal-bank state_dim must be >= 0.")
+    if config.num_heads < 1:
+        raise ValueError("causal-bank num_heads must be >= 1.")
+    if config.state_dim > 0 and config.state_dim % config.num_heads != 0:
+        raise ValueError("causal-bank state_dim must be divisible by num_heads.")
+    if config.patch_size < 1:
+        raise ValueError("causal-bank patch_size must be >= 1.")
 
 
 def learnable_substrate_keys(config: CausalBankConfig) -> tuple[str, ...]:

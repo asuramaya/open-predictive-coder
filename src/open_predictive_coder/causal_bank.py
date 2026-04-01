@@ -73,6 +73,9 @@ class CausalBankConfig:
     num_hemispheres: int = 1  # 1=uniform, 2=fast/slow split
     fast_hemisphere_ratio: float = 0.25  # fraction of state_dim for fast hemisphere
     fast_lr_mult: float = 4.0  # learning rate multiplier for fast hemisphere params
+    local_poly_order: int = 1  # 1=linear (current), 2=quadratic, 3=cubic feature expansion on local window
+    training_noise: float = 0.0  # noise injection σ during training (0=off)
+    adaptive_reg: bool = False  # regularization that grows with training steps
 
 
 @dataclass(frozen=True)
@@ -145,6 +148,10 @@ def validate_config(config: CausalBankConfig) -> None:
         raise ValueError("causal-bank fast_hemisphere_ratio must be in (0, 1).")
     if config.fast_lr_mult <= 0:
         raise ValueError("causal-bank fast_lr_mult must be positive.")
+    if config.local_poly_order < 1 or config.local_poly_order > 3:
+        raise ValueError("causal-bank local_poly_order must be 1, 2, or 3.")
+    if config.training_noise < 0:
+        raise ValueError("causal-bank training_noise must be >= 0.")
 
 
 def learnable_substrate_keys(config: CausalBankConfig) -> tuple[str, ...]:

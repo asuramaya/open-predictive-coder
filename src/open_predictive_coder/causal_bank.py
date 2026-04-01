@@ -103,6 +103,15 @@ def validate_config(config: CausalBankConfig) -> None:
         raise ValueError("causal-bank oscillatory candidate grid counts must be positive.")
     if config.local_window < 1:
         raise ValueError("causal-bank local_window must be >= 1.")
+    if config.linear_half_life_min <= 0:
+        raise ValueError("causal-bank linear_half_life_min must be positive.")
+    if config.linear_half_life_max <= config.linear_half_life_min:
+        raise ValueError("causal-bank linear_half_life_max must be > linear_half_life_min.")
+    if config.oscillatory_frac > 0:
+        if config.oscillatory_period_min <= 0:
+            raise ValueError("causal-bank oscillatory_period_min must be positive.")
+        if config.oscillatory_period_max <= config.oscillatory_period_min:
+            raise ValueError("causal-bank oscillatory_period_max must be > oscillatory_period_min.")
 
 
 def osc_pair_count(config: CausalBankConfig) -> int:

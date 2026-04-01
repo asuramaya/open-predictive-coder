@@ -217,6 +217,7 @@ descendant family. Its configuration surface includes:
 - `random` — default, Gaussian scaled by 1/sqrt(embedding_dim)
 - `orthogonal_rows` — QR-factorized orthogonal basis
 - `split_banks` — separate subspaces for oscillatory and non-oscillatory modes
+  - `_orthogonal_rows_in_proj` shape fix applied for high `osc_frac` values
 - `kernel_energy` — energy-weighted by mode RMS
 
 ### Oscillatory Scheduling (`oscillatory_schedule`)
@@ -224,6 +225,72 @@ descendant family. Its configuration surface includes:
 - `logspace` — simple logarithmic spacing of periods and half-lives
 - `mincorr_greedy` — greedy selection minimizing pairwise correlation among candidate pairs
 - `period_bucket_greedy` — bucketed half-lives with greedy period selection within each bucket
+
+### Substrate Modes (`substrate_mode`)
+
+- `frozen` — fixed random projection, no gradient through substrate
+- `learnable_decays` — decay rates are gradient-tracked parameters
+- `learnable_mixing` — mixing weights are gradient-tracked parameters
+- `learned_recurrence` — full selective scan with Mamba-style input-dependent B/C projections; chunked parallel scan implementation
+
+### Memory Attachment (`memory_kind` / `MemoryAttachmentConfig`)
+
+- `none` — no auxiliary memory
+- `ngram` — n-gram prior lookup
+- `exact_context` — exact context cache
+- `statistical_backoff` — backoff hierarchy over n-gram and exact-context layers
+
+`OnlineCausalMemory` is a runtime n-gram accumulator with a 7-feature query
+interface that updates incrementally during training without a separate build step.
+
+### Stacked Substrate Blocks
+
+- `num_blocks` — number of stacked substrate blocks (default 1)
+- `block_mixing_ratio` — bottleneck mixing fraction between blocks
+- `block_stride` — multi-timescale striding: block `i` operates at stride `block_stride^i`
+
+### Selective Scan Dimensions
+
+- `state_dim` — inner state dimension for B/C projections (used with `learned_recurrence`)
+- `num_heads` — number of selective scan heads
+
+### Byte-to-Patch Encoding
+
+- `patch_size` — number of raw bytes per patch (1 = no patching)
+- `patch_causal_decoder` — decoder applied after patch embedding:
+  - `none` — no patch decoder
+  - `autoregressive` — left-to-right patch token prediction
+  - `mlp_factored` — independent per-byte MLP heads
+  - `hybrid` — global SSM over patches plus local window over raw bytes
+
+### Fast/Slow State Splitting
+
+- `num_hemispheres` — number of hemispheres (2 = fast + slow)
+- `fast_hemisphere_ratio` — fraction of state allocated to the fast hemisphere
+- `fast_lr_mult` — learning rate multiplier applied to fast-hemisphere parameters
+
+### Polynomial Feature Expansion
+
+- `local_poly_order` — NVAR polynomial expansion order on local window features
+- `substrate_poly_order` — polynomial expansion order on substrate output before readout
+
+### Stability Controls
+
+- `training_noise` — Gaussian noise injected into substrate state during forward
+- `adaptive_reg` — automatically scales regularization based on live gradient statistics
+- Decay regularization term added to training loss
+
+### Readout Kinds
+
+The `CAUSAL_BANK_READOUT_KINDS` registry now includes `gru` (recurrent GRU readout)
+in addition to the existing linear and MLP variants.
+
+### Validation Helpers
+
+- `learnable_substrate_keys()` — returns the set of config keys that are
+  gradient-tracked under the given `substrate_mode`
+- Period and half-life range validation with descriptive error messages on
+  out-of-range values
 
 ### Downstream Threading
 

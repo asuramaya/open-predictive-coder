@@ -116,12 +116,19 @@ stays in the descendant.
   - reusable controller-side mechanisms
 - `exact_context`, `ngram_memory`, `statistical_backoff`
   - causal memory primitives
+  - `OnlineCausalMemory` — runtime n-gram accumulator with 7-feature query interface
 - `views`, `hierarchical_views`, `linear_views`
   - feature and summary views
 - `readouts`, `experts`
-  - reusable readout surfaces
+  - reusable readout surfaces (now includes GRU recurrent readout)
 - `causal_bank`
   - backend-neutral causal-bank family metadata and deterministic substrate construction
+  - new config fields: `substrate_mode`, `memory_kind`, `num_blocks`, `block_mixing_ratio`,
+    `block_stride`, `state_dim`, `num_heads`, `patch_size`, `patch_causal_decoder`,
+    `num_hemispheres`, `fast_hemisphere_ratio`, `fast_lr_mult`, `local_poly_order`,
+    `substrate_poly_order`, `training_noise`, `adaptive_reg`
+  - `learnable_substrate_keys()` helper
+  - chunked parallel scan for `learned_recurrence` substrate mode
 - `bridge_export`, `oracle_analysis`, `teacher_export`
   - descendant-facing boundary helpers
 - `runtime`, `eval`, `train_eval`, `artifacts`

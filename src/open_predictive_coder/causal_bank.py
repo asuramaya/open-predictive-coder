@@ -159,7 +159,7 @@ def validate_config(config: CausalBankConfig) -> None:
         raise ValueError("causal-bank substrate_poly_order must be 1, 2, or 3.")
     if config.block_stride < 1:
         raise ValueError("causal-bank block_stride must be >= 1.")
-    if config.patch_causal_decoder not in ("none", "autoregressive", "mlp_factored"):
+    if config.patch_causal_decoder not in ("none", "autoregressive", "mlp_factored", "hybrid"):
         raise ValueError(f"Unknown patch_causal_decoder: {config.patch_causal_decoder!r}")
     if config.patch_size > 1 and config.patch_causal_decoder == "none":
         import warnings

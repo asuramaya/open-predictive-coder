@@ -114,6 +114,10 @@ from .learned_segmentation import (
 from .hierarchical_views import HierarchicalFeatureView, HierarchicalSummary
 from .linear_views import LinearMemoryFeatureView
 from .memory_cache import ExactContextCache, MemoryPredictionRecord, MemoryPredictionSummary, StatisticalBackoffCache
+from open_predictive_coder.memory_protocol import (
+    MEMORY_KINDS,
+    MemoryAttachmentConfig,
+)
 from .ngram_memory import NgramMemory, NgramMemoryConfig, NgramMemoryReport
 from .noncausal_reconstructive import (
     NoncausalReconstructiveAdapter,
@@ -320,6 +324,8 @@ __all__ = [
     "LocalByteEncoderConfig",
     "make_artifact_accounting",
     "make_replay_span",
+    "MEMORY_KINDS",
+    "MemoryAttachmentConfig",
     "MemoryPredictionRecord",
     "MemoryPredictionSummary",
     "MemoryMergeMode",

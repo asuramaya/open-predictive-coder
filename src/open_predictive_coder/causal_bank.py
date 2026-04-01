@@ -63,6 +63,7 @@ class CausalBankConfig:
     bank_gate_span: float = 0.5
     input_proj_scheme: str = "random"
     init_seed: int = 42
+    memory_kind: str = "none"
 
 
 @dataclass(frozen=True)
@@ -112,6 +113,9 @@ def validate_config(config: CausalBankConfig) -> None:
             raise ValueError("causal-bank oscillatory_period_min must be positive.")
         if config.oscillatory_period_max <= config.oscillatory_period_min:
             raise ValueError("causal-bank oscillatory_period_max must be > oscillatory_period_min.")
+    from open_predictive_coder.memory_protocol import MEMORY_KINDS
+    if config.memory_kind not in MEMORY_KINDS:
+        raise ValueError(f"Unknown causal-bank memory_kind: {config.memory_kind!r}; expected one of {MEMORY_KINDS}")
 
 
 def osc_pair_count(config: CausalBankConfig) -> int:

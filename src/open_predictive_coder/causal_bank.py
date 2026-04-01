@@ -78,6 +78,7 @@ class CausalBankConfig:
     adaptive_reg: bool = False  # regularization that grows with training steps
     substrate_poly_order: int = 1  # polynomial expansion on substrate output (1=linear, 2=quadratic, 3=cubic)
     block_stride: int = 1  # temporal stride for stacked blocks (1=every position, 4=every 4th, etc.)
+    patch_causal_decoder: str = "none"  # "none", "autoregressive", "mlp_factored"
 
 
 @dataclass(frozen=True)
@@ -158,6 +159,11 @@ def validate_config(config: CausalBankConfig) -> None:
         raise ValueError("causal-bank substrate_poly_order must be 1, 2, or 3.")
     if config.block_stride < 1:
         raise ValueError("causal-bank block_stride must be >= 1.")
+    if config.patch_causal_decoder not in ("none", "autoregressive", "mlp_factored"):
+        raise ValueError(f"Unknown patch_causal_decoder: {config.patch_causal_decoder!r}")
+    if config.patch_size > 1 and config.patch_causal_decoder == "none":
+        import warnings
+        warnings.warn("patch_size > 1 with patch_causal_decoder='none' leaks future bytes within patches")
 
 
 def learnable_substrate_keys(config: CausalBankConfig) -> tuple[str, ...]:

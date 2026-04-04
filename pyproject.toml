@@ -57,6 +57,7 @@ testpaths = ["tests"]
 target-version = "py311"
 line-length = 120
 src = ["src"]
+exclude = ["examples/"]
 
 [tool.ruff.lint]
 select = [

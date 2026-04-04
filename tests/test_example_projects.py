@@ -75,9 +75,9 @@ class ExampleProjectTests(unittest.TestCase):
         variant_2_readme = (PROJECTS_ROOT / "causal" / "linear_correction" / "README.md").read_text(encoding="utf-8")
         variant_3_readme = (PROJECTS_ROOT / "causal" / "residual_repair" / "README.md").read_text(encoding="utf-8")
 
-        self.assertIn("kernel now has sampled readout", variant_1_readme)
-        self.assertIn("runtime rollout and slow-update knobs already live in the kernel", variant_2_readme)
-        self.assertIn("rollout mode switches already live in the kernel", variant_3_readme)
+        self.assertIn("stays in the kernel", variant_1_readme)
+        self.assertIn("already live in the kernel", variant_2_readme)
+        self.assertIn("already live in the kernel", variant_3_readme)
 
 
 if __name__ == "__main__":

@@ -12,9 +12,9 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-from open_predictive_coder.artifacts import ArtifactAccounting, ArtifactMetadata, ReplaySpan, make_replay_span
-from open_predictive_coder.codecs import ensure_tokens
-from open_predictive_coder.noncausal_reconstructive import (
+from decepticons.artifacts import ArtifactAccounting, ArtifactMetadata, ReplaySpan, make_replay_span
+from decepticons.codecs import ensure_tokens
+from decepticons.noncausal_reconstructive import (
     NoncausalReconstructiveAdapter,
     NoncausalReconstructiveConfig,
     NoncausalReconstructiveFitReport,

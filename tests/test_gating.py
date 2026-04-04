@@ -4,8 +4,8 @@ import unittest
 
 import numpy as np
 
-from open_predictive_coder.control import ControllerSummary, ControllerSummaryBuilder, ControllerSummaryConfig
-from open_predictive_coder.gating import PathwayGateConfig, PathwayGateController
+from decepticons.control import ControllerSummary, ControllerSummaryBuilder, ControllerSummaryConfig
+from decepticons.gating import PathwayGateConfig, PathwayGateController
 
 
 class PathwayGateTests(unittest.TestCase):

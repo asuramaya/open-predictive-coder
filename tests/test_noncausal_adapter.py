@@ -4,8 +4,8 @@ import unittest
 
 import numpy as np
 
-from open_predictive_coder.artifacts import ArtifactAccounting
-from open_predictive_coder.noncausal_reconstructive import (
+from decepticons.artifacts import ArtifactAccounting
+from decepticons.noncausal_reconstructive import (
     NoncausalReconstructiveAdapter,
     NoncausalReconstructiveConfig,
     NoncausalReconstructiveFitReport,

@@ -4,7 +4,7 @@ from dataclasses import fields
 import inspect
 import unittest
 
-import open_predictive_coder as opc
+import decepticons as opc
 
 
 def _field_names(cls: type[object]) -> set[str]:

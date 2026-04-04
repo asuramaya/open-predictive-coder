@@ -8,7 +8,7 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-from open_predictive_coder import (  # noqa: E402
+from decepticons import (  # noqa: E402
     OracleAnalysisAdapter as _OracleAnalysisAdapter,
     OracleAnalysisConfig as BidirectionalAnalysisConfig,
     OracleAnalysisPoint,

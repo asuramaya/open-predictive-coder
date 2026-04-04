@@ -1,14 +1,14 @@
 # Chronohorn Kernel Boundary
 
-This document defines the boundary between `open-predictive-coder` as the shared Python kernel and `Chronohorn` as the main runtime descendant system.
+This document defines the boundary between `decepticons` as the shared Python kernel and `Chronohorn` as the main runtime descendant system.
 
 The goal is to keep the kernel mechanism-first and keep Chronohorn responsible for training, replay, packing, evaluation, and fleet execution.
 
 ## Repository Roles
 
-### `open-predictive-coder`
+### `decepticons`
 
-`open-predictive-coder` remains the shared Python kernel and core.
+`decepticons` remains the shared Python kernel and core.
 
 It owns:
 

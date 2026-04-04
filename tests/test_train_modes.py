@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from open_predictive_coder.train_modes import TrainModeConfig
+from decepticons.train_modes import TrainModeConfig
 
 
 class TrainModeConfigTests(unittest.TestCase):

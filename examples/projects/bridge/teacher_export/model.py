@@ -12,18 +12,18 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-from open_predictive_coder.artifacts import ArtifactAccounting
-from open_predictive_coder.bidirectional_context import BidirectionalContextConfig, BidirectionalContextProbe, BidirectionalContextStats
-from open_predictive_coder.bridge_export import BridgeExportAdapter, BridgeExportConfig
-from open_predictive_coder.bridge_features import BridgeFeatureConfig
-from open_predictive_coder.codecs import ensure_tokens
-from open_predictive_coder.metrics import bits_per_byte_from_probabilities
-from open_predictive_coder.probability_diagnostics import (
+from decepticons.artifacts import ArtifactAccounting
+from decepticons.bidirectional_context import BidirectionalContextConfig, BidirectionalContextProbe, BidirectionalContextStats
+from decepticons.bridge_export import BridgeExportAdapter, BridgeExportConfig
+from decepticons.bridge_features import BridgeFeatureConfig
+from decepticons.codecs import ensure_tokens
+from decepticons.metrics import bits_per_byte_from_probabilities
+from decepticons.probability_diagnostics import (
     ProbabilityDiagnostics,
     ProbabilityDiagnosticsConfig,
     top2_margin,
 )
-from open_predictive_coder.teacher_export import TeacherExportAdapter, TeacherExportConfig as SharedTeacherExportConfig
+from decepticons.teacher_export import TeacherExportAdapter, TeacherExportConfig as SharedTeacherExportConfig
 
 
 def _softmax(logits: np.ndarray) -> np.ndarray:

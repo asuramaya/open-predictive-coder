@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from open_predictive_coder.bidirectional_context import (
+from decepticons.bidirectional_context import (
     BidirectionalContextConfig,
     BidirectionalContextProbe,
 )

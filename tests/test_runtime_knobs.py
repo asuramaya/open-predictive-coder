@@ -16,7 +16,7 @@ if str(SRC_ROOT) not in sys.path:
 if str(CAUSAL_ROOT) not in sys.path:
     sys.path.insert(0, str(CAUSAL_ROOT))
 
-from open_predictive_coder import HierarchicalSubstrate, TrainModeConfig, hierarchical_small  # noqa: E402
+from decepticons import HierarchicalSubstrate, TrainModeConfig, hierarchical_small  # noqa: E402
 from shared import build_hierarchical_stability_expert  # noqa: E402
 
 

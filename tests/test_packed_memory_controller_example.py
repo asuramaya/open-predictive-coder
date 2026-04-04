@@ -15,7 +15,7 @@ PROJECT = ROOT / "examples/projects/causal/packed_memory_controller"
 if str(PROJECT) not in sys.path:
     sys.path.insert(0, str(PROJECT))
 
-from open_predictive_coder.probability_diagnostics import (
+from decepticons.probability_diagnostics import (
     ProbabilityDiagnosticsConfig,
     probability_diagnostics,
 )

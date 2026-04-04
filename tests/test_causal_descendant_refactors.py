@@ -7,7 +7,7 @@ import subprocess
 import sys
 import unittest
 
-from open_predictive_coder import (
+from decepticons import (
     ExactContextMemory,
     LinearMemorySubstrate,
     NgramMemory,

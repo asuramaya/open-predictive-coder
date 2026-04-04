@@ -4,7 +4,7 @@ import unittest
 
 import numpy as np
 
-from open_predictive_coder.ngram_memory import NgramMemory, NgramMemoryConfig
+from decepticons.ngram_memory import NgramMemory, NgramMemoryConfig
 
 
 class NgramMemoryTests(unittest.TestCase):

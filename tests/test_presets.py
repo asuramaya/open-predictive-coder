@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import unittest
 
-from open_predictive_coder import ByteLatentPredictiveCoder
-from open_predictive_coder.presets import delay_small, echo_state_small, hierarchical_small, mixed_memory_small
+from decepticons import ByteLatentPredictiveCoder
+from decepticons.presets import delay_small, echo_state_small, hierarchical_small, mixed_memory_small
 
 
 class PresetTests(unittest.TestCase):

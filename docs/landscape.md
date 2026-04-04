@@ -252,7 +252,7 @@ Across the projects above, the missing combined surface is:
 - reservoir-style fixed recurrent memory instead of only trainable latent stacks
 - a small readable reference implementation with package docs, tests, and CLI
 
-That is the wedge for `open-predictive-coder`.
+That is the wedge for `decepticons`.
 
 ## Positioning For This Repo
 
@@ -296,14 +296,14 @@ See [`lineage.md`](./lineage.md) for the attribution rule and why these are name
 
 The intended interpretation is:
 
-- `open-predictive-coder` is a reusable library layer for work in this family
+- `decepticons` is a reusable library layer for work in this family
 - those repos are examples of downstream pattern types the library is meant to serve
 - the current implementation only covers the `byte-latent` reference path directly
 - this repo is not presented as an adaptation of those projects even though it learns from their documentation
 
 ## Naming Notes
 
-The exact surface `open-predictive-coder` did not show up as an existing obvious GitHub or PyPI collision during this pass.
+The exact surface `decepticons` did not show up as an existing obvious GitHub or PyPI collision during this pass.
 However, shorter names are already crowded or ambiguous:
 
 - `pypc` is taken on PyPI by an unrelated package

@@ -4,8 +4,8 @@ import unittest
 
 import numpy as np
 
-from open_predictive_coder.config import DelayLineConfig, MixedMemoryConfig, ReservoirConfig
-from open_predictive_coder.mixed_memory import MixedMemorySubstrate
+from decepticons.config import DelayLineConfig, MixedMemoryConfig, ReservoirConfig
+from decepticons.mixed_memory import MixedMemorySubstrate
 
 
 def small_config() -> MixedMemoryConfig:

@@ -8,8 +8,8 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-from open_predictive_coder import HierarchicalFeatureView, HierarchicalSubstrate, hierarchical_small
-from open_predictive_coder import TrainModeConfig
+from decepticons import HierarchicalFeatureView, HierarchicalSubstrate, hierarchical_small
+from decepticons import TrainModeConfig
 from model import HierarchicalPredictiveConfig, HierarchicalPredictiveModel
 
 

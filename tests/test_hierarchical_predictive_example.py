@@ -7,7 +7,7 @@ import unittest
 
 import numpy as np
 
-from open_predictive_coder import ByteCodec, TrainModeConfig
+from decepticons import ByteCodec, TrainModeConfig
 
 
 PROJECTS_ROOT = Path(__file__).resolve().parents[1] / "examples" / "projects"

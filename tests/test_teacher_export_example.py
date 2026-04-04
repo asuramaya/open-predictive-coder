@@ -8,7 +8,7 @@ import sys
 import unittest
 
 import numpy as np
-from open_predictive_coder.teacher_export import TeacherExportAdapter
+from decepticons.teacher_export import TeacherExportAdapter
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]

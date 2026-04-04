@@ -8,7 +8,7 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-from open_predictive_coder import ByteCodec  # noqa: E402
+from decepticons import ByteCodec  # noqa: E402
 from model import BidirectionalAnalysisConfig, BidirectionalAnalysisModel  # noqa: E402
 
 

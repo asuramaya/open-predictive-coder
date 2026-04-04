@@ -22,7 +22,7 @@ _SRC_ROOT = Path(__file__).resolve().parents[2] / "src"
 if _SRC_ROOT.exists() and str(_SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(_SRC_ROOT))
 
-from open_predictive_coder import (
+from decepticons import (
     DelayLineConfig,
     DelayLineSubstrate,
     EchoStateSubstrate,
@@ -37,7 +37,7 @@ from open_predictive_coder import (
     RidgeReadout,
     ensure_tokens,
 )
-from open_predictive_coder.metrics import bits_per_byte_from_probabilities, softmax
+from decepticons.metrics import bits_per_byte_from_probabilities, softmax
 
 
 def _coerce_sequences(

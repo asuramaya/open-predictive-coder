@@ -4,8 +4,8 @@ import unittest
 
 import numpy as np
 
-from open_predictive_coder.control import ControllerSummary, ControllerSummaryBuilder
-from open_predictive_coder.routing import RoutingConfig, SummaryRouter
+from decepticons.control import ControllerSummary, ControllerSummaryBuilder
+from decepticons.routing import RoutingConfig, SummaryRouter
 
 
 class RoutingTests(unittest.TestCase):

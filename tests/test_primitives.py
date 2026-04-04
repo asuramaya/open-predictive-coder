@@ -4,7 +4,7 @@ import unittest
 
 import numpy as np
 
-from open_predictive_coder import (
+from decepticons import (
     AdaptiveSegmenter,
     ByteLatentFeatureView,
     ByteLatentPredictiveCoder,
@@ -12,7 +12,7 @@ from open_predictive_coder import (
     LatentCommitter,
     OpenPredictiveCoderConfig,
 )
-from open_predictive_coder.config import LatentConfig, ReservoirConfig, SegmenterConfig
+from decepticons.config import LatentConfig, ReservoirConfig, SegmenterConfig
 
 
 def small_config() -> OpenPredictiveCoderConfig:

@@ -11,7 +11,7 @@ _SRC_ROOT = Path(__file__).resolve().parents[4] / "src"
 if _SRC_ROOT.exists() and str(_SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(_SRC_ROOT))
 
-from open_predictive_coder import (
+from decepticons import (
     ByteLatentPredictiveCoder,
     ExactContextConfig,
     ExactContextMemory,
@@ -20,7 +20,7 @@ from open_predictive_coder import (
     SupportWeightedMixer,
     ensure_tokens,
 )
-from open_predictive_coder.config import LatentConfig, ReservoirConfig, SegmenterConfig
+from decepticons.config import LatentConfig, ReservoirConfig, SegmenterConfig
 
 
 def _coerce_tokens(data: str | bytes | bytearray | memoryview | np.ndarray | Sequence[int]) -> np.ndarray:

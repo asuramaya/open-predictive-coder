@@ -1,6 +1,6 @@
 # OPC Export ABI
 
-This document is the first draft of the stable export contract between `open-predictive-coder` and descendant systems such as `Chronohorn`.
+This document is the first draft of the stable export contract between `decepticons` and descendant systems such as `Chronohorn`.
 
 The goal is simple:
 

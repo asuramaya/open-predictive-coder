@@ -4,7 +4,7 @@ import unittest
 
 import numpy as np
 
-from open_predictive_coder import ByteCodec, ensure_byte_tokens, ensure_tokens
+from decepticons import ByteCodec, ensure_byte_tokens, ensure_tokens
 
 
 class CodecTests(unittest.TestCase):

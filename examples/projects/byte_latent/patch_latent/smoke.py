@@ -8,7 +8,7 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-from open_predictive_coder import ByteCodec
+from decepticons import ByteCodec
 from model import PatchLatentByteModel, PatchLatentConfig
 
 

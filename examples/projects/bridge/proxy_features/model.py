@@ -12,7 +12,7 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-from open_predictive_coder import ByteCodec, BridgeFeatureArrays, BridgeFeatureConfig, bridge_feature_arrays, ensure_tokens
+from decepticons import ByteCodec, BridgeFeatureArrays, BridgeFeatureConfig, bridge_feature_arrays, ensure_tokens
 
 
 def _normalized_matrix(rng: np.random.Generator, rows: int, cols: int, scale: float) -> np.ndarray:

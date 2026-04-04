@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from open_predictive_coder.artifacts import ArtifactAccounting, ArtifactMetadata, ReplaySpan
+from decepticons.artifacts import ArtifactAccounting, ArtifactMetadata, ReplaySpan
 
 
 class ArtifactMetadataTests(unittest.TestCase):

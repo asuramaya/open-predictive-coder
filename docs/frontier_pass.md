@@ -6,7 +6,7 @@ This document captures the current frontier pass against the live sibling descen
 - `blinx`
 - `giddy-up`
 
-The point is not to copy those repos into `open-predictive-coder`. The point is to read the current frontier and ask:
+The point is not to copy those repos into `decepticons`. The point is to read the current frontier and ask:
 
 1. what is still descendant-only policy
 2. what is now repeated enough to be a candidate kernel mechanism
@@ -84,16 +84,16 @@ So the bridge frontier is currently pushing on:
 The current kernel and descendant examples already cover a meaningful part of that frontier:
 
 - packed statistical memory in simplified form:
-  - [`ngram_memory.py`](../src/open_predictive_coder/ngram_memory.py)
+  - [`ngram_memory.py`](../src/decepticons/ngram_memory.py)
 - exact support-aware causal repair:
-  - [`exact_context.py`](../src/open_predictive_coder/exact_context.py)
+  - [`exact_context.py`](../src/decepticons/exact_context.py)
 - bridge proxy features and export:
-  - [`bridge_features.py`](../src/open_predictive_coder/bridge_features.py)
-  - [`bridge_export.py`](../src/open_predictive_coder/bridge_export.py)
+  - [`bridge_features.py`](../src/decepticons/bridge_features.py)
+  - [`bridge_export.py`](../src/decepticons/bridge_export.py)
 - oracle-side bidirectional support probing:
-  - [`bidirectional_context.py`](../src/open_predictive_coder/bidirectional_context.py)
+  - [`bidirectional_context.py`](../src/decepticons/bidirectional_context.py)
 - score-to-span reuse:
-  - [`span_selection.py`](../src/open_predictive_coder/span_selection.py)
+  - [`span_selection.py`](../src/decepticons/span_selection.py)
 - descendant rebuilds:
   - `examples/projects/causal/*`
   - `examples/projects/causal/packed_memory_controller`
@@ -214,4 +214,4 @@ That means:
 - `BLINX` defines the noncausal imagination limit for now
 - `Giddy-Up` defines the legal bridge/oracle imagination limit for now
 
-`open-predictive-coder` should keep rebuilding those shapes as example descendants and only extracting the seams that survive repetition.
+`decepticons` should keep rebuilding those shapes as example descendants and only extracting the seams that survive repetition.

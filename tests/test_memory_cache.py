@@ -4,7 +4,7 @@ import unittest
 
 import numpy as np
 
-from open_predictive_coder import (
+from decepticons import (
     ExactContextCache,
     ExactContextConfig,
     ExactContextMemory,

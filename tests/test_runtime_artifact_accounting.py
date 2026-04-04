@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import unittest
 
-from open_predictive_coder.artifacts import ArtifactMetadata, make_artifact_accounting, make_replay_span
-from open_predictive_coder.artifacts_audits import audit_artifact, summarize_artifact_audits
+from decepticons.artifacts import ArtifactMetadata, make_artifact_accounting, make_replay_span
+from decepticons.artifacts_audits import audit_artifact, summarize_artifact_audits
 
 
 class RuntimeArtifactAccountingTests(unittest.TestCase):

@@ -10,7 +10,7 @@ if str(SRC) not in sys.path:
 
 import numpy as np
 
-from open_predictive_coder import (
+from decepticons import (
     ByteCodec,
     HierarchicalFeatureView,
     HierarchicalSubstrate,

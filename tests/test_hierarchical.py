@@ -4,8 +4,8 @@ import unittest
 
 import numpy as np
 
-from open_predictive_coder.config import HierarchicalSubstrateConfig
-from open_predictive_coder.hierarchical import HierarchicalSubstrate
+from decepticons.config import HierarchicalSubstrateConfig
+from decepticons.hierarchical import HierarchicalSubstrate
 
 
 def small_config(slow_stride: int = 2) -> HierarchicalSubstrateConfig:

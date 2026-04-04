@@ -1,6 +1,6 @@
 # Kernel Matrix
 
-This matrix lays out the kernel-first build order for `open-predictive-coder` using three sources of guidance:
+This matrix lays out the kernel-first build order for `decepticons` using three sources of guidance:
 
 - the upstream workspace thesis that the reusable center is the literal core from which the downstream systems evolve
 - the generalized downstream pattern language in [`downstream_patterns.md`](./downstream_patterns.md)

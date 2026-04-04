@@ -12,7 +12,7 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-from open_predictive_coder import (
+from decepticons import (
     ExactContextCache,
     ExactContextConfig,
     ExactContextFitReport,

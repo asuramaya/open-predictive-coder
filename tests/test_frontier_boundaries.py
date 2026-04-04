@@ -5,10 +5,10 @@ from pathlib import Path
 import inspect
 import unittest
 
-import open_predictive_coder as opc
+import decepticons as opc
 
 
-SRC_ROOT = Path(__file__).resolve().parents[1] / "src" / "open_predictive_coder"
+SRC_ROOT = Path(__file__).resolve().parents[1] / "src" / "decepticons"
 
 
 def _field_names(cls: type[object]) -> set[str]:

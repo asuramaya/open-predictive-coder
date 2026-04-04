@@ -11,7 +11,7 @@ _SRC_ROOT = Path(__file__).resolve().parents[4] / "src"
 if _SRC_ROOT.exists() and str(_SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(_SRC_ROOT))
 
-from open_predictive_coder import (
+from decepticons import (
     ExactContextConfig,
     ExactContextFitReport,
     ExactContextMemory,
@@ -25,8 +25,8 @@ from open_predictive_coder import (
     ensure_tokens,
     replay_spans_from_scores,
 )
-from open_predictive_coder.metrics import bits_per_byte_from_probabilities
-from open_predictive_coder.probability_diagnostics import (
+from decepticons.metrics import bits_per_byte_from_probabilities
+from decepticons.probability_diagnostics import (
     ProbabilityDiagnosticsConfig,
     probability_diagnostics,
 )

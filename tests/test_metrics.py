@@ -4,7 +4,7 @@ import unittest
 
 import numpy as np
 
-from open_predictive_coder import bits_per_byte_from_probabilities, bits_per_token_from_probabilities
+from decepticons import bits_per_byte_from_probabilities, bits_per_token_from_probabilities
 
 
 class MetricsTests(unittest.TestCase):

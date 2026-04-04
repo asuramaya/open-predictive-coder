@@ -4,7 +4,7 @@ import unittest
 
 import numpy as np
 
-from open_predictive_coder import ReplaySpan, ScoredSpan, SpanSelectionConfig, replay_spans_from_scores, select_scored_spans
+from decepticons import ReplaySpan, ScoredSpan, SpanSelectionConfig, replay_spans_from_scores, select_scored_spans
 
 
 class SpanSelectionTests(unittest.TestCase):

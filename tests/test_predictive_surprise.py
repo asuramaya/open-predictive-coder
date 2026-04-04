@@ -4,7 +4,7 @@ import unittest
 
 import numpy as np
 
-from open_predictive_coder.predictive_surprise import (
+from decepticons.predictive_surprise import (
     PredictionState,
     PredictiveSurpriseConfig,
     PredictiveSurpriseController,

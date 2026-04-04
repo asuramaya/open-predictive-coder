@@ -4,7 +4,7 @@ import unittest
 
 import numpy as np
 
-from open_predictive_coder.learned_segmentation import (
+from decepticons.learned_segmentation import (
     BoundaryFeatures,
     BoundaryScorerConfig,
     LearnedBoundaryScorer,

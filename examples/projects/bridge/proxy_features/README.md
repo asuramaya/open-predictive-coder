@@ -4,7 +4,7 @@ This folder is a small bridge-style example that turns a causal probability stre
 shared bridge features.
 
 It is intentionally project-local. The shared kernel primitive is the bridge transform in
-[`bridge_feature_arrays`](../../../../src/open_predictive_coder/bridge_features.py).
+[`bridge_feature_arrays`](../../../../src/decepticons/bridge_features.py).
 
 Kernel primitives used here:
 

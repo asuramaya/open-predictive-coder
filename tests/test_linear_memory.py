@@ -4,7 +4,7 @@ import unittest
 
 import numpy as np
 
-from open_predictive_coder import LinearMemoryConfig, LinearMemorySubstrate
+from decepticons import LinearMemoryConfig, LinearMemorySubstrate
 
 
 class LinearMemoryTests(unittest.TestCase):

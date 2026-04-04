@@ -16,7 +16,7 @@ if str(SRC) not in sys.path:
 if str(HERE) not in sys.path:
     sys.path.insert(0, str(HERE))
 
-from open_predictive_coder import (
+from decepticons import (
     ControllerSummary,
     ControllerSummaryBuilder,
     ControllerSummaryConfig,
@@ -42,7 +42,7 @@ from open_predictive_coder import (
     SummaryRouter,
     TrainModeConfig,
 )
-from open_predictive_coder.metrics import bits_per_byte_from_logits, softmax
+from decepticons.metrics import bits_per_byte_from_logits, softmax
 from predictor import HierarchicalPredictor, HierarchicalPredictorConfig
 
 

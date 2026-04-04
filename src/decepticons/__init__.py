@@ -1,4 +1,4 @@
-"""Public API for the open_predictive_coder kernel.
+"""Public API for the decepticons kernel.
 
 This package is the shared mechanism layer for downstream systems such as
 Chronohorn: reusable substrates, control primitives, memory blocks, readouts,
@@ -115,7 +115,7 @@ from .learned_segmentation import (
 from .hierarchical_views import HierarchicalFeatureView, HierarchicalSummary
 from .linear_views import LinearMemoryFeatureView
 from .memory_cache import ExactContextCache, MemoryPredictionRecord, MemoryPredictionSummary, StatisticalBackoffCache
-from open_predictive_coder.memory_protocol import (
+from decepticons.memory_protocol import (
     MEMORY_KINDS,
     MemoryAttachmentConfig,
 )

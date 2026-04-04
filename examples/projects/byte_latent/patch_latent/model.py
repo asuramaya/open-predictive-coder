@@ -12,7 +12,7 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-from open_predictive_coder import (
+from decepticons import (
     ByteLatentFeatureView,
     FitReport,
     LatentConfig,
@@ -25,14 +25,14 @@ from open_predictive_coder import (
     SequenceReport,
     ensure_tokens,
 )
-from open_predictive_coder.metrics import bits_per_byte_from_logits, softmax
-from open_predictive_coder.patch_latent_blocks import (
+from decepticons.metrics import bits_per_byte_from_logits, softmax
+from decepticons.patch_latent_blocks import (
     GlobalLocalBridge,
     GlobalLocalBridgeConfig,
     LocalByteEncoder,
     LocalByteEncoderConfig,
 )
-from open_predictive_coder.patching import AdaptiveSegmenter
+from decepticons.patching import AdaptiveSegmenter
 
 
 def _normalized_matrix(rng: np.random.Generator, rows: int, cols: int, scale: float = 1.0) -> np.ndarray:

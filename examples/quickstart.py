@@ -1,13 +1,13 @@
 from __future__ import annotations
 
-from open_predictive_coder import (
+from decepticons import (
     ByteCodec,
     ByteLatentPredictiveCoder,
     OpenPredictiveCoderConfig,
     ReservoirConfig,
     SegmenterConfig,
 )
-from open_predictive_coder.config import LatentConfig
+from decepticons.config import LatentConfig
 
 
 def quickstart_config() -> OpenPredictiveCoderConfig:

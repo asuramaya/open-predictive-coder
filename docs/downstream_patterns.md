@@ -1,7 +1,7 @@
 # Downstream Patterns
 
 This document extracts reusable library shapes from related descendant projects, but renames them by idea instead of
-by codename. The goal is to keep `open-predictive-coder` legible as a library surface even if the surrounding project
+by codename. The goal is to keep `decepticons` legible as a library surface even if the surrounding project
 names change.
 
 Use [`lineage.md`](./lineage.md) for the attribution rule behind the non-vendored sources named here.

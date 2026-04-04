@@ -10,12 +10,12 @@ It stays project-local on purpose:
 
 Kernel pieces reused here:
 
-- [`bridge_feature_arrays`](/Users/asuramaya/Code/carving_machine_v3/open-predictive-coder/src/open_predictive_coder/bridge_features.py)
+- [`bridge_feature_arrays`](/Users/asuramaya/Code/carving_machine_v3/decepticons/src/decepticons/bridge_features.py)
 
 Entry points:
 
-- [`probe.py`](/Users/asuramaya/Code/carving_machine_v3/open-predictive-coder/examples/projects/bridge/feature_export/probe.py)
-- [`smoke.py`](/Users/asuramaya/Code/carving_machine_v3/open-predictive-coder/examples/projects/bridge/feature_export/smoke.py)
+- [`probe.py`](/Users/asuramaya/Code/carving_machine_v3/decepticons/examples/projects/bridge/feature_export/probe.py)
+- [`smoke.py`](/Users/asuramaya/Code/carving_machine_v3/decepticons/examples/projects/bridge/feature_export/smoke.py)
 
 Run from the repo root:
 

@@ -4,8 +4,8 @@ import unittest
 
 import numpy as np
 
-from open_predictive_coder.config import ReservoirConfig
-from open_predictive_coder.reservoir import EchoStateReservoir, build_recurrent_matrix, spectral_radius
+from decepticons.config import ReservoirConfig
+from decepticons.reservoir import EchoStateReservoir, build_recurrent_matrix, spectral_radius
 
 
 class ReservoirTests(unittest.TestCase):

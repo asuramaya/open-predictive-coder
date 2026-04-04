@@ -4,7 +4,7 @@ import unittest
 
 import numpy as np
 
-from open_predictive_coder.bridge_features import BridgeFeatureConfig, bridge_feature_arrays
+from decepticons.bridge_features import BridgeFeatureConfig, bridge_feature_arrays
 
 
 class BridgeFeatureTests(unittest.TestCase):

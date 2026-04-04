@@ -4,8 +4,8 @@ import unittest
 
 import numpy as np
 
-from open_predictive_coder.config import SampledReadoutBandConfig, SampledReadoutConfig
-from open_predictive_coder.sampled_readout import SampledMultiscaleReadout
+from decepticons.config import SampledReadoutBandConfig, SampledReadoutConfig
+from decepticons.sampled_readout import SampledMultiscaleReadout
 
 
 class SampledReadoutTests(unittest.TestCase):

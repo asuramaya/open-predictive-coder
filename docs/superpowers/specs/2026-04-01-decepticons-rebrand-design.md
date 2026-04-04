@@ -8,8 +8,8 @@ Rename the library from "Open Predictive Coder" / "OPC" to "Decepticons". This i
 
 | Pattern | Replacement | Scope |
 |---------|-------------|-------|
-| `open_predictive_coder` | `decepticons` | Python module name, all imports, internal references |
-| `open-predictive-coder` | `decepticons` | Package name (pyproject.toml, hyphenated references in docs) |
+| `decepticons` | `decepticons` | Python module name, all imports, internal references |
+| `decepticons` | `decepticons` | Package name (pyproject.toml, hyphenated references in docs) |
 | `OpenPredictiveCoderConfig` | `DecepticonsConfig` | Class name + all usages |
 | `OpenPredictiveCoder` | `Decepticons` | Only where it appears as part of the Config class name — not as free text in docs describing the project generically |
 | `opc` (CLI entry point) | `decepticons` | pyproject.toml `[project.scripts]`, cli.py references, docs/README CLI examples |
@@ -18,20 +18,20 @@ Rename the library from "Open Predictive Coder" / "OPC" to "Decepticons". This i
 ## What Changes
 
 ### 1. Directory rename
-- `src/open_predictive_coder/` → `src/decepticons/`
+- `src/decepticons/` → `src/decepticons/`
 
 ### 2. pyproject.toml
-- `name = "open-predictive-coder"` → `name = "decepticons"`
+- `name = "decepticons"` → `name = "decepticons"`
 - `[project.scripts]`: `opc = ...` → `decepticons = ...`
 - Package directory references
 
 ### 3. All Python files under `src/decepticons/`
-- Update any self-referencing imports (e.g., `from open_predictive_coder.x import y` → `from decepticons.x import y`)
+- Update any self-referencing imports (e.g., `from decepticons.x import y` → `from decepticons.x import y`)
 - Rename `OpenPredictiveCoderConfig` → `DecepticonsConfig` in `config.py` and all usages
 
 ### 4. Tests (`tests/`)
-- All `import open_predictive_coder` → `import decepticons`
-- All `from open_predictive_coder` → `from decepticons`
+- All `import decepticons` → `import decepticons`
+- All `from decepticons` → `from decepticons`
 
 ### 5. Examples (`examples/`)
 - All imports updated
@@ -62,9 +62,9 @@ Rename the library from "Open Predictive Coder" / "OPC" to "Decepticons". This i
 
 ## Execution Order
 
-1. Rename the directory `src/open_predictive_coder/` → `src/decepticons/`
-2. Find-and-replace `open_predictive_coder` → `decepticons` across all `.py` files
-3. Find-and-replace `open-predictive-coder` → `decepticons` in pyproject.toml and docs
+1. Rename the directory `src/decepticons/` → `src/decepticons/`
+2. Find-and-replace `decepticons` → `decepticons` across all `.py` files
+3. Find-and-replace `decepticons` → `decepticons` in pyproject.toml and docs
 4. Rename `OpenPredictiveCoderConfig` → `DecepticonsConfig` across all files
 5. Update CLI entry point (`opc` → `decepticons`) in pyproject.toml and docs
 6. Update prose references (README, docs, comments) from "Open Predictive Coder" / "OPC" to "Decepticons"

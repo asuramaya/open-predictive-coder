@@ -4,8 +4,8 @@ import unittest
 
 import numpy as np
 
-from open_predictive_coder.control import ControllerSummary
-from open_predictive_coder.modulation import HormoneModulationConfig, HormoneModulator
+from decepticons.control import ControllerSummary
+from decepticons.modulation import HormoneModulationConfig, HormoneModulator
 
 
 class HormoneModulationTests(unittest.TestCase):

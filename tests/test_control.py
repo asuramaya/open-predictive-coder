@@ -4,7 +4,7 @@ import unittest
 
 import numpy as np
 
-from open_predictive_coder.control import (
+from decepticons.control import (
     ControllerSummaryBuilder,
     ControllerSummaryConfig,
     stack_summaries,

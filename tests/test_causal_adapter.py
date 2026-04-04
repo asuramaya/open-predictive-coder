@@ -5,17 +5,17 @@ import unittest
 
 import numpy as np
 
-from open_predictive_coder.artifacts import ArtifactAccounting
-from open_predictive_coder.exact_context import (
+from decepticons.artifacts import ArtifactAccounting
+from decepticons.exact_context import (
     ExactContextConfig,
     ExactContextMemory,
     SupportMixConfig,
     SupportWeightedMixer,
 )
-from open_predictive_coder.ngram_memory import NgramMemory, NgramMemoryConfig
+from decepticons.ngram_memory import NgramMemory, NgramMemoryConfig
 
 
-MODULE_NAME = "open_predictive_coder.causal_predictive"
+MODULE_NAME = "decepticons.causal_predictive"
 CLASS_NAMES = ("CausalPredictiveAdapter", "CausalPredictiveModel")
 
 
@@ -148,7 +148,7 @@ class CausalAdapterSurfaceTests(unittest.TestCase):
 
 class CausalKernelSplitTests(unittest.TestCase):
     def test_kernel_exports_causal_primitives_but_not_descendant_policy(self) -> None:
-        import open_predictive_coder as opc
+        import decepticons as opc
 
         self.assertTrue(hasattr(opc, "ExactContextMemory"))
         self.assertTrue(hasattr(opc, "SupportWeightedMixer"))

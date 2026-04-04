@@ -23,7 +23,7 @@ The repo is intentionally split into three layers.
 
 ### 1. Kernel
 
-The `src/open_predictive_coder/` package contains reusable mechanisms only.
+The `src/decepticons/` package contains reusable mechanisms only.
 
 It owns:
 
@@ -102,68 +102,68 @@ The kernel is easiest to understand by category rather than by filename order.
 
 ### Foundation
 
-- [`codecs.py`](../src/open_predictive_coder/codecs.py)
-- [`config.py`](../src/open_predictive_coder/config.py)
-- [`metrics.py`](../src/open_predictive_coder/metrics.py)
+- [`codecs.py`](../src/decepticons/codecs.py)
+- [`config.py`](../src/decepticons/config.py)
+- [`metrics.py`](../src/decepticons/metrics.py)
 
 ### Substrates
 
-- [`reservoir.py`](../src/open_predictive_coder/reservoir.py)
-- [`delay.py`](../src/open_predictive_coder/delay.py)
-- [`linear_memory.py`](../src/open_predictive_coder/linear_memory.py)
-- [`oscillatory_memory.py`](../src/open_predictive_coder/oscillatory_memory.py)
-- [`mixed_memory.py`](../src/open_predictive_coder/mixed_memory.py)
-- [`hierarchical.py`](../src/open_predictive_coder/hierarchical.py)
-- [`substrates.py`](../src/open_predictive_coder/substrates.py)
-- [`factories.py`](../src/open_predictive_coder/factories.py)
+- [`reservoir.py`](../src/decepticons/reservoir.py)
+- [`delay.py`](../src/decepticons/delay.py)
+- [`linear_memory.py`](../src/decepticons/linear_memory.py)
+- [`oscillatory_memory.py`](../src/decepticons/oscillatory_memory.py)
+- [`mixed_memory.py`](../src/decepticons/mixed_memory.py)
+- [`hierarchical.py`](../src/decepticons/hierarchical.py)
+- [`substrates.py`](../src/decepticons/substrates.py)
+- [`factories.py`](../src/decepticons/factories.py)
 
 ### Control And Side Channels
 
-- [`control.py`](../src/open_predictive_coder/control.py)
-- [`gating.py`](../src/open_predictive_coder/gating.py)
-- [`routing.py`](../src/open_predictive_coder/routing.py)
-- [`modulation.py`](../src/open_predictive_coder/modulation.py)
-- [`predictive_surprise.py`](../src/open_predictive_coder/predictive_surprise.py)
+- [`control.py`](../src/decepticons/control.py)
+- [`gating.py`](../src/decepticons/gating.py)
+- [`routing.py`](../src/decepticons/routing.py)
+- [`modulation.py`](../src/decepticons/modulation.py)
+- [`predictive_surprise.py`](../src/decepticons/predictive_surprise.py)
 
 ### Memory, Latents, And Views
 
-- [`bridge_features.py`](../src/open_predictive_coder/bridge_features.py)
-- [`bidirectional_context.py`](../src/open_predictive_coder/bidirectional_context.py)
-- [`exact_context.py`](../src/open_predictive_coder/exact_context.py)
-- [`latents.py`](../src/open_predictive_coder/latents.py)
-- [`learned_segmentation.py`](../src/open_predictive_coder/learned_segmentation.py)
-- [`memory_cache.py`](../src/open_predictive_coder/memory_cache.py)
-- [`ngram_memory.py`](../src/open_predictive_coder/ngram_memory.py)
-- [`statistical_backoff.py`](../src/open_predictive_coder/statistical_backoff.py)
-- [`patch_latent_blocks.py`](../src/open_predictive_coder/patch_latent_blocks.py)
-- [`probability_diagnostics.py`](../src/open_predictive_coder/probability_diagnostics.py)
-- [`segmenters.py`](../src/open_predictive_coder/segmenters.py)
-- [`views.py`](../src/open_predictive_coder/views.py)
-- [`linear_views.py`](../src/open_predictive_coder/linear_views.py)
-- [`hierarchical_views.py`](../src/open_predictive_coder/hierarchical_views.py)
-- [`sampled_readout.py`](../src/open_predictive_coder/sampled_readout.py)
+- [`bridge_features.py`](../src/decepticons/bridge_features.py)
+- [`bidirectional_context.py`](../src/decepticons/bidirectional_context.py)
+- [`exact_context.py`](../src/decepticons/exact_context.py)
+- [`latents.py`](../src/decepticons/latents.py)
+- [`learned_segmentation.py`](../src/decepticons/learned_segmentation.py)
+- [`memory_cache.py`](../src/decepticons/memory_cache.py)
+- [`ngram_memory.py`](../src/decepticons/ngram_memory.py)
+- [`statistical_backoff.py`](../src/decepticons/statistical_backoff.py)
+- [`patch_latent_blocks.py`](../src/decepticons/patch_latent_blocks.py)
+- [`probability_diagnostics.py`](../src/decepticons/probability_diagnostics.py)
+- [`segmenters.py`](../src/decepticons/segmenters.py)
+- [`views.py`](../src/decepticons/views.py)
+- [`linear_views.py`](../src/decepticons/linear_views.py)
+- [`hierarchical_views.py`](../src/decepticons/hierarchical_views.py)
+- [`sampled_readout.py`](../src/decepticons/sampled_readout.py)
 
 ### Readouts, Experts, And Runtime
 
-- [`readout.py`](../src/open_predictive_coder/readout.py)
-- [`readouts.py`](../src/open_predictive_coder/readouts.py)
-- [`experts.py`](../src/open_predictive_coder/experts.py)
-- [`runtime.py`](../src/open_predictive_coder/runtime.py)
-- [`eval.py`](../src/open_predictive_coder/eval.py)
-- [`span_selection.py`](../src/open_predictive_coder/span_selection.py)
-- [`train_eval.py`](../src/open_predictive_coder/train_eval.py)
-- [`train_modes.py`](../src/open_predictive_coder/train_modes.py)
-- [`artifacts.py`](../src/open_predictive_coder/artifacts.py)
+- [`readout.py`](../src/decepticons/readout.py)
+- [`readouts.py`](../src/decepticons/readouts.py)
+- [`experts.py`](../src/decepticons/experts.py)
+- [`runtime.py`](../src/decepticons/runtime.py)
+- [`eval.py`](../src/decepticons/eval.py)
+- [`span_selection.py`](../src/decepticons/span_selection.py)
+- [`train_eval.py`](../src/decepticons/train_eval.py)
+- [`train_modes.py`](../src/decepticons/train_modes.py)
+- [`artifacts.py`](../src/decepticons/artifacts.py)
 
 ### Adapters And Presets
 
-- [`adapters.py`](../src/open_predictive_coder/adapters.py)
-- [`causal_predictive.py`](../src/open_predictive_coder/causal_predictive.py)
-- [`bridge_export.py`](../src/open_predictive_coder/bridge_export.py)
-- [`oracle_analysis.py`](../src/open_predictive_coder/oracle_analysis.py)
-- [`model.py`](../src/open_predictive_coder/model.py)
-- [`presets.py`](../src/open_predictive_coder/presets.py)
-- [`cli.py`](../src/open_predictive_coder/cli.py)
+- [`adapters.py`](../src/decepticons/adapters.py)
+- [`causal_predictive.py`](../src/decepticons/causal_predictive.py)
+- [`bridge_export.py`](../src/decepticons/bridge_export.py)
+- [`oracle_analysis.py`](../src/decepticons/oracle_analysis.py)
+- [`model.py`](../src/decepticons/model.py)
+- [`presets.py`](../src/decepticons/presets.py)
+- [`cli.py`](../src/decepticons/cli.py)
 
 ## Promotion Rule
 

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from open_predictive_coder import (
+from decepticons import (
     BidirectionalContextConfig,
     ByteCodec,
     OracleAnalysisAdapter,
@@ -10,7 +10,7 @@ from open_predictive_coder import (
     OracleAnalysisReport,
     TrainModeConfig,
 )
-from open_predictive_coder.train_eval import evaluate_dataset
+from decepticons.train_eval import evaluate_dataset
 
 
 class OracleAdapterTests(unittest.TestCase):

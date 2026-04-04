@@ -4,9 +4,9 @@ import unittest
 
 import numpy as np
 
-from open_predictive_coder.config import HierarchicalSubstrateConfig
-from open_predictive_coder.hierarchical import HierarchicalSubstrate
-from open_predictive_coder.hierarchical_views import HierarchicalFeatureView
+from decepticons.config import HierarchicalSubstrateConfig
+from decepticons.hierarchical import HierarchicalSubstrate
+from decepticons.hierarchical_views import HierarchicalFeatureView
 
 
 def small_config() -> HierarchicalSubstrateConfig:

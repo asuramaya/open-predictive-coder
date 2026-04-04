@@ -4,7 +4,7 @@ import unittest
 
 import numpy as np
 
-from open_predictive_coder.oscillatory_memory import OscillatoryMemoryConfig, OscillatoryMemorySubstrate
+from decepticons.oscillatory_memory import OscillatoryMemoryConfig, OscillatoryMemorySubstrate
 
 
 class OscillatoryMemorySubstrateTests(unittest.TestCase):

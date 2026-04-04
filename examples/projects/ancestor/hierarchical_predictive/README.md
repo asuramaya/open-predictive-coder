@@ -1,6 +1,6 @@
 # hierarchical_predictive
 
-This folder is a runnable example project for the kernel layer in `open-predictive-coder`.
+This folder is a runnable example project for the kernel layer in `decepticons`.
 
 It is a reconstruction inside this repo, not a vendored copy of the upstream ancestor code.
 

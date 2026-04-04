@@ -3,11 +3,11 @@ from __future__ import annotations
 from dataclasses import fields
 import unittest
 
-import open_predictive_coder as opc
-from open_predictive_coder.bidirectional_context import BidirectionalContextConfig, BidirectionalContextStats
-from open_predictive_coder.bridge_features import BridgeFeatureArrays, BridgeFeatureConfig
-from open_predictive_coder.factories import create_substrate
-from open_predictive_coder.ngram_memory import NgramMemoryConfig
+import decepticons as opc
+from decepticons.bidirectional_context import BidirectionalContextConfig, BidirectionalContextStats
+from decepticons.bridge_features import BridgeFeatureArrays, BridgeFeatureConfig
+from decepticons.factories import create_substrate
+from decepticons.ngram_memory import NgramMemoryConfig
 
 
 def _field_names(cls: type[object]) -> set[str]:

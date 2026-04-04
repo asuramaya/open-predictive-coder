@@ -3,15 +3,15 @@ from __future__ import annotations
 from dataclasses import fields
 import unittest
 
-from open_predictive_coder import (
+from decepticons import (
     ByteCodec,
     CausalPredictiveAdapter,
     CausalPredictiveFitReport,
     CausalPredictiveScore,
 )
-from open_predictive_coder.bridge_features import BridgeFeatureArrays, BridgeFeatureConfig
-from open_predictive_coder.exact_context import ExactContextConfig, ExactContextMemory
-from open_predictive_coder.ngram_memory import NgramMemory, NgramMemoryConfig
+from decepticons.bridge_features import BridgeFeatureArrays, BridgeFeatureConfig
+from decepticons.exact_context import ExactContextConfig, ExactContextMemory
+from decepticons.ngram_memory import NgramMemory, NgramMemoryConfig
 
 
 def _field_names(cls: type[object]) -> set[str]:

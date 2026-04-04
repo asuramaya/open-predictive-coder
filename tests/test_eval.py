@@ -4,9 +4,9 @@ import unittest
 
 import numpy as np
 
-from open_predictive_coder import ByteLatentPredictiveCoder, OpenPredictiveCoderConfig
-from open_predictive_coder.config import LatentConfig, ReservoirConfig, SegmenterConfig
-from open_predictive_coder.eval import evaluate_rollout, score_next_step
+from decepticons import ByteLatentPredictiveCoder, OpenPredictiveCoderConfig
+from decepticons.config import LatentConfig, ReservoirConfig, SegmenterConfig
+from decepticons.eval import evaluate_rollout, score_next_step
 
 
 def small_config() -> OpenPredictiveCoderConfig:

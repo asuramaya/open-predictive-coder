@@ -4,15 +4,15 @@ import unittest
 
 import numpy as np
 
-from open_predictive_coder.artifacts import ArtifactAccounting
-from open_predictive_coder.bridge_export import (
+from decepticons.artifacts import ArtifactAccounting
+from decepticons.bridge_export import (
     BridgeExportAdapter,
     BridgeExportConfig,
     BridgeExportFitReport,
     BridgeExportReport,
 )
-from open_predictive_coder.bridge_features import BridgeFeatureConfig, bridge_feature_arrays
-from open_predictive_coder.metrics import bits_per_byte_from_probabilities
+from decepticons.bridge_features import BridgeFeatureConfig, bridge_feature_arrays
+from decepticons.metrics import bits_per_byte_from_probabilities
 
 
 class BridgeExportTests(unittest.TestCase):

@@ -1,8 +1,8 @@
-# Open Predictive Coder
+# Decepticons
 
 Shared kernel for predictive descendants.
 
-`open-predictive-coder` extracts reusable model mechanisms from a broader
+`decepticons` extracts reusable model mechanisms from a broader
 experiment family so downstream systems can specialize without forking the
 kernel itself.
 
@@ -15,7 +15,7 @@ kernel itself.
 - reusable readout and feature-view building blocks
 - lightweight runtime and evaluation helpers
 - backend-neutral family metadata and deterministic substrate builders, such as
-  `open_predictive_coder.causal_bank`
+  `decepticons.causal_bank`
 - export helpers and contracts for descendant systems
 
 It is intentionally not a full runtime system:
@@ -51,7 +51,7 @@ opc fit --input ./corpus.txt --prompt "predictive " --generate 80
 ## Python
 
 ```python
-from open_predictive_coder import ByteCodec, ByteLatentPredictiveCoder
+from decepticons import ByteCodec, ByteLatentPredictiveCoder
 
 text = "predictive coding likes repeated structure.\n" * 64
 model = ByteLatentPredictiveCoder()
@@ -69,13 +69,13 @@ print(ByteCodec.decode_text(sample))
 The intended ecosystem split is:
 
 ```text
-open-predictive-coder -> chronohorn -> heinrich
+decepticons -> chronohorn -> heinrich
 kernel                 runtime       evidence / audit
 ```
 
 Ownership is simple:
 
-- `open-predictive-coder`
+- `decepticons`
   - family-neutral predictive mechanisms
   - reusable substrate, memory, control, and readout primitives
   - backend-neutral family metadata

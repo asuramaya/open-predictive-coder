@@ -4,7 +4,7 @@ import unittest
 
 import numpy as np
 
-from open_predictive_coder.patch_latent_blocks import (
+from decepticons.patch_latent_blocks import (
     GlobalLocalBridge,
     GlobalLocalBridgeConfig,
     LocalByteEncoder,

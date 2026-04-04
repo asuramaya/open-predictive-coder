@@ -7,7 +7,7 @@ temporary directories.
 
 ## What Is In This Repo
 
-- the reusable kernel in `src/open_predictive_coder/`
+- the reusable kernel in `src/decepticons/`
 - project-layer descendant reconstructions under `examples/projects/`
 - docs that explain the extraction boundary, research anchors, and downstream pattern language
 

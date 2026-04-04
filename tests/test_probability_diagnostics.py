@@ -4,7 +4,7 @@ import unittest
 
 import numpy as np
 
-from open_predictive_coder.probability_diagnostics import (
+from decepticons.probability_diagnostics import (
     ProbabilityDiagnosticsConfig,
     normalized_entropy,
     overlap_mass,

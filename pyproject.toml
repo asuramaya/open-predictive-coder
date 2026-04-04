@@ -3,14 +3,14 @@ requires = ["setuptools>=69", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "open-predictive-coder"
+name = "decepticons"
 version = "0.1.0"
 description = "Shared predictive substrate kernel for reusable model primitives and descendant systems."
 readme = "README.md"
 requires-python = ">=3.11"
 license = {text = "MIT"}
 authors = [
-  {name = "Open Predictive Coder contributors"},
+  {name = "Decepticons contributors"},
 ]
 dependencies = [
   "numpy>=1.26",
@@ -33,11 +33,11 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/asuramaya/open-predictive-coder"
-Repository = "https://github.com/asuramaya/open-predictive-coder"
+Homepage = "https://github.com/asuramaya/decepticons"
+Repository = "https://github.com/asuramaya/decepticons"
 
 [project.scripts]
-opc = "open_predictive_coder.cli:main"
+opc = "decepticons.cli:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}

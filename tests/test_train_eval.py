@@ -2,14 +2,14 @@ from __future__ import annotations
 
 import unittest
 
-from open_predictive_coder import (
+from decepticons import (
     ByteLatentPredictiveCoder,
     OpenPredictiveCoderConfig,
     evaluate_dataset,
     evaluate_rollout_curve,
     evaluate_transfer_probe,
 )
-from open_predictive_coder.config import LatentConfig, ReservoirConfig, SegmenterConfig
+from decepticons.config import LatentConfig, ReservoirConfig, SegmenterConfig
 
 
 def small_config() -> OpenPredictiveCoderConfig:

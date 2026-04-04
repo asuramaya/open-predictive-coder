@@ -10,7 +10,7 @@ It is intentionally separate from the other bridge examples:
 
 Kernel pieces reused here:
 
-- [`bridge_feature_arrays`](../../../../src/open_predictive_coder/bridge_features.py)
+- [`bridge_feature_arrays`](../../../../src/decepticons/bridge_features.py)
 
 Project-local policy:
 

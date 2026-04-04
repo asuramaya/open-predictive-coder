@@ -4,9 +4,9 @@
 
 It uses:
 
-- [`StatisticalBackoffCache`](/Users/asuramaya/Code/carving_machine_v3/open-predictive-coder/src/open_predictive_coder/memory_cache.py)
-- [`ExactContextCache`](/Users/asuramaya/Code/carving_machine_v3/open-predictive-coder/src/open_predictive_coder/memory_cache.py)
-- [`probability_diagnostics`](/Users/asuramaya/Code/carving_machine_v3/open-predictive-coder/src/open_predictive_coder/probability_diagnostics.py)
+- [`StatisticalBackoffCache`](/Users/asuramaya/Code/carving_machine_v3/decepticons/src/decepticons/memory_cache.py)
+- [`ExactContextCache`](/Users/asuramaya/Code/carving_machine_v3/decepticons/src/decepticons/memory_cache.py)
+- [`probability_diagnostics`](/Users/asuramaya/Code/carving_machine_v3/decepticons/src/decepticons/probability_diagnostics.py)
 
 What stays local:
 

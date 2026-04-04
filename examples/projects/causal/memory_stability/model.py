@@ -10,7 +10,7 @@ FAMILY_ROOT = Path(__file__).resolve().parents[1]
 if str(FAMILY_ROOT) not in sys.path:
     sys.path.insert(0, str(FAMILY_ROOT))
 
-from open_predictive_coder import FrozenReadoutExpert, OscillatoryMemoryConfig, OscillatoryMemorySubstrate
+from decepticons import FrozenReadoutExpert, OscillatoryMemoryConfig, OscillatoryMemorySubstrate
 
 from shared import CausalReplicaBase, ExpertMixtureModel, build_linear_memory_expert
 

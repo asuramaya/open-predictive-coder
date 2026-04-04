@@ -6,7 +6,7 @@ from pathlib import Path
 import sys
 import unittest
 
-import open_predictive_coder as opc
+import decepticons as opc
 
 
 PROJECTS_ROOT = Path(__file__).resolve().parents[1] / "examples" / "projects"

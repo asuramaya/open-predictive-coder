@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import unittest
 
-from open_predictive_coder import ByteCodec, OpenPredictiveCoder, OpenPredictiveCoderConfig
-from open_predictive_coder.config import LatentConfig, ReservoirConfig, SegmenterConfig
+from decepticons import ByteCodec, OpenPredictiveCoder, OpenPredictiveCoderConfig
+from decepticons.config import LatentConfig, ReservoirConfig, SegmenterConfig
 
 
 def small_config() -> OpenPredictiveCoderConfig:

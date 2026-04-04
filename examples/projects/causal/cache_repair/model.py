@@ -11,7 +11,7 @@ _SRC_ROOT = Path(__file__).resolve().parents[4] / "src"
 if _SRC_ROOT.exists() and str(_SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(_SRC_ROOT))
 
-from open_predictive_coder import (
+from decepticons import (
     ExactContextCache,
     ExactContextConfig,
     ExactContextFitReport,
@@ -20,7 +20,7 @@ from open_predictive_coder import (
     StatisticalBackoffFitReport,
     ensure_tokens,
 )
-from open_predictive_coder.probability_diagnostics import ProbabilityDiagnosticsConfig, probability_diagnostics
+from decepticons.probability_diagnostics import ProbabilityDiagnosticsConfig, probability_diagnostics
 
 
 def _coerce_tokens(data: str | bytes | bytearray | memoryview | np.ndarray | Sequence[int]) -> np.ndarray:

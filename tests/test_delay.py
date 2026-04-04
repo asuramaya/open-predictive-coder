@@ -4,8 +4,8 @@ import unittest
 
 import numpy as np
 
-from open_predictive_coder.config import DelayLineConfig
-from open_predictive_coder.delay import DelayLineSubstrate
+from decepticons.config import DelayLineConfig
+from decepticons.delay import DelayLineSubstrate
 
 
 class DelayLineSubstrateTests(unittest.TestCase):

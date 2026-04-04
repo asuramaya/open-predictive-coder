@@ -4,7 +4,7 @@ import unittest
 
 import numpy as np
 
-from open_predictive_coder.config import (
+from decepticons.config import (
     DelayLineConfig,
     HierarchicalSubstrateConfig,
     LatentConfig,
@@ -13,8 +13,8 @@ from open_predictive_coder.config import (
     OscillatoryMemoryConfig,
     ReservoirConfig,
 )
-from open_predictive_coder.delay import DelayLineSubstrate
-from open_predictive_coder.factories import (
+from decepticons.delay import DelayLineSubstrate
+from decepticons.factories import (
     create_delay_line_substrate,
     create_echo_state_substrate,
     create_hierarchical_substrate,
@@ -23,10 +23,10 @@ from open_predictive_coder.factories import (
     create_substrate,
     create_substrate_for_model,
 )
-from open_predictive_coder.hierarchical import HierarchicalSubstrate
-from open_predictive_coder.mixed_memory import MixedMemorySubstrate
-from open_predictive_coder.oscillatory_memory import OscillatoryMemorySubstrate
-from open_predictive_coder.reservoir import EchoStateReservoir
+from decepticons.hierarchical import HierarchicalSubstrate
+from decepticons.mixed_memory import MixedMemorySubstrate
+from decepticons.oscillatory_memory import OscillatoryMemorySubstrate
+from decepticons.reservoir import EchoStateReservoir
 
 
 class FactoryTests(unittest.TestCase):

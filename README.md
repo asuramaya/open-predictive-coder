@@ -4,7 +4,7 @@
   <img src="docs/logo.webp" alt="Decepticons" width="520">
 </p>
 
-O(1) attention is deception. Shared kernel for non-transformer predictive descendants.
+O(n) attention is deception. Shared kernel for non-transformer predictive descendants.
 
 `decepticons` extracts reusable model mechanisms from a broader
 experiment family so downstream systems can specialize without forking the

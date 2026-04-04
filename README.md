@@ -1,8 +1,10 @@
 # Decepticons
 
-![Decepticons](docs/logo.webp)
+<p align="center">
+  <img src="docs/logo.webp" alt="Decepticons" width="520">
+</p>
 
-Shared kernel for predictive descendants.
+O(1) attention is deception. Shared kernel for non-transformer predictive descendants.
 
 `decepticons` extracts reusable model mechanisms from a broader
 experiment family so downstream systems can specialize without forking the
@@ -10,7 +12,7 @@ kernel itself.
 
 ## What It Does
 
-`opc` provides the mechanism layer:
+`decepticons` provides the mechanism layer:
 
 - reusable substrates and memory primitives
 - controller summaries, gates, routing, and modulation

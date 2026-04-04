@@ -49,7 +49,7 @@ python3 examples/quickstart.py
 ## CLI
 
 ```bash
-opc fit --input ./corpus.txt --prompt "predictive " --generate 80
+decepticons fit --input ./corpus.txt --prompt "predictive " --generate 80
 ```
 
 ## Python

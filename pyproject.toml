@@ -37,7 +37,7 @@ Homepage = "https://github.com/asuramaya/decepticons"
 Repository = "https://github.com/asuramaya/decepticons"
 
 [project.scripts]
-opc = "decepticons.cli:main"
+decepticons = "decepticons.cli:main"
 
 [project.optional-dependencies]
 torch = [
